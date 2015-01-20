@@ -1,8 +1,10 @@
 package framework.net.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,7 @@ public class JSONObjectRequest extends Request<JSONObject> {
 	public JSONObjectRequest(String url, Map<String, String> params,
 			Listener<JSONObject> reponseListener, ErrorListener errorListener) {
 		super(Method.POST, url, errorListener);
+		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
 	}
@@ -33,12 +36,22 @@ public class JSONObjectRequest extends Request<JSONObject> {
 	public JSONObjectRequest(int method, String url, Map<String, String> params,
 			Listener<JSONObject> reponseListener, ErrorListener errorListener) {
 		super(method, url, errorListener);
+		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
 	}
 
 	protected Map<String, String> getParams()
 			throws com.android.volley.AuthFailureError {
+		Log.d(TAG, "params:");
+		if(params != null){
+			Object[] values = params.values().toArray();
+			int i=0;
+			for(String key:params.keySet()){
+				Log.d(TAG, key + "," + values[i]);
+				i++;
+			}
+		}
 		return params;
 	};
 
@@ -49,7 +62,7 @@ public class JSONObjectRequest extends Request<JSONObject> {
 		try {
 			String jsonString = new String(response.data,
 					HttpHeaderParser.parseCharset(response.headers));
-			Log.d(TAG, jsonString);
+			Log.d(TAG, "result:"+jsonString);
 			return Response.success(new JSONObject(jsonString),
 					HttpHeaderParser.parseCacheHeaders(response));
 		} catch (UnsupportedEncodingException e) {

@@ -12,8 +12,7 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uni.netframe.GlobalDefs;
-import com.uni.netframe.MyApplication;
+import com.uni.netframe.NetframeApplication;
 
 public class NetworkRequest {
 	
@@ -22,6 +21,7 @@ public class NetworkRequest {
 		@Override
 		public void onErrorResponse(VolleyError e) {
 			e.printStackTrace();
+			Log.d(TAG, "error:"+e.getMessage());
 		}
 
 	};
@@ -40,10 +40,9 @@ public class NetworkRequest {
 	public static void requestJson(String url, Map<String, String> params,
 			Response.Listener<JSONObject> listener, Response.ErrorListener error) {
 
-		JSONObjectRequest jsonObjReq = new JSONObjectRequest(GlobalDefs.NetWork.URL
-				+ url, params, listener, error == null ? defaultError : error);
+		JSONObjectRequest jsonObjReq = new JSONObjectRequest(url, params, listener, error == null ? defaultError : error);
 
-		MyApplication.getInstance().addToRequestQueue(jsonObjReq);
+		NetframeApplication.getInstance().addToRequestQueue(jsonObjReq);
 	}
 
 	/**
@@ -64,10 +63,9 @@ public class NetworkRequest {
 		Type type = ((ParameterizedType)mySuperClass).getActualTypeArguments()[0];
 		Log.d(TAG, type.toString());
 
-		JSONObjectRequest jsonObjReq = new JSONObjectRequest(GlobalDefs.NetWork.URL
-				+ url, null, listener, error == null ? defaultError : error);
+		JSONObjectRequest jsonObjReq = new JSONObjectRequest(url, null, listener, error == null ? defaultError : error);
 
-		MyApplication.getInstance().addToRequestQueue(jsonObjReq);
+		NetframeApplication.getInstance().addToRequestQueue(jsonObjReq);
 	}
 
 	private final static String TAG = "HttpRequest";
@@ -91,10 +89,9 @@ public class NetworkRequest {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = objectMapper.convertValue(bean, Map.class);
 
-		JSONObjectRequest jsonObjReq = new JSONObjectRequest(GlobalDefs.NetWork.URL
-				+ url, params, listener, error == null ? defaultError : error);
+		JSONObjectRequest jsonObjReq = new JSONObjectRequest(url, params, listener, error == null ? defaultError : error);
 
-		MyApplication.getInstance().addToRequestQueue(jsonObjReq);
+		NetframeApplication.getInstance().addToRequestQueue(jsonObjReq);
 	}   
 
 	/**
@@ -111,10 +108,9 @@ public class NetworkRequest {
 	public static void requestArray(String url, Map<String, String> params,
 			Response.Listener<JSONArray> listener, Response.ErrorListener error) {
 
-		JSONArrayRequest jsonObjReq = new JSONArrayRequest(GlobalDefs.NetWork.URL
-				+ url, params, listener, error == null ? defaultError : error);
+		JSONArrayRequest jsonObjReq = new JSONArrayRequest(url, params, listener, error == null ? defaultError : error);
 
-		MyApplication.getInstance().addToRequestQueue(jsonObjReq);
+		NetframeApplication.getInstance().addToRequestQueue(jsonObjReq);
 	}
 
 	/**
@@ -131,10 +127,9 @@ public class NetworkRequest {
 	public static void requestArray(String url, 
 			Response.Listener<JSONArray> listener, Response.ErrorListener error) {
 
-		JSONArrayRequest jsonObjReq = new JSONArrayRequest(GlobalDefs.NetWork.URL
-				+ url, null, listener, error == null ? defaultError : error);
+		JSONArrayRequest jsonObjReq = new JSONArrayRequest(url, null, listener, error == null ? defaultError : error);
 
-		MyApplication.getInstance().addToRequestQueue(jsonObjReq);
+		NetframeApplication.getInstance().addToRequestQueue(jsonObjReq);
 	}
 
 	/**
@@ -157,10 +152,9 @@ public class NetworkRequest {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = objectMapper.convertValue(bean, Map.class);
 
-		JSONArrayRequest jsonObjReq = new JSONArrayRequest(GlobalDefs.NetWork.URL
-				+ url, params, listener, error == null ? defaultError : error);
+		JSONArrayRequest jsonObjReq = new JSONArrayRequest(url, params, listener, error == null ? defaultError : error);
 
-		MyApplication.getInstance().addToRequestQueue(jsonObjReq);
+		NetframeApplication.getInstance().addToRequestQueue(jsonObjReq);
 	}   
 
 }

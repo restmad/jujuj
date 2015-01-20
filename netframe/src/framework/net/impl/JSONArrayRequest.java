@@ -26,6 +26,7 @@ public class JSONArrayRequest extends Request<JSONArray> {
 	public JSONArrayRequest(String url, Map<String, String> params,
 			Listener<JSONArray> reponseListener, ErrorListener errorListener) {
 		super(Method.POST, url, errorListener);
+		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
 	}
@@ -33,12 +34,22 @@ public class JSONArrayRequest extends Request<JSONArray> {
 	public JSONArrayRequest(int method, String url, Map<String, String> params,
 			Listener<JSONArray> reponseListener, ErrorListener errorListener) {
 		super(method, url, errorListener);
+		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
 	}
 
 	protected Map<String, String> getParams()
 			throws com.android.volley.AuthFailureError {
+		Log.d(TAG, "params:");
+		if(params != null){
+			Object[] values = params.values().toArray();
+			int i=0;
+			for(String key:params.keySet()){
+				Log.d(TAG, key + "," + values[i]);
+				i++;
+			}
+		}
 		return params;
 	};
 
@@ -49,7 +60,7 @@ public class JSONArrayRequest extends Request<JSONArray> {
 		try {
 			String jsonString = new String(response.data,
 					HttpHeaderParser.parseCharset(response.headers));
-			Log.d(TAG, jsonString);
+			Log.d(TAG, "result:"+jsonString);
 			return Response.success(new JSONArray(jsonString),
 					HttpHeaderParser.parseCacheHeaders(response));
 		} catch (UnsupportedEncodingException e) {
