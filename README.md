@@ -3,10 +3,10 @@ A common client-server flow goes something like:
 query from database -> (load from server -> save ->) display -> edit -> update.
 With netframe, the flow above is all automatically set with very simple code. 
 
-@
+
 public class LoginActivity extends Activity(
-	@Override
-    
+
+	@Override    
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		Netframe.inject(this, new MutableEntity<LoginRequest(new LoginRequest()));
