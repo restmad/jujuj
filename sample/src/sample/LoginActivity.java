@@ -3,8 +3,6 @@ package sample;
 import org.json.JSONException;
 import org.json.JSONObject;
  
-
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shinado.netframe.sample.R;
