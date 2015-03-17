@@ -15,4 +15,14 @@ public class MutableEntity<T> {
 	public void setEntity(T t){
 		this.t = t;
 	}
+	
+	protected boolean bStored = false;
+
+	public boolean isStateStored() {
+		return bStored;
+	}
+
+	public void onStoring() {
+		bStored = true;
+	}
 }

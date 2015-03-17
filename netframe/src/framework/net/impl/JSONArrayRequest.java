@@ -22,18 +22,20 @@ public class JSONArrayRequest extends Request<JSONArray> {
 
 	private Listener<JSONArray> listener;
 	private Map<String, String> params;
+	private String charset = "utf-8";
 
-	public JSONArrayRequest(String url, Map<String, String> params,
+	public JSONArrayRequest(String url, Map<String, String> params, String charset,
 			Listener<JSONArray> reponseListener, ErrorListener errorListener) {
 		super(Method.POST, url, errorListener);
 		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
+		this.charset = charset;
 	}
 
-	public JSONArrayRequest(int method, String url, Map<String, String> params,
+	public JSONArrayRequest(String url, Map<String, String> params,
 			Listener<JSONArray> reponseListener, ErrorListener errorListener) {
-		super(method, url, errorListener);
+		super(Method.POST, url, errorListener);
 		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
@@ -58,8 +60,9 @@ public class JSONArrayRequest extends Request<JSONArray> {
 	@Override
 	protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
 		try {
-			String jsonString = new String(response.data,
-					HttpHeaderParser.parseCharset(response.headers));
+			Log.d(TAG, "charset:"+charset);
+			String jsonString = new String(response.data, charset);
+//					HttpHeaderParser.parseCharset(response.headers));
 			Log.d(TAG, "result:"+jsonString);
 			return Response.success(new JSONArray(jsonString),
 					HttpHeaderParser.parseCacheHeaders(response));
@@ -82,7 +85,7 @@ public class JSONArrayRequest extends Request<JSONArray> {
 
 	@Override
 	public String getBodyContentType() {
-		return "application/json; charset=utf-8";
+		return "application/json; charset="+charset;
 	}
 
 	@Override

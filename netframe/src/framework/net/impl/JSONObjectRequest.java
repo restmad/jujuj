@@ -1,10 +1,8 @@
 package framework.net.impl;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,18 +22,20 @@ public class JSONObjectRequest extends Request<JSONObject> {
 
 	private Listener<JSONObject> listener;
 	private Map<String, String> params;
+	private String charset = "utf-8";
 
-	public JSONObjectRequest(String url, Map<String, String> params,
+	public JSONObjectRequest(String url, Map<String, String> params, String charset,
 			Listener<JSONObject> reponseListener, ErrorListener errorListener) {
 		super(Method.POST, url, errorListener);
 		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
+		this.charset = charset;
 	}
 
-	public JSONObjectRequest(int method, String url, Map<String, String> params,
+	public JSONObjectRequest(String url, Map<String, String> params,
 			Listener<JSONObject> reponseListener, ErrorListener errorListener) {
-		super(method, url, errorListener);
+		super(Method.POST, url, errorListener);
 		Log.d(TAG, "url:"+url);
 		this.listener = reponseListener;
 		this.params = params;
@@ -60,8 +60,9 @@ public class JSONObjectRequest extends Request<JSONObject> {
 	@Override
 	protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
 		try {
-			String jsonString = new String(response.data,
-					HttpHeaderParser.parseCharset(response.headers));
+			Log.d(TAG, "charset:"+charset);
+			String jsonString = new String(response.data, charset);
+//					HttpHeaderParser.parseCharset(response.headers));
 			Log.d(TAG, "result:"+jsonString);
 			return Response.success(new JSONObject(jsonString),
 					HttpHeaderParser.parseCacheHeaders(response));
@@ -84,7 +85,7 @@ public class JSONObjectRequest extends Request<JSONObject> {
 
 	@Override
 	public String getBodyContentType() {
-		return "application/json; charset=utf-8";
+		return "application/json; charset="+charset;
 	}
 
 	@Override
