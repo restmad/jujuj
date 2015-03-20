@@ -8,9 +8,9 @@ Netframe is based on ActiveAndroid, Gson, universal image loader and volley, whi
 ##sample code 
 
  In the sample code below, the activity does 3 things:
- 	1. query from database
-	2. if get nothing from database, load data from server and save
-	3. display data, image included on the view
+ 1. query from database
+2. if get nothing from database, load data from server and save
+3. display data, image included on the view
 
 ```sh
 public class Demo3Activity extends Activity{
