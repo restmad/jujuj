@@ -132,7 +132,8 @@ Second, edit your manifest
         
     <meta-data android:name="AA_DB_NAME" android:value="netframe.db" />
     <meta-data android:name="AA_DB_VERSION" android:value="5" />
-```    
+```   
+That's it!
 ## Copyright
 
 Copyright (C) 2014 shinado <shinado023@gmail.com>
