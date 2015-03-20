@@ -5,10 +5,8 @@ query from database -> (load from server -> save ->) display -> edit -> update.
 With netframe, the flow above is all automatically set with very simple code, with no need to parse from JSON, display on views. You just need to specify fields with view ids, all the datas will be automatically displayed.
 
 Netframe is based on ActiveAndroid, Gson, universal image loader and volley, which supports TextView, SpinnerView, ImageView, CheckBox and AbsListView now. 
-###fdsa 
+##sample code 
 
-
- ##sample code
  In the sample code below, the activity does 3 things:
  	1. query from database
 	2. if get nothing from database, load data from server and save
