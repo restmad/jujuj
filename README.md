@@ -7,11 +7,12 @@ With netframe, the flow above is all automatically set with very simple code, wi
 Netframe is based on ActiveAndroid, Gson, universal image loader and volley, which supports TextView, SpinnerView, ImageView, CheckBox and AbsListView now. 
 ##sample code 
 
- In the sample code below, the activity does 3 things:
+ In the sample code below, the activity does 4 things:
  
 1. query from database
-2. if get nothing from database, load data from server and save
-3. display data, image included on the view
+2. if get nothing from database, load data from server
+3. insert data into database
+4. display data, image included on the view
 
 ```sh
 public class Demo3Activity extends Activity{
@@ -115,6 +116,23 @@ public class Number extends Entity{
 
 }
 ```
+## How to use
+
+First, extend NetframeApplication
+```sh
+public class MyApplication extends NetframeApplication
+
+```
+Second, edit your manifest
+```sh
+<uses-permission android:name="android.permission.INTERNET"/>
+<application
+    android:name="sample.MyApplication"
+    ... >
+        
+    <meta-data android:name="AA_DB_NAME" android:value="netframe.db" />
+    <meta-data android:name="AA_DB_VERSION" android:value="5" />
+```    
 ## Copyright
 
 Copyright (C) 2014 shinado <shinado023@gmail.com>
