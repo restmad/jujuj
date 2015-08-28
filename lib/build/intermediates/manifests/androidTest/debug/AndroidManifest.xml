@@ -3,7 +3,7 @@
     package="com.shinado.netframe.test" >
 
     <uses-sdk
-        android:minSdkVersion="7"
+        android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
     <instrumentation
