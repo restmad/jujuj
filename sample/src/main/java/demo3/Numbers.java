@@ -2,22 +2,20 @@ package demo3;
 
 import java.util.ArrayList;
 
+import framework.inj.entity.Downloadable;
 import sample.MyApplication;
 import android.content.Context;
+import android.util.Log;
 
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.shinado.netframe.sample.R;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
 import framework.inj.entity.ArrayDownloadable;
-import framework.inj.entity.Downloadable;
-import framework.inj.entity.Entity;
 
-public class Numbers implements ArrayDownloadable{
+public class Numbers implements Downloadable{
 	
-	@ViewInj(R.id.contact_number)
+	@ViewInj(R.id.number_list)
 	public ArrayList<Number> numbers;
 
 	@Override
@@ -39,12 +37,12 @@ public class Numbers implements ArrayDownloadable{
 
 	@Override
 	public void onError(Context context, String msg) {
-
+		Log.d("HttpRequest", "number error:"+msg);
 	}
 
-	@GroupViewInj(R.layout.layout_number)
-	class Number{
+	@GroupViewInj(R.layout.layout_demo2n3_number)
+	public class Number{
 		@ViewInj(R.id.contact_number)
-		String number;
+		public String number;
 	}
 }

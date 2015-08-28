@@ -8,7 +8,7 @@ import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
 import framework.inj.entity.Entity;
 
-@GroupViewInj(R.layout.layout_number)
+@GroupViewInj(R.layout.layout_demo2n3_number)
 @Table(name = "Number")
 public class Number extends Entity{
 	

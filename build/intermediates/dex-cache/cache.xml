@@ -2,11 +2,18 @@
 <items version="2" >
 
     <item
-        jar="/Users/shinado/Desktop/workspace/jujuj/sample/build/intermediates/exploded-aar/jujuj/lib/unspecified/jars/classes.jar"
+        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/libs/activeandroid-3.1-beta.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="f513c78d023499b67467b079876af5d8145e1e91">
-        <dex dex="/Users/shinado/Desktop/workspace/jujuj/sample/build/intermediates/pre-dexed/debug/classes-2e0247130a4eb301938e2c9672fde2e3b02e8b33.jar" />
+        sha1="60a522113b5b4beca6696530394e411705988e92">
+        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/activeandroid-3.1-beta-b0a84c59a367743e027a4fbdda25c5a8b2e54d03.jar" />
+    </item>
+    <item
+        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9d4de2faedb0fc0ff43a453bcb2b0c16ece612f5">
+        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-90bf83e2d64bce34c243cb753e19d734f14fad6e.jar" />
     </item>
 
 </items>

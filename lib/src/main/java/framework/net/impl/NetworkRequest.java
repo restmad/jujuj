@@ -17,9 +17,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.uni.netframe.NetframeApplication;
 
-import framework.net.abs.AbsNetworkRequest;
-import framework.net.abs.Listener;
-
 public class NetworkRequest{
 	
 	private static Response.ErrorListener defaultError = new Response.ErrorListener() {

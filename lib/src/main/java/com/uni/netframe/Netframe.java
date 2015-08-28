@@ -30,6 +30,7 @@ import framework.inj.entity.Multipleable;
 import framework.inj.entity.MutableEntity;
 import framework.inj.entity.Postable;
 import framework.inj.entity.Validatable;
+import framework.inj.exception.ViewNotFoundException;
 import framework.inj.impl.AbsListViewInjector;
 import framework.inj.impl.CheckBoxInjector;
 import framework.inj.impl.ImageViewInjector;
@@ -41,6 +42,7 @@ import framework.net.abs.Listener;
 import framework.net.impl.NetworkRequest;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,6 +50,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class Netframe {
+
+	private final String TAG = "Netframe";
 
 	protected Configuration mConfig;
 	private static Netframe instance;
@@ -203,8 +207,15 @@ public class Netframe {
 		setContent(context, view, bean);
 		return false;
 	}
-	
-	public  void setContent(Context context, View view, Object bean) {
+
+	/**
+	 *
+	 * @param context
+	 * @param view
+	 * @param bean
+	 * @return true if a ViewFoundException is supposed to throw
+	 */
+	public void setContent(Context context, View view, Object bean) {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			Annotation annotation = field.getAnnotation(ViewInj.class);
 			if (annotation == null) {
@@ -214,10 +225,8 @@ public class Netframe {
 			int resId = inj.value();
 			View v = findViewById(view, resId);
 			if (v == null) {
-				//TODO cant just throw it
-				//when a field is owned by different layout
-				//you have no idea
-//				throw new ViewNotFoundException("view not found, in field "+field.getName());
+				//TODO
+				Log.w(TAG, "View not find, in class " + bean.getClass().getName() + ", resource id " + resId);
 				continue;
 			}
 			for(ViewInjector injector:injectors){
@@ -226,6 +235,7 @@ public class Netframe {
 				}
 			}
 		}
+
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -531,7 +541,7 @@ public class Netframe {
                 .create();
     }
 
-	private  void handleDownloadObject(Context context, View view, MutableEntity m, Downloadable obj){
+	private void handleDownloadObject(Context context, View view, MutableEntity m, Downloadable obj){
 		if (obj != null) {
 			if(obj instanceof Entity){
 				saveInDatabase((Entity) obj);
@@ -558,7 +568,7 @@ public class Netframe {
 		}
 	}
 
-	private  boolean injectEntity(final Context context, final View view,
+	private boolean injectEntity(final Context context, final View view,
 			final MutableEntity m) {
 		Entity bean = (Entity) m.getEntity();
 		if (bean.getId() == null) {

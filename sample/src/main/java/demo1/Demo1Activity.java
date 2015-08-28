@@ -18,7 +18,6 @@ import com.uni.netframe.Netframe;
 
 import demo2.Demo2Activity;
 import framework.inj.ActivityInj;
-import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
 import framework.inj.entity.MutableEntity;
 import framework.inj.entity.Postable;
@@ -38,7 +37,7 @@ public class Demo1Activity extends Activity{
 		Netframe.getInstance().inject(this, new MutableEntity(new LoginRequest()));
 	}
 
-	@ActivityInj(R.layout.activity_login)
+	@ActivityInj(R.layout.activity_demo1)
 	public class LoginRequest implements Postable{
 		
 		private ProgressDialog dialog;

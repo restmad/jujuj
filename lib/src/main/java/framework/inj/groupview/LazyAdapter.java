@@ -2,17 +2,19 @@ package framework.inj.groupview;
 
 import java.util.Collection;
 
-import com.activeandroid.util.Log;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.uni.netframe.Netframe;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import framework.inj.exception.ViewNotFoundException;
 
 public class LazyAdapter extends BaseAdapter{
 
@@ -84,8 +86,8 @@ public class LazyAdapter extends BaseAdapter{
         if (dataSet == null) {
             return;
         }
-		Log.d("HttpRequest", "adapter get item:"+dataSet.toString());
-        
+		Log.d("HttpRequest", "adapter get item:" + dataSet.toString());
+
         Netframe.getInstance().setContent(mContext, view, dataSet);
         
     }

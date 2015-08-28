@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import demo1.Demo1Activity;
 import demo2.Demo2Activity;
 import demo3.Demo3Activity;
+import demo4.Demo4Activity;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -35,12 +36,15 @@ public class MainActivity extends ListActivity{
                     case 2:
 						intent = new Intent(MainActivity.this, Demo3Activity.class);
 						break;
+					case 3:
+						intent = new Intent(MainActivity.this, Demo4Activity.class);
+						break;
 				}
 				startActivity(intent);
 			}
 		});
 		
-		String[] items = { "Posting a request", "Loading from server", "Handling multiple requests" };
+		String[] items = { "Posting a request", "Loading from server", "Handling multiple requests", "Loading from local"};
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, items);

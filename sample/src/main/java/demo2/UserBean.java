@@ -1,6 +1,5 @@
 package demo2;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,13 +12,12 @@ import com.activeandroid.query.Select;
 import com.shinado.netframe.sample.R;
 
 import framework.inj.ActivityInj;
-import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
 import framework.inj.entity.Entity;
 
 
-@ActivityInj(R.layout.activity_main)
+@ActivityInj(R.layout.activity_demo2n3)
 @Table(name = "User")
 public class UserBean extends Entity implements Downloadable{
 	
@@ -43,7 +41,8 @@ public class UserBean extends Entity implements Downloadable{
 	public List<Number> numbers;
 
 	public List<Number> numbers(){
-		return getMany(Number.class, "userBean");
+		//WARNING don't use getMany, use getMani instead
+		return getMani(Number.class, "userBean");
 	}
 	
 	public UserBean(){

@@ -53,7 +53,6 @@ public class NetframeApplication extends com.activeandroid.app.Application{
 	@Override
     public void onCreate() {
         super.onCreate();
-        ActiveAndroid.initialize(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         requestQueue = Volley.newRequestQueue(this);
         mInstance = this;

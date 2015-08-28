@@ -1,8 +1,7 @@
 package com.uni.netframe;
 
-import framework.net.abs.AbsNetworkRequest;
-import framework.net.impl.NetworkRequest;
-import framework.net.impl.VolleyNetworkRequest;
+import framework.net.abs.AbsDataProvider;
+import framework.net.impl.VolleyProvider;
 
 /**
  * Created by shinado on 15/8/27.
@@ -11,7 +10,7 @@ public class Configuration {
 
     String encoder;
     String charset;
-    AbsNetworkRequest networkRequest;
+    AbsDataProvider networkRequest;
 
     private Configuration(Builder builder){
         encoder = builder.encoder;
@@ -26,10 +25,10 @@ public class Configuration {
     public static class Builder{
         private String encoder;
         private String charset;
-        private AbsNetworkRequest networkRequest;
+        private AbsDataProvider networkRequest;
 
         public Builder(){
-            networkRequest = new VolleyNetworkRequest();
+            networkRequest = new VolleyProvider();
             encoder = "gbk";
             charset = "utf-8";
         }
@@ -44,7 +43,7 @@ public class Configuration {
             return this;
         }
 
-        public Builder setNetworkRequest(AbsNetworkRequest networkRequest){
+        public Builder setNetworkRequest(AbsDataProvider networkRequest){
             this.networkRequest = networkRequest;
             return this;
         }

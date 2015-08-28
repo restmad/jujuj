@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.activeandroid.util.Log;
 
 import framework.inj.entity.Transformable;
 import framework.inj.exception.FieldNotPublicException;
@@ -14,6 +13,7 @@ import framework.inj.groupview.Adaptable;
 import framework.inj.groupview.LazyAdapter;
 import android.R;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
