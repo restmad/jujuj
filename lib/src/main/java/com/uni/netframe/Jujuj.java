@@ -10,7 +10,7 @@ import framework.net.abs.AbsDataProvider;
 public class Jujuj {
 
     public void setProviders(AbsDataProvider[] providers){
-        
+        //test
     }
 
     public void inject(){
