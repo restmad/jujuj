@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/shinado/Desktop/workspace/jujuj/sample/build/intermediates/exploded-aar/jujuj/lib/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f513c78d023499b67467b079876af5d8145e1e91">
+        <dex dex="/Users/shinado/Desktop/workspace/jujuj/sample/build/intermediates/pre-dexed/debug/classes-2e0247130a4eb301938e2c9672fde2e3b02e8b33.jar" />
+    </item>
+
+</items>
