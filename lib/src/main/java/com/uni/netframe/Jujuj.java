@@ -1,5 +1,14 @@
 package com.uni.netframe;
 
+import java.util.ArrayList;
+
+import framework.inj.impl.AbsListViewInjector;
+import framework.inj.impl.CheckBoxInjector;
+import framework.inj.impl.ImageViewInjector;
+import framework.inj.impl.SpinnerInjector;
+import framework.inj.impl.TextViewInjector;
+import framework.inj.impl.ViewInjector;
+import framework.inj.impl.WebViewInjector;
 import framework.net.abs.AbsDataProvider;
 
 /**
@@ -9,8 +18,16 @@ import framework.net.abs.AbsDataProvider;
  */
 public class Jujuj {
 
-    public void setProviders(AbsDataProvider[] providers){
-        //test
+    private ArrayList<ViewInjector> injectors;
+
+    private Jujuj(){
+        injectors = new ArrayList<>();
+        injectors.add(new ImageViewInjector());
+        injectors.add(new CheckBoxInjector());
+        injectors.add(new AbsListViewInjector());
+        injectors.add(new SpinnerInjector());
+        injectors.add(new WebViewInjector());
+        injectors.add(new TextViewInjector());
     }
 
     public void inject(){

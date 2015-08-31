@@ -1,5 +1,7 @@
 package com.uni.netframe;
 
+import java.util.TreeSet;
+
 import framework.net.abs.AbsDataProvider;
 import framework.net.impl.VolleyProvider;
 
@@ -10,12 +12,12 @@ public class Configuration {
 
     String encoder;
     String charset;
-    AbsDataProvider networkRequest;
+    TreeSet<AbsDataProvider> dataProviders;
 
     private Configuration(Builder builder){
         encoder = builder.encoder;
         charset = builder.charset;
-        networkRequest = builder.networkRequest;
+        dataProviders = builder.dataProviders;
     }
 
     public static Configuration getDefault(){
@@ -25,10 +27,10 @@ public class Configuration {
     public static class Builder{
         private String encoder;
         private String charset;
-        private AbsDataProvider networkRequest;
+        private TreeSet<AbsDataProvider> dataProviders;
 
         public Builder(){
-            networkRequest = new VolleyProvider();
+            dataProviders = new TreeSet<>();
             encoder = "gbk";
             charset = "utf-8";
         }
@@ -43,8 +45,8 @@ public class Configuration {
             return this;
         }
 
-        public Builder setNetworkRequest(AbsDataProvider networkRequest){
-            this.networkRequest = networkRequest;
+        public Builder addDataProvider(AbsDataProvider dataProvider){
+            this.dataProviders.add(dataProvider);
             return this;
         }
 
