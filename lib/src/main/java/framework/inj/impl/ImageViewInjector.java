@@ -1,18 +1,21 @@
 package framework.inj.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
+import framework.core.Jujuj;
 import framework.inj.ImageViewInj;
 import framework.inj.exception.FieldNotPublicException;
-import framework.inj.exception.TypeNotSupportedException;
-import framework.net.image.ImageUploader;
+import framework.net.image.AbsImageProvider;
 import framework.net.image.Uploadable;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -26,8 +29,14 @@ import android.widget.ImageView;
  */
 public class ImageViewInjector extends ViewInjector{
 
+	private AbsImageProvider mProvider;
+
+	public ImageViewInjector(AbsImageProvider provider){
+		mProvider = provider;
+	}
+
 	@Override
-	public String addParams(View view, HashMap<String, String> params, final Object bean, final Field field)
+	public String addParams(View view, final HashMap<String, String> params, final Object bean, final Field field)
 			throws Exception{
 		if(view instanceof ImageView){
 			Annotation anno = field.getAnnotation(ImageViewInj.class);
@@ -41,13 +50,23 @@ public class ImageViewInjector extends ViewInjector{
 						Bundle b1 = new Bundle(uploadable, "", field.getName());
 						mHandler.obtainMessage(WHAT_START_UPLOAD, b1).sendToTarget();
 						
-						String response;
+						String response = "";
+						InputStream is;
 						if(fieldUrl != null){
-							response = ImageUploader.upload(uploadUrl, fieldUrl);
+							try {
+								is = new FileInputStream(fieldUrl);
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+								return;
+							}
 						}else{
 							BitmapDrawable drawable = (BitmapDrawable) ((ImageView) bean).getDrawable();
-							response = ImageUploader.upload(uploadUrl, drawable.getBitmap());
+							ByteArrayOutputStream baos = new ByteArrayOutputStream();
+							drawable.getBitmap().compress(Bitmap.CompressFormat.JPEG, 100, baos);
+							is = new ByteArrayInputStream(baos.toByteArray());
 						}
+
+						mProvider.upload(uploadUrl, params, is);
 						Bundle b2 = new Bundle(uploadable, response, field.getName());
 						mHandler.obtainMessage(WHAT_UPLOAD_FINISH, b2).sendToTarget();
 					}
@@ -104,8 +123,10 @@ public class ImageViewInjector extends ViewInjector{
 			if (value instanceof Integer){
 				((ImageView) view).setImageResource((Integer) value);
 			}else {
-				String str = getString(value);
-				ImageLoader.getInstance().displayImage(str, (ImageView) view);
+				String url = getString(value);
+				//TODO think about it
+				mProvider.displayImage(url, (ImageView) view);
+//				ImageLoader.getInstance().displayImage(url, (ImageView) view);
 			}
 			return true;
 		}else{

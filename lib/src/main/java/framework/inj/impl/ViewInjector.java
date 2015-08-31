@@ -3,8 +3,7 @@ package framework.inj.impl;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import framework.inj.entity.Transformable;
-import framework.inj.exception.FieldNotPublicException;
+import framework.core.Jujuj;
 import framework.inj.exception.TypeNotSupportedException;
 import android.content.Context;
 import android.view.View;

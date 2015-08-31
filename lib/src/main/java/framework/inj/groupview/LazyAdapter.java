@@ -2,9 +2,6 @@ package framework.inj.groupview;
 
 import java.util.Collection;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.uni.netframe.Netframe;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import framework.core.Jujuj;
 import framework.inj.exception.ViewNotFoundException;
 
 public class LazyAdapter extends BaseAdapter{
@@ -65,7 +63,7 @@ public class LazyAdapter extends BaseAdapter{
         View v = null;
         if (convertView == null) {
         	if(mData !=null && mData.size() > 0){
-                v = Netframe.getInstance().findView(mContext, parent, mData.toArray()[0].getClass());
+                v = Jujuj.getInstance().findView(mContext, parent, mData.toArray()[0].getClass());
         	}
         } else {
             v = convertView;
@@ -88,50 +86,8 @@ public class LazyAdapter extends BaseAdapter{
         }
 		Log.d("HttpRequest", "adapter get item:" + dataSet.toString());
 
-        Netframe.getInstance().setContent(mContext, view, dataSet);
+        Jujuj.getInstance().setContent(mContext, view, dataSet);
         
-    }
-
-    /**
-     * Called by bindView() to set the image for an ImageView but only if
-     * there is no existing ViewBinder or if the existing ViewBinder cannot
-     * handle binding to an ImageView.
-     *
-     * This method is called instead of {@link #setViewImage(ImageView, String)}
-     * if the supplied data is an int or Integer.
-     *
-     * @param v ImageView to receive an image
-     * @param value the value retrieved from the data set
-     *
-     * @see #setViewImage(ImageView, String)
-     */
-    public void setViewImage(ImageView v, int value) {
-        v.setImageResource(value);
-    }
-
-    /**
-     * Called by bindView() to set the image for an ImageView but only if
-     * there is no existing ViewBinder or if the existing ViewBinder cannot
-     * handle binding to an ImageView.
-     *
-     * By default, the value will be treated as an image resource. If the
-     * value cannot be used as an image resource, the value is used as an
-     * image Uri.
-     *
-     * This method is called instead of {@link #setViewImage(ImageView, int)}
-     * if the supplied data is not an int or Integer.
-     *
-     * @param v ImageView to receive an image
-     * @param value the value retrieved from the data set
-     *
-     * @see #setViewImage(ImageView, int) 
-     */
-    public void setViewImage(ImageView v, String value) {
-        try {
-            v.setImageResource(Integer.parseInt(value));
-        } catch (NumberFormatException nfe) {
-        	ImageLoader.getInstance().displayImage(value, v);
-        }
     }
 
     /**

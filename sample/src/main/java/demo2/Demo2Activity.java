@@ -1,8 +1,8 @@
 package demo2;
 
 import com.activeandroid.query.Select;
-import com.uni.netframe.Netframe;
 
+import framework.core.Jujuj;
 import framework.inj.entity.MutableEntity;
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ public class Demo2Activity extends Activity{
 		UserBean bean = new UserBean();
 		bean.userName = "Dan";
 
-		Netframe.getInstance().inject(this, new MutableEntity(bean));
+		Jujuj.getInstance().inject(this, new MutableEntity(bean));
 	}
 	
 }

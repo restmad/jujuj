@@ -1,7 +1,6 @@
 package framework.inj.impl;
 
 import java.lang.reflect.Field;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 import framework.inj.entity.Transformable;
@@ -10,7 +9,6 @@ import framework.inj.exception.TypeNotSupportedException;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 /**
  * 

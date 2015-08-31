@@ -1,8 +1,7 @@
 package framework.core;
 
-import java.util.TreeSet;
-
-import framework.net.abs.AbsDataProvider;
+import framework.net.image.AbsImageProvider;
+import framework.provider.AbsDataProvider;
 
 /**
  * Created by shinado on 15/8/27.
@@ -11,25 +10,27 @@ public class Configurations {
 
     String encoder;
     String charset;
-    TreeSet<AbsDataProvider> dataProviders;
+    AbsDataProvider dataProvider;
+    AbsImageProvider imageProvider;
 
     private Configurations(Builder builder){
+        if(builder.dataProvider == null){
+            throw new IllegalArgumentException("DataProvider must be set before using");
+        }
+
         encoder = builder.encoder;
         charset = builder.charset;
-        dataProviders = builder.dataProviders;
-    }
-
-    public static Configurations getDefault(){
-        return new Configurations.Builder().build();
+        dataProvider = builder.dataProvider;
+        imageProvider = builder.imageProvider;
     }
 
     public static class Builder{
         private String encoder;
         private String charset;
-        private TreeSet<AbsDataProvider> dataProviders;
+        private AbsDataProvider dataProvider;
+        private AbsImageProvider imageProvider;
 
         public Builder(){
-            dataProviders = new TreeSet<>();
             encoder = "gbk";
             charset = "utf-8";
         }
@@ -44,8 +45,29 @@ public class Configurations {
             return this;
         }
 
-        public Builder addDataProvider(AbsDataProvider dataProvider){
-            this.dataProviders.add(dataProvider);
+        public Builder addDataProvider(AbsDataProvider provider){
+            if(provider == null){
+                throw new IllegalArgumentException("DataProvider can't be null");
+            }
+            if(this.dataProvider == null){
+                dataProvider = provider;
+            }else{
+                addDataProvider(dataProvider, provider);
+            }
+            return this;
+        }
+
+        private void addDataProvider(AbsDataProvider base, AbsDataProvider provider){
+            AbsDataProvider supervisor = base.getSupervisor();
+            if(supervisor != null){
+                addDataProvider(supervisor, provider);
+            }else{
+                base.setSupervisor(provider);
+            }
+        }
+
+        public Builder setImageProvider(AbsImageProvider provider){
+            imageProvider = provider;
             return this;
         }
 

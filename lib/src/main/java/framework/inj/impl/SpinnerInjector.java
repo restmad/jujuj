@@ -1,12 +1,10 @@
 package framework.inj.impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
 import framework.inj.entity.Transformable;
-import framework.inj.entity.MutableEntity;
 import framework.inj.exception.FieldNotPublicException;
 import framework.inj.exception.TypeNotSupportedException;
 import android.R;

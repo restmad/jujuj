@@ -3,7 +3,7 @@ package demo3;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.uni.netframe.Netframe;
+import framework.core.Jujuj;
 
 public class Demo3Activity extends Activity{
 
@@ -11,7 +11,7 @@ public class Demo3Activity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-		Netframe.getInstance().inject(this, new Bean());
+		Jujuj.getInstance().inject(this, new Bean("Dan"));
 	}
 	
 }

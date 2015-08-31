@@ -3,7 +3,6 @@ package framework.inj.impl;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 
 import framework.inj.entity.Transformable;
@@ -11,14 +10,11 @@ import framework.inj.exception.FieldNotPublicException;
 import framework.inj.exception.TypeNotSupportedException;
 import framework.inj.groupview.Adaptable;
 import framework.inj.groupview.LazyAdapter;
-import android.R;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.Spinner;
 
 /**
  * 

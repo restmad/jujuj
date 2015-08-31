@@ -2,19 +2,12 @@ package demo1;
 
 import org.json.JSONException;
 import org.json.JSONObject;
- 
 
 
-
-
-
-
+import framework.core.Jujuj;
 import sample.MyApplication;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shinado.netframe.sample.R;
-import com.uni.netframe.Netframe;
 
 import demo2.Demo2Activity;
 import framework.inj.ActivityInj;
@@ -33,8 +26,7 @@ public class Demo1Activity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
-		Netframe.getInstance().inject(this, new MutableEntity(new LoginRequest()));
+		Jujuj.getInstance().inject(this, new MutableEntity(new LoginRequest()));
 	}
 
 	@ActivityInj(R.layout.activity_demo1)

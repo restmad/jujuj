@@ -6,11 +6,11 @@ import com.shinado.netframe.sample.R;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
-import framework.inj.entity.Entity;
+import provider.Entity;
 
 @GroupViewInj(R.layout.layout_demo2n3_number)
 @Table(name = "Number")
-public class Number extends Entity{
+public class Number extends Entity {
 	
 	public Number(){
 		super();
@@ -30,7 +30,7 @@ public class Number extends Entity{
 	}
 
 	@Override
-	public void setForignKey(Entity entity) {
+	public void setForeignKey(Entity entity) {
 		user = (UserBean) entity;
 	}
 

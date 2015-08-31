@@ -3,6 +3,7 @@ package demo2;
 import java.util.HashMap;
 import java.util.List;
 
+import provider.Entity;
 import sample.MyApplication;
 import android.content.Context;
 
@@ -14,7 +15,6 @@ import com.shinado.netframe.sample.R;
 import framework.inj.ActivityInj;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
-import framework.inj.entity.Entity;
 
 
 @ActivityInj(R.layout.activity_demo2n3)

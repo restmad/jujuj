@@ -2,67 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/dependency/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-60819cd3352ca11a286f396288bf53cc9a8e7b7a.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/libs/activeandroid-3.1-beta.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="60a522113b5b4beca6696530394e411705988e92">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/activeandroid-3.1-beta-b0a84c59a367743e027a4fbdda25c5a8b2e54d03.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-04e4311cd6b33dee4856e8a70c23d59c1d925afb.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-9577fadc4cb43e2ec92680238ab3334cfd8db959.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/libs/universal-image-loader-1.9.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/universal-image-loader-1.9.3-9e5e3ba90792c15f8f444300244edd7af4bb7d74.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/Downloads/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-936cd825f128cda9424d337a6bb7114c16377b3e.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="f0f3c1f6940f5cf0475240c029bc050300a2e096">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-90bf83e2d64bce34c243cb753e19d734f14fad6e.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/libs/gson-1.7.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="7291c9de7f574b15502f73f0ac2ae6d3af36c751">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/gson-1.7.1-71a3f685b6d6134b376b96702bca2ff8459e513d.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/libs/volley.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="7eb90d3407943ccbac85ddb1406522baa36ef0ba">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/volley-64873097e37e8cb2202f5a2c3e02ab2b8e701f6d.jar" />
+        sha1="481993ced4baa9fb8b09314bfcb2bb78e0d798fb">
+        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-1745f28f2146954edb1f14f2f18c5707f5c66677.jar" />
     </item>
 
 </items>

@@ -9,7 +9,13 @@ import framework.inj.entity.MutableEntity;
 @ActivityInj(R.layout.activity_demo2n3)
 public class Bean implements Multipleable{
 
-	public MutableEntity user = new MutableEntity(new UserBean());
+	public Bean(String userName){
+		UserBean bean = new UserBean();
+		bean.userName = userName;
+		user = new MutableEntity(bean);
+	}
+
+	public MutableEntity user;
 	
 	public MutableEntity number = new MutableEntity(new Numbers());
 	
