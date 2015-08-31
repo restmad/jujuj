@@ -21,7 +21,7 @@ import framework.net.abs.Listener;
 /**
  * Created by shinado on 15/8/27.
  */
-public class VolleyProvider implements AbsDataProvider {
+public class VolleyProvider extends AbsDataProvider {
 
     private final String TAG = "HttpRequest";
     private Response.ErrorListener defaultError = new Response.ErrorListener() {
@@ -104,5 +104,10 @@ public class VolleyProvider implements AbsDataProvider {
         });
 
         NetframeApplication.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    @Override
+    public int index() {
+        return 0;
     }
 }

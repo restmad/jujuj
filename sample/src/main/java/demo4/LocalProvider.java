@@ -9,7 +9,7 @@ import framework.net.abs.Listener;
 /**
  * Created by shinado on 15/8/28.
  */
-public class LocalProvider implements AbsDataProvider {
+public class LocalProvider extends AbsDataProvider {
 
     @Override
     public void requestJson(String url, Object params, String charset, Listener.Response response, Listener.Error error) {
@@ -25,5 +25,10 @@ public class LocalProvider implements AbsDataProvider {
     @Override
     public void requestArray(String url, Object params, String charset, Listener.Response response, Listener.Error error) {
 
+    }
+
+    @Override
+    public int index() {
+        return 0;
     }
 }

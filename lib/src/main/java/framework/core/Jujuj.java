@@ -1,4 +1,4 @@
-package com.uni.netframe;
+package framework.core;
 
 import java.util.ArrayList;
 

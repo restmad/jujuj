@@ -1,36 +1,35 @@
-package com.uni.netframe;
+package framework.core;
 
 import java.util.TreeSet;
 
 import framework.net.abs.AbsDataProvider;
-import framework.net.impl.VolleyProvider;
 
 /**
  * Created by shinado on 15/8/27.
  */
-public class Configuration {
+public class Configurations {
 
     String encoder;
     String charset;
-    AbsDataProvider networkRequest;
+    TreeSet<AbsDataProvider> dataProviders;
 
-    private Configuration(Builder builder){
+    private Configurations(Builder builder){
         encoder = builder.encoder;
         charset = builder.charset;
-        networkRequest = builder.networkRequest;
+        dataProviders = builder.dataProviders;
     }
 
-    public static Configuration getDefault(){
-        return new Configuration.Builder().build();
+    public static Configurations getDefault(){
+        return new Configurations.Builder().build();
     }
 
     public static class Builder{
         private String encoder;
         private String charset;
-        private AbsDataProvider networkRequest;
+        private TreeSet<AbsDataProvider> dataProviders;
 
         public Builder(){
-            networkRequest = new VolleyProvider();
+            dataProviders = new TreeSet<>();
             encoder = "gbk";
             charset = "utf-8";
         }
@@ -45,13 +44,13 @@ public class Configuration {
             return this;
         }
 
-        public Builder setNetworkRequest(AbsDataProvider dataProvider){
-            this.networkRequest = dataProvider;
+        public Builder addDataProvider(AbsDataProvider dataProvider){
+            this.dataProviders.add(dataProvider);
             return this;
         }
 
-        public Configuration build(){
-            return new Configuration(this);
+        public Configurations build(){
+            return new Configurations(this);
         }
     }
 }
