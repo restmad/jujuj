@@ -1,51 +1,29 @@
-A client-server flow always goes something like: 
+Juju was designed to handle data fetching(both from server and local) and display data into layout. It was an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
+  sample
+ dependency
+jujuj
 
-query from database -> (load from server -> save ->) display -> edit -> update.
+In module ‘dependency’, it implements data providers using Volley as network request, ActiveAndroid as ORM, and Universal Image Loader as image loader. You can replace them with your favorite libraries.
 
-With netframe, the flow above is all automatically set with very simple code, with no need to parse from JSON, display on views. You just need to specify fields with view ids, all the datas will be automatically displayed.
+## How it works
 
-Netframe is based on ActiveAndroid, Gson, universal image loader and volley, which supports TextView, SpinnerView, ImageView, CheckBox and AbsListView now. 
-##sample code 
+In jujuj, a view can be set in two ways, one by annotation of model, another by an inter-class like what MVVM pattern suggests to. 
 
- In the sample code below, the activity does 4 things:
- 
-1. query from database
-2. if get nothing from database, load data from server
-3. insert data into database
-4. display data, image included on the view
+Assume you have a view to display information of a person, including his name, portrait, and a list of numbers. You’ll need a model like this:
 
-```sh
-public class Demo3Activity extends Activity{
-
-	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-
-		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
-		UserBean bean = new UserBean();
-		bean.userName = "Dan";
-		Netframe.inject(this, new MutableEntity<UserBean>(bean));
-	}
-	
-}
 @ActivityInj(R.layout.activity_demo2)
-@Table(name = "User")
-public class UserBean extends Entity implements Downloadable{
+public class UserBean implements Downloadable{
 	
 	@ViewInj(R.id.user_portrait)
-	@Column(name = "portrait")
 	public String userPortrait;
 
 	@ViewInj(R.id.user_name)
-	@Column(name = "userName")
 	public String userName;
 
 	@ViewInj(R.id.email)
-	@Column(name = "email")
 	public String email;
 
 	@ViewInj(R.id.married)
-	@Column(name = "married")
 	public boolean married;
 
 	@ViewInj(R.id.number_list)
@@ -55,20 +33,6 @@ public class UserBean extends Entity implements Downloadable{
 		return getMany(Number.class, "userBean");
 	}
 	
-	public UserBean(){
-		super();  
-	}
-	
-	@Override
-	public Entity query() {
-		UserBean entity = new Select().from(UserBean.class)
-        		.where("userName = ?", userName).executeSingle();
-		if(entity != null){
-			entity.numbers = entity.numbers();
-		} 
-		return entity;
-	}
-
 	@Override
 	public String onDownLoadUrl(Context context) {
 		return MyApplication.URL + "netframe_get_user.php";
@@ -88,52 +52,18 @@ public class UserBean extends Entity implements Downloadable{
 	}
 
 }
-@GroupViewInj(R.layout.layout_number)
-@Table(name = "Number")
-public class Number extends Entity{
-	
-	public Number(){
-		super();
-	}
-	
-	@ViewInj(R.id.contact_number)
-	@Column(name = "number")
-	public String number;
 
-	@Column(name = "userBean")
-	public UserBean user;
+This model defines how it’s loaded(Notice that it could be loaded either from local or server). The annotations define how this model is supposed to display in a layout. 
 
-	@Override
-	public Entity query() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+This is the simple use case for Jujuj. 
 
-	@Override
-	public void setForignKey(Entity entity) {
-		user = (UserBean) entity;
-	}
+## What’s more
 
-}
-```
-## How to use
+Juju also provides with handful of functional interfaces, such as Validatable, to check if a request is validate; Transformable, to transform data types; Notifiable, to notify an Activity from model; Multilpleable, to handle multiple loading requests in an model.
 
-First, extend NetframeApplication
-```sh
-public class MyApplication extends NetframeApplication
+## What needs to be done
+Moreable, to load more data, which is very basic for data-fetching apps.
 
-```
-Second, edit your manifest
-```sh
-<uses-permission android:name="android.permission.INTERNET"/>
-<application
-    android:name="sample.MyApplication"
-    ... >
-        
-    <meta-data android:name="AA_DB_NAME" android:value="netframe.db" />
-    <meta-data android:name="AA_DB_VERSION" android:value="5" />
-```   
-That's it!
 ## Copyright
 
 Copyright (C) 2014 shinado <shinado023@gmail.com>
