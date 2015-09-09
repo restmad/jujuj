@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <FrameLayout
+        android:layout_below="@+id/main_title_bar"
+        android:layout_marginTop="-2dp"
+        android:id="@+id/main_content_holder"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white" />
+
+    <RelativeLayout
+        android:id="@+id/main_title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@drawable/bcg_title" >
+
+        <ImageButton
+            style="@style/title_bar_img_btn"
+            android:onClick="setting"
+            android:src="@drawable/mt_setting" />
+
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="72dp"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="17dip"
+            android:typeface="sans" />
+
+        <ImageButton
+            android:id="@+id/main_btn"
+            style="@style/title_bar_img_btn"
+            android:layout_alignParentRight="true" />
+
+        <View
+            android:id="@+id/main_loading_bar"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/white" />
+    </RelativeLayout>
+    
+</RelativeLayout>

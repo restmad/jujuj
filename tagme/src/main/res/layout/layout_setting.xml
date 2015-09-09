@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            style="@style/setting_title_bar"
+            android:layout_marginTop="4dip" >
+
+            <TextView
+                style="@style/setting_title"
+                android:text="@string/setting_manage" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/setting_content_theme"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/setting_noti"
+                style="@style/setting_bar"
+                android:background="@drawable/setting_style" >
+
+                <TextView
+                    style="@style/setting_text"
+                    android:text="@string/notification" />
+
+                <TextSwitcher
+                    android:id="@+id/setting_noti_switcher"
+                    style="@style/setting_item"
+                    android:inAnimation="@android:anim/slide_in_left"
+                    android:outAnimation="@android:anim/slide_out_right" >
+
+                    <TextView
+                        style="@style/item_text"
+                        android:text="@string/open" />
+
+                    <TextView
+                        style="@style/item_text"
+                        android:text="@string/close" />
+                </TextSwitcher>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_about"
+                style="@style/setting_bar"
+                android:background="@drawable/setting_style" >
+
+                <TextView
+                    style="@style/setting_text"
+                    android:text="@string/about" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_update"
+                style="@style/setting_bar"
+                android:background="@drawable/setting_style" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/setting_text"
+                    android:text="@string/check_update" />
+
+                <ImageView
+                    android:id="@+id/setting_update_ic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_toRightOf="@+id/textView1"
+                    android:src="@drawable/red_dot"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/light" />
+
+        <RelativeLayout
+            style="@style/setting_title_bar"
+            android:layout_marginTop="4dip" >
+
+            <TextView
+                style="@style/setting_title"
+                android:text="@string/setting_developer" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/setting_mail"
+                style="@style/setting_bar"
+                android:background="@drawable/setting_style" >
+
+                <TextView
+                    style="@style/setting_text"
+                    android:text="@string/send_mail" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setting_support"
+                style="@style/setting_bar"
+                android:background="@drawable/setting_style" >
+
+                <TextView
+                    style="@style/setting_text"
+                    android:text="@string/support" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/light" />
+
+        <RelativeLayout
+            style="@style/setting_title_bar"
+            android:layout_marginTop="4dip" >
+
+            <TextView
+                style="@style/setting_title"
+                android:text="@string/setting_share" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/setting_qrcode"
+                style="@style/setting_bar"
+                android:background="@drawable/setting_style" >
+
+                <TextView
+                    style="@style/setting_text"
+                    android:text="@string/qrcode" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

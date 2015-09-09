@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/blur_much_more" >
+	        
+	<ImageView 
+	    android:layout_margin="6dp"
+		android:layout_width="24dp"
+		android:layout_height="24dp"
+		android:src="@drawable/ic_location" />
+	        
+	<TextView 
+		android:id="@+id/location_view_text"
+		android:gravity="center|left"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:text="Home, sweet home"
+		android:textColor="@color/white"
+		android:textSize="18dp"/>
+	    
+</LinearLayout>

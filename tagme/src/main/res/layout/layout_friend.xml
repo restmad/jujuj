@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center" >
+
+        <ImageView
+            android:id="@+id/friend_portrait"
+            android:src="@drawable/head_ss"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/friend_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shinado"
+                android:textColor="@color/dark"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/friend_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
+                android:text="\@ss"
+                android:textColor="@color/dark"
+                android:textSize="17dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ToggleButton
+        android:id="@+id/friend_follow_tb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@drawable/follow_style"
+        android:background="@color/transparent"
+        android:paddingBottom="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="4dp"
+        android:textOff="@string/followed"
+        android:textOn="@string/follow"
+        android:textSize="17dp" />
+
+</RelativeLayout>

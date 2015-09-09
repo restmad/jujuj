@@ -87,7 +87,6 @@ public class LazyAdapter extends BaseAdapter{
 		Log.d("HttpRequest", "adapter get item:" + dataSet.toString());
 
         Jujuj.getInstance().setContent(mContext, view, dataSet);
-        
     }
 
     /**

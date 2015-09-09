@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/setting_menu"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="60dp" >
+
+        <com.mocaa.tagme.view.PortraitView
+            android:id="@+id/main_head"
+            android:layout_width="88dp"
+            android:layout_height="88dp" />
+
+        <TextView
+            android:id="@+id/main_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Areno Shinado"
+            android:textColor="@color/white"
+            android:textSize="19dp" />
+
+        <TableLayout
+            android:id="@+id/main_menu_root"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" >
+
+            <TableRow
+                style="@style/main_menu_row"
+                android:tag="0" >
+
+                <ImageView
+                    style="@style/main_menu_img"
+                    android:src="@drawable/ic_home" />
+
+                <TextView
+                    style="@style/main_menu_text"
+                    android:text="@string/title_home" />
+            </TableRow>
+
+            <TableRow
+                style="@style/main_menu_row"
+                android:tag="1" >
+
+                <ImageView
+                    style="@style/main_menu_img"
+                    android:src="@drawable/ic_friends" />
+
+                <TextView
+                    style="@style/main_menu_text"
+                    android:text="@string/title_friends" />
+            </TableRow>
+
+            <TableRow
+                style="@style/main_menu_row"
+                android:tag="2" >
+
+                <ImageView
+                    style="@style/main_menu_img"
+                    android:src="@drawable/ic_noti" />
+
+                <TextView
+                    style="@style/main_menu_text"
+                    android:text="@string/title_notifications" />
+            </TableRow>
+
+            <TableRow
+                style="@style/main_menu_row"
+                android:tag="3" >
+
+                <ImageView
+                    style="@style/main_menu_img"
+                    android:src="@drawable/ic_mine" />
+
+                <TextView
+                    style="@style/main_menu_text"
+                    android:text="@string/title_my_tag" />
+            </TableRow>
+
+            <TableRow
+                style="@style/main_menu_row"
+                android:tag="4" >
+
+                <ImageView
+                    style="@style/main_menu_img"
+                    android:src="@drawable/ic_setting" />
+
+                <TextView
+                    style="@style/main_menu_text"
+                    android:text="@string/title_settings" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="8" />
+
+</LinearLayout>

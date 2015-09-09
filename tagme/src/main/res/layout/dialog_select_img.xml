@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="16dp"
+    android:layout_gravity="center" 
+    android:orientation="vertical">
+    
+    <TextView 
+	    android:id="@+id/dialog_select_img_title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/dark"
+        android:text="@string/choose_img"
+        />
+    
+	    <View 
+	        android:layout_marginTop="6dp"
+	        android:layout_marginBottom="6dp"
+		    android:layout_width="fill_parent"
+		    android:layout_height="1dip"
+		    android:background="@color/bcg_yi_bcg"
+	        />
+	    
+    
+   	<LinearLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center" >
+    
+	    <ImageButton 
+	        android:id="@+id/dialog_select_gallery"
+	        android:padding="16dp"
+			android:layout_width="116dp"
+			android:layout_height="116dp"
+			android:background="@drawable/button_style_dark"
+			android:src="@drawable/img_gallery"/>
+	      
+	    <ImageButton 
+	        android:id="@+id/dialog_select_camera"
+	        android:padding="16dp"
+			android:layout_width="116dp"
+			android:layout_height="116dp"
+			android:background="@drawable/button_style_dark"
+			android:src="@drawable/img_camera"/>
+          
+	</LinearLayout>
+    
+</LinearLayout>

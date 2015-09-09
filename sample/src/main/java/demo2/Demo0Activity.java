@@ -50,7 +50,7 @@ public class Demo0Activity extends Activity{
             //load from server
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("userName", userName);
-            new VolleyProvider().handleData(MyApplication.URL + "netframe_get_user.php", params, new UserBean(),
+            new VolleyProvider().handleData(MyApplication.URL + "netframe_get_user.php", params, UserBean.class,
                     new Listener.Response<UserBean>(){
 
                         @Override

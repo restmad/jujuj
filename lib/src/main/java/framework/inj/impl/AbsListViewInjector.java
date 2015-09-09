@@ -1,27 +1,24 @@
 package framework.inj.impl;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
-
-
-import framework.inj.entity.Transformable;
-import framework.inj.exception.FieldNotPublicException;
-import framework.inj.exception.TypeNotSupportedException;
-import framework.inj.groupview.Adaptable;
-import framework.inj.groupview.LazyAdapter;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
+
+import framework.inj.exception.TypeNotSupportedException;
+import framework.inj.groupview.Adaptable;
+import framework.inj.groupview.LazyAdapter;
 
 /**
  * 
  * @author ss
  * supported type: Collection
  */
-public class AbsListViewInjector extends ViewInjector{
+public class AbsListViewInjector extends ViewInjector {
 
 	@Override
 	public String addParams(View view, HashMap<String, String> params, Object bean, Field field)
@@ -30,11 +27,9 @@ public class AbsListViewInjector extends ViewInjector{
 	}
 
 	@Override
-	public boolean setContent(Context context, View view, Object bean, Field field) 
-			throws FieldNotPublicException, TypeNotSupportedException {
+	public boolean setContent(Context context, View view, Object bean, String name, Object value){
 		if(view instanceof AbsListView){
 			AbsListView listView = (AbsListView) view;
-			Object value = getValue(bean, field);
 			if (value instanceof Collection) {
 //				ListAdapter adapter = listView.getAdapter();
 //				if(adapter != null){
@@ -51,33 +46,16 @@ public class AbsListViewInjector extends ViewInjector{
 					LazyAdapter adp = new LazyAdapter(context, (Collection<Object>) value);
 					listView.setAdapter(adp);
 				}
+			}else if(value instanceof Adaptable){
+				listView.setAdapter(((Adaptable)value).getAdapter(context));
 			}else{
 				throw new TypeNotSupportedException("The type of the field is not a Collection. In class " +
-						bean.getClass().getName() + ", field " + field.getName());
+						bean.getClass().getName() + ", field " + name);
 			}
 			return true;
 		}else{
 			return false;
 		}
-	}
-	
-	private Object getValue(Object bean, Field field) throws FieldNotPublicException{
-		Object value = null;
-		try {
-			value = field.get(bean);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			throw new FieldNotPublicException("The field is not public. In class " +
-					bean.getClass().getName() + ", field " + field.getName());
-		}
-		if (bean instanceof Transformable) {
-			Object valueFromServer = ((Transformable) bean).fromServer(field.getName(), value);
-			if(valueFromServer != null){
-				value = valueFromServer;
-			}
-		}
-		return value;
 	}
 
 }

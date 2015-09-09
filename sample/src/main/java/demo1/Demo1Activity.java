@@ -1,8 +1,5 @@
 package demo1;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 import framework.core.Jujuj;
 import sample.MyApplication;
@@ -30,7 +27,7 @@ public class Demo1Activity extends Activity{
 	}
 
 	@ActivityInj(R.layout.activity_demo1)
-	public class LoginRequest implements Postable{
+	public class LoginRequest implements Postable<LoginRequest.Result> {
 		
 		private ProgressDialog dialog;
 		
@@ -46,20 +43,19 @@ public class Demo1Activity extends Activity{
 		}
 
 		@Override
-		public void onPostResponse(Context context, JSONObject obj) {
+		public void onPostResponse(Context context, LoginRequest.Result result) {
 			if(dialog != null){
 				dialog.dismiss();
 			}
-			try {
-				int id = obj.getInt("id");
-				if(id > 0){
-					startActivity(new Intent(Demo1Activity.this, Demo2Activity.class));
-				}else{
-					Toast.makeText(context, "login failed", Toast.LENGTH_LONG).show();
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			if(result.id > 0){
+				startActivity(new Intent(Demo1Activity.this, Demo2Activity.class));
+			}else{
+				Toast.makeText(context, "login failed", Toast.LENGTH_LONG).show();
 			}
+		}
+
+		public class Result{
+			public int id;
 		}
 
 		@Override

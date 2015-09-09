@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="16dp"
+    android:layout_gravity="center" 
+    android:orientation="vertical">
+    
+   	<LinearLayout 
+        android:id="@+id/dialog_loading_group"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center" >
+    
+	    <ImageView
+	        android:layout_margin="@dimen/loading_dot_margin"
+			android:layout_width="@dimen/loading_dot_width"
+			android:layout_height="@dimen/loading_dot_width"
+			android:src="@drawable/dot_process"/>
+	      
+	    <ImageView
+	        android:layout_margin="@dimen/loading_dot_margin"
+			android:layout_width="@dimen/loading_dot_width"
+			android:layout_height="@dimen/loading_dot_width"
+			android:src="@drawable/dot_process"/>
+	      
+	    <ImageView
+	        android:layout_margin="@dimen/loading_dot_margin"
+			android:layout_width="@dimen/loading_dot_width"
+			android:layout_height="@dimen/loading_dot_width"
+			android:src="@drawable/dot_process"/>
+	      
+	</LinearLayout>
+	
+    <TextView 
+        android:id="@+id/dialog_loading_hint"
+        android:layout_marginTop="12dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/dark"
+        android:text="@string/loading"
+        />
+    
+</LinearLayout>

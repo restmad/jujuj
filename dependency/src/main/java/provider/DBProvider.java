@@ -16,16 +16,19 @@ public class DBProvider extends AbsDataProvider {
     private final String TAG = "DBProvider";
 
     @Override
-    public void handleData(String uri, Map<String, String> params, Object target, Listener.Response response, Listener.Error error) {
-        if(target == null){
-            Log.d(TAG, "passed....");
-            response.onResponse(null);
-            return;
-        }
+    public void handleData(String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
 
-        if(target instanceof Entity){
+        if(cls.isAssignableFrom(Entity.class)){
             Log.d(TAG, "handling....");
-            response.onResponse(((Entity) target).query());
+            Entity entity = null;
+            try {
+                entity = (Entity) cls.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            response.onResponse(entity.query());
         }else{
             Log.d(TAG, "passed....");
             response.onResponse(null);

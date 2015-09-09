@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>  
+	<color name="transparent">#00000000</color>
+	<color name="btn_pressed">#55ffffff</color>
+	<color name="blur">#22000000</color>
+	<color name="blur_more">#55000000</color>
+	<color name="blur_much_more">#77000000</color>
+	<color name="white">#ffffff</color>
+	<color name="white_blur">#bbffffff</color>
+	<color name="light">#dddddd</color>
+	<color name="bcg_grid">#f2f2f2</color>
+	<color name="bcg_grid_pressed">#eeeeee</color>
+	<color name="bcg_grid_press_hard">#cccccc</color>
+	<color name="bcg_white">#f8f8f8</color>
+	<color name="black">#000000</color>
+	<color name="very_dark">#111111</color> 
+	<color name="bcg_theme">#81d2d4</color>
+	<color name="bcg_theme_dark">#6db8ba</color>
+	<color name="bck_thumb">#993aaacf</color>
+	<color name="bck_button">#5a9aa8</color>
+	<color name="bck_pressed">#4d8693</color>
+	<color name="dark">#555555</color>
+	<color name="pressed">#efefef</color>  
+	<color name="gray">#696969</color>
+	<color name="gray_less">#eeeeee</color>
+    <color name="bck_gray">#f6f6f6</color>
+    <color name="txt_gray">#a9a9a9</color>
+    <color name="bcg_search">#abe3ec</color> 
+	<color name="bcg_keyboard">#212021</color>
+	<color name="disable">#cdcdcd</color>
+	<color name="disable_press">#ababab</color>
+    
+	<color name="setting_text">#676767</color>
+	<color name="bcg_remove">#eeb0b0</color>
+	<color name="bcg_removing">#ed8d8d</color>
+	<color name="bck_running_task">#5a9aa8</color>
+	
+	<color name="darker">#333333</color>
+	<color name="title_shadow">#cdcdcd</color>
+	<color name="bcg_yi_bcg">#88b1b9</color>
+	
+	<color name="key_norm">#eeeeee</color>
+	<color name="key_pressed">#dddddd</color>
+	  
+	<color name="bcg_basic">#566069</color>
+	
+	<color name="tag_normal">#ffdddddd</color>
+	<color name="tag_pressed">#ffcccccc</color>
+	
+	<color name="edit_hint">#bbffffff</color>
+	
+	<color name="btn_sign_up">#33000000</color>
+	<color name="btn_sign_up_pressed">#55000000</color>
+	
+	<color name="btn_sign_in">#55000000</color>
+	<color name="btn_sign_in_pressed">#77000000</color>
+	
+	<color name="delete_red">#e86e6e</color>
+	<color name="delete_dark">#e05c5c</color>
+
+	<color name="list_divider">#d4d4d4</color>
+	<color name="link">#004B97</color>
+</resources>

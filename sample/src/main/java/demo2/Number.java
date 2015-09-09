@@ -10,7 +10,7 @@ import provider.Entity;
 
 @GroupViewInj(R.layout.layout_demo2n3_number)
 @Table(name = "Number")
-public class Number extends Entity {
+class Number extends Entity {
 	
 	public Number(){
 		super();

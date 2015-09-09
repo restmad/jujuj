@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp" >
+    
+    <com.mocaa.tagme.view.PortraitView
+        android:id="@+id/comments_portrait"
+        android:src="@drawable/head_ss"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        />
+    
+	<LinearLayout 
+	    android:layout_toRightOf="@+id/comments_portrait"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" 
+	    android:paddingLeft="8dp"
+	    android:orientation="vertical">
+	    
+	    <TextView 
+        	android:id="@+id/comments_user_name"
+	        android:layout_marginTop="2dp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:textSize="16dp"
+		    android:textColor="@color/link"
+		    android:text="Shinado"
+		    android:layout_alignParentRight="true"/>
+	    
+	    <TextView 
+        	android:id="@+id/comments_content"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:textSize="16dp"
+		    android:textColor="@color/dark"
+		    android:text="Awesome!"
+		    android:layout_alignParentRight="true"/>
+
+        <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="4dp"
+              android:background="@color/list_divider" />
+	    
+	</LinearLayout>
+    
+    <TextView 
+        android:id="@+id/comments_time"
+	    android:layout_marginTop="2dp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:textSize="14dp"
+	    android:textColor="@color/gray"
+	    android:text="2 mins ago"
+	    android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

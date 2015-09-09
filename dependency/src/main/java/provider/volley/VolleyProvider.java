@@ -34,7 +34,7 @@ public class VolleyProvider extends AbsDataProvider {
     };
 
     @Override
-    public void handleData(String uri, Map<String, String> params, final Object target,
+    public void handleData(String uri, Map<String, String> params, final Class cls,
                            final Listener.Response response, final Listener.Error error) {
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
 
@@ -42,8 +42,7 @@ public class VolleyProvider extends AbsDataProvider {
             public void onResponse(JSONObject json) {
 
                 Gson gson = generateGson();
-                Class beanCls = target.getClass();
-                Downloadable obj = (Downloadable) gson.fromJson(json.toString(), beanCls);
+                Downloadable obj = (Downloadable) gson.fromJson(json.toString(), cls);
 
                 response.onResponse(obj);
             }

@@ -11,9 +11,8 @@ import com.shinado.netframe.sample.R;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
-import framework.inj.entity.ArrayDownloadable;
 
-public class Numbers implements Downloadable{
+class Numbers implements Downloadable{
 	
 	@ViewInj(R.id.number_list)
 	public ArrayList<Number> numbers;

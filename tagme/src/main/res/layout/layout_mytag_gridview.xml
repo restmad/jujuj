@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bcg_grid"
+    android:scrollbarThumbVertical="@color/bcg_theme"
+    android:scrollbarSize="5dp"
+    android:gravity="center"
+    android:listSelector="@color/transparent"
+    android:numColumns="2"
+    android:cacheColorHint="@color/transparent">
+    
+
+</GridView>
