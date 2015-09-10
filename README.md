@@ -114,7 +114,10 @@ public class UserDlb extends Loadable<UserBean>{
 Jujuj also provides with handful of functional interfaces, such as Validatable, to check if a request is validate; Transformable, to transform data types; Notifiable, to notify an Activity from model; Multilpleable, to handle multiple loading requests in an model.
 
 ## What needs to be done
-Moreable, to load more data, which is very basic for data-fetching apps.
+- Moreable, to load more data, which is very basic for data-fetching apps.
+- Magic class. Everyone is using magic class instead of relection so will us.
+- ListView. ListView works pretty bad currently.
+- Loadable. it works for MVVM pattern. Problems remain. 
 
 ## Copyright
 
