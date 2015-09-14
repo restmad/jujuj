@@ -1,9 +1,17 @@
 Juju was designed to handle data fetching(both from server and local) and display data into layout. It was an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
+
   sample
  dependency
 jujuj
 
 In module ‘dependency’, it implements data providers using Volley as network request, ActiveAndroid as ORM, and Universal Image Loader as image loader. You can replace them with your favorite libraries.
+
+## Why Jujuj
+No heavy Activity. All data fetching flow is done in another class, nice and clean.
+MVVM. Jujuj makes you write codes in a MVVM pattern.
+Independent. of UI, of any data agency.
+Testable. network and data can be tested separately. 
+Abstract. you can implement if with your favorite libs.
 
 ## How it works
 
@@ -59,7 +67,7 @@ This is the simple use case for Jujuj.
 
 ## What’s more
 
-Juju also provides with handful of functional interfaces, such as Validatable, to check if a request is validate; Transformable, to transform data types; Notifiable, to notify an Activity from model; Multilpleable, to handle multiple loading requests in an model.
+Jujuj also provides with handful of functional interfaces, such as Validatable, to check if a request is validate; Transformable, to transform data types; Notifiable, to notify an Activity from model; Multilpleable, to handle multiple loading requests in an model.
 
 ## What needs to be done
 Moreable, to load more data, which is very basic for data-fetching apps.

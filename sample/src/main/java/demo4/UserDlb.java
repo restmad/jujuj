@@ -3,30 +3,48 @@ package demo4;
 import android.content.Context;
 import com.shinado.netframe.sample.R;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import framework.inj.ActivityInj;
 import framework.inj.ViewValueInj;
-import framework.inj.entity.Listable;
 import framework.inj.entity.Loadable;
 import sample.MyApplication;
 
-@ActivityInj(R.layout.activity_demo4)
-public class UserDlb extends Loadable<UserDlb.DldBean>{
+@ActivityInj(R.layout.activity_demo2n3)
+public class UserDlb extends Loadable<UserBean>{
 
-    public UserDlb() {
+    public UserDlb(String userName){
+        setEntity(new UserBean(userName));
     }
 
-    @ViewValueInj(R.id.user_list)
-    public ListUser users(){
-        return new ListUser(getEntity().users);
+    @ViewValueInj(R.id.user_name)
+    public String userName(){
+        return getEntity().userName;
     }
 
-    public UserDlb(DldBean userBeans) {
-        super(userBeans);
+    @ViewValueInj(R.id.user_portrait)
+    public String portrait(){
+        return getEntity().userPortrait;
+    }
+
+    @ViewValueInj(R.id.email)
+    public String email(){
+        return getEntity().email;
+    }
+
+    @ViewValueInj(R.id.married)
+    public boolean married(){
+        return getEntity().married;
+    }
+
+    @ViewValueInj(R.id.number_list)
+    public ArrayList<Numbers> numbers(){
+        return getEntity().numbers;
     }
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return MyApplication.URL + "netframe_get_all_users.php";
+        return MyApplication.URL + "netframe_get_user.php";
     }
 
     @Override
@@ -36,17 +54,13 @@ public class UserDlb extends Loadable<UserDlb.DldBean>{
 
     @Override
     public Object onDownloadParams() {
-        return null;
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("userName", getEntity().userName);
+        return params;
     }
 
     @Override
     public void onError(Context context, String msg) {
-
-    }
-
-    public static class DldBean {
-
-        public ArrayList<UserBean> users;
 
     }
 }

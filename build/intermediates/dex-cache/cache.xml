@@ -5,15 +5,8 @@
         jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="5410a8b3c4628d35ab33069365a50dd8cf373bf7">
+        sha1="7dd161d0a34baea336ace587b2256b8be78f18a5">
         <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-90bf83e2d64bce34c243cb753e19d734f14fad6e.jar" />
-    </item>
-    <item
-        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/dependency/unspecified/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4a05f1269a82e596d046a0e104847f2543630968">
-        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-1745f28f2146954edb1f14f2f18c5707f5c66677.jar" />
     </item>
 
 </items>

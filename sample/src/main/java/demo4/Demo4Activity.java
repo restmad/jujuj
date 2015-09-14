@@ -11,6 +11,6 @@ public class Demo4Activity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Jujuj.getInstance().inject(this, new UserDlb());
+        Jujuj.getInstance().inject(this, new UserDlb("Dan"));
     }
 }

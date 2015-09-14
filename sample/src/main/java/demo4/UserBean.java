@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.shinado.netframe.sample.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import framework.inj.ViewInj;
@@ -24,5 +25,5 @@ public class UserBean {
 
 	public boolean married;
 
-
+	public ArrayList<Numbers> numbers;
 }

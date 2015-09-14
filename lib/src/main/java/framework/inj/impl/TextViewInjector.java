@@ -47,12 +47,6 @@ public class TextViewInjector extends ViewInjector {
 	public boolean setContent(Context context, View view, Object bean, String name, Object value)
 			throws FieldNotPublicException, TypeNotSupportedException {
 		if(view instanceof TextView){
-			if (bean instanceof Transformable) {
-				Object valueFromServe = ((Transformable) bean).fromServer(name, value);
-				if(valueFromServe != null){
-					value = valueFromServe;
-				}
-			}
 			String str = getString(value);
 			((TextView) view).setText(str);
 			return true;

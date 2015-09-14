@@ -40,9 +40,10 @@ public class VolleyProvider extends AbsDataProvider {
 
             @Override
             public void onResponse(JSONObject json) {
+                Log.d(TAG, json.toString());
 
                 Gson gson = generateGson();
-                Downloadable obj = (Downloadable) gson.fromJson(json.toString(), cls);
+                Object obj = gson.fromJson(json.toString(), cls);
 
                 response.onResponse(obj);
             }

@@ -1,6 +1,7 @@
 package framework.inj.impl;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import java.lang.reflect.Field;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import framework.inj.entity.utility.Transformable;
 import framework.inj.exception.FieldNotPublicException;
 import framework.inj.exception.TypeNotSupportedException;
+import framework.util.L;
 
 public abstract class ViewInjector {
 
@@ -45,31 +47,36 @@ public abstract class ViewInjector {
 
 	public boolean setContent(Context context, View view, Object bean, Method method){
 		try {
+			String name = method.getName();
 			Object value = method.invoke(bean);
-			value = transform(bean, value, method.getName());
+			value = transform(bean, value, name);
+			if(value == null){
+				L.w("The value from method " + name + " is null. Are you sure that's what you really want?");
+			}
 			return setContent(context, view, bean, method.getName(), value);
 		} catch (IllegalAccessException e) {
 			throw new FieldNotPublicException("The method is not public. In class " +
 					bean.getClass().getName() + ", method " + method.getName());
 		} catch (InvocationTargetException e) {
-			//TODO
-			e.printStackTrace();
+			throw new IllegalArgumentException(e);
 		}
-		return false;
 	}
 
 	public boolean setContent(Context context, View view, Object bean, Field field){
 		try {
+			String name = field.getName();
 			Object value = field.get(bean);
+			value = transform(bean, value, name);
+			if(value == null){
+				L.w("The value from field " + name + " is null. Are you sure that's what you really want?");
+			}
 			return setContent(context, view, bean, field.getName(), value);
 		} catch (IllegalArgumentException e) {
-			//TODO
-			e.printStackTrace();
+			throw e;
 		} catch (IllegalAccessException e) {
 			throw new FieldNotPublicException("The field is not public. In class " +
 					bean.getClass().getName() + ", field " + field.getName());
 		}
-		return false;
 	}
 
 	/**

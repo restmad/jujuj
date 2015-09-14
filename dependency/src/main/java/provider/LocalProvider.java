@@ -20,18 +20,17 @@ public class LocalProvider extends AbsDataProvider {
 
     @Override
     public void handleData(String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
-        if (uri.endsWith("netframe_get_user.php")){
-            Log.d(TAG, "handling....");
-            String json = "{\"userPortrait\":\"http:\\/\\/img3.douban.com\\/icon\\/ul50757825-11.jpg\",\"userName\":\"Dan\",\"email\":\"fckgfw@china.com\",\"married\":\"false\",\"numbers\":[{\"number\":\"13555855443\"},{\"number\":\"15366783412\"}]}";
-
-            Gson gson = generateGson();
-            Downloadable obj = (Downloadable) gson.fromJson(json, cls);
-            response.onResponse(obj);
-        }else {
+//        if (uri.endsWith("netframe_get_user.php")){
+//            Log.d(TAG, "handling....");
+//            String json = "{\"userPortrait\":\"http:\\/\\/img3.douban.com\\/icon\\/ul50757825-11.jpg\",\"userName\":\"Dan\",\"email\":\"fckgfw@china.com\",\"married\":\"false\",\"numbers\":[{\"number\":\"13555855443\"},{\"number\":\"15366783412\"}]}";
+//
+//            Gson gson = generateGson();
+//            Object obj = gson.fromJson(json, cls);
+//            response.onResponse(obj);
+//        }else {
             Log.d(TAG, "passed....");
             response.onResponse(null);
-        }
-
+//        }
     }
 
 

@@ -12,6 +12,8 @@ import java.util.HashMap;
 import framework.inj.exception.TypeNotSupportedException;
 import framework.inj.groupview.Adaptable;
 import framework.inj.groupview.LazyAdapter;
+import framework.inj.groupview.Listable;
+import framework.inj.groupview.ListableAdapter;
 
 /**
  * 
@@ -48,6 +50,8 @@ public class AbsListViewInjector extends ViewInjector {
 				}
 			}else if(value instanceof Adaptable){
 				listView.setAdapter(((Adaptable)value).getAdapter(context));
+			}else if(value instanceof Listable) {
+				listView.setAdapter(new ListableAdapter<>(context, (Listable) value));
 			}else{
 				throw new TypeNotSupportedException("The type of the field is not a Collection. In class " +
 						bean.getClass().getName() + ", field " + name);
