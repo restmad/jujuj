@@ -1,4 +1,4 @@
-package framework.inj.entity;
+package framework.inj.entity.utility;
 
 /**
  * TODO not well designed

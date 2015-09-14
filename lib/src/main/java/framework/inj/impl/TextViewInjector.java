@@ -1,21 +1,22 @@
 package framework.inj.impl;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-
-import framework.inj.entity.Transformable;
-import framework.inj.exception.FieldNotPublicException;
-import framework.inj.exception.TypeNotSupportedException;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+
+import framework.inj.entity.utility.Transformable;
+import framework.inj.exception.FieldNotPublicException;
+import framework.inj.exception.TypeNotSupportedException;
 
 /**
  * 
  * @author ss
  * supported type String
  */
-public class TextViewInjector extends ViewInjector{
+public class TextViewInjector extends ViewInjector {
 
 	@Override
 	public String addParams(View view, HashMap<String, String> params, Object bean, Field field)
@@ -43,24 +44,9 @@ public class TextViewInjector extends ViewInjector{
 	}
 
 	@Override
-	public boolean setContent(Context context, View view, Object bean, Field field) 
+	public boolean setContent(Context context, View view, Object bean, String name, Object value)
 			throws FieldNotPublicException, TypeNotSupportedException {
 		if(view instanceof TextView){
-			Object value = null;
-			try {
-				value = field.get(bean);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				throw new FieldNotPublicException("The field is not public. In class " +
-						bean.getClass().getName() + ", field " + field.getName());
-			}
-			if (bean instanceof Transformable) {
-				Object valueFromServe = ((Transformable) bean).fromServer(field.getName(), value);
-				if(valueFromServe != null){
-					value = valueFromServe;
-				}
-			}
 			String str = getString(value);
 			((TextView) view).setText(str);
 			return true;

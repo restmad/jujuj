@@ -1,14 +1,14 @@
 package framework.inj.impl;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-
-import framework.inj.entity.Transformable;
-import framework.inj.exception.FieldNotPublicException;
-import framework.inj.exception.TypeNotSupportedException;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+
+import framework.inj.entity.utility.Transformable;
+import framework.inj.exception.TypeNotSupportedException;
 
 /**
  * 
@@ -39,30 +39,16 @@ public class CheckBoxInjector extends ViewInjector {
 		}
 	}
 
+
 	@Override
-	public boolean setContent(Context context, View view, Object bean, Field field)
-			throws FieldNotPublicException, TypeNotSupportedException {
+	public boolean setContent(Context context, View view, Object bean, String name, Object value){
 		if (view instanceof CheckBox) {
-			Object value = null;
-			try {
-				value = field.get(bean);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				throw new FieldNotPublicException("The field is not public. In class " +
-						bean.getClass().getName() + ", field " + field.getName());
-			}
-			if (bean instanceof Transformable) {
-				Object valueFromServe = ((Transformable) bean).fromServer(field.getName(), value);
-				if(valueFromServe != null){
-					value = valueFromServe;
-				}
-			}
+
 			if (value instanceof Boolean) {
 				((CheckBox) view).setChecked((Boolean) value);
 			} else {
 				throw new TypeNotSupportedException("The type of the field is neither an Integer nor Boolean. In class " +
-						bean.getClass().getName() + ", field " + field.getName());
+						bean.getClass().getName() + ", field " + name);
 			}
 			return true;
 		} else {

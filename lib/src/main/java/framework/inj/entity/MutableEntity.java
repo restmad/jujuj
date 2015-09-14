@@ -1,29 +1,39 @@
 package framework.inj.entity;
 
-public class MutableEntity {
-	
-	public MutableEntity(Object t){
-		this.t = t;
+import framework.inj.entity.utility.Notifiable;
+
+/**
+ * A MutableEntity is just like a shell,
+ * which contains a entity that needs to load entity from somewhere else(either local or server)
+ *
+ * @param <T> the entity that is supposed to load data from somewhere(either local or server)
+ */
+public class MutableEntity<T> {
+
+	public MutableEntity(){}
+
+	public MutableEntity(T t){
+		this.target = t;
 	}
 
-	public MutableEntity(Object t, Notifiable notifiable){
-		this.t = t;
+	public MutableEntity(T t, Notifiable notifiable){
+		this.target = t;
 		this.notifiable = notifiable;
 	}
 
-	private Object t;
+	private T target;
 	private Notifiable notifiable;
 	
 	public Notifiable getNotifiable(){
 		return notifiable;
 	}
 	
-	public Object getEntity(){
-		return t;
+	public T getEntity(){
+		return target;
 	}
 	
-	public void setEntity(Object t){
-		this.t = t;
+	public void setEntity(T t){
+		this.target = t;
 	}
 	
 	protected boolean bStored = false;

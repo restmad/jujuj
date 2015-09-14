@@ -2,6 +2,7 @@ package framework.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,32 +10,35 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.json.JSONArray;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import framework.core.exception.NotInitiatedException;
 import framework.inj.ActivityInj;
 import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
-import framework.inj.entity.ArrayPostable;
 import framework.inj.entity.Downloadable;
-import framework.inj.entity.Getable;
+import framework.inj.entity.Following;
+import framework.inj.entity.Loadable;
 import framework.inj.entity.Multipleable;
 import framework.inj.entity.MutableEntity;
 import framework.inj.entity.Postable;
-import framework.inj.entity.Validatable;
+import framework.inj.entity.utility.Validatable;
+import framework.inj.exception.ViewNotFoundException;
 import framework.inj.impl.AbsListViewInjector;
 import framework.inj.impl.CheckBoxInjector;
 import framework.inj.impl.ImageViewInjector;
 import framework.inj.impl.SpinnerInjector;
 import framework.inj.impl.TextViewInjector;
 import framework.inj.impl.ViewInjector;
+import framework.inj.ViewValueInj;
 import framework.inj.impl.WebViewInjector;
 import framework.provider.AbsDataProvider;
 import framework.provider.Listener;
@@ -77,7 +81,7 @@ public class Jujuj {
         injectors.add(new TextViewInjector());
     }
 
-    private void checkInit(){
+    void checkInit(){
         if(configurations == null){
             throw new NotInitiatedException("Please initiate jujuj by using init() before inject");
         }
@@ -96,7 +100,7 @@ public class Jujuj {
         inject(context, view, mtp);
     }
 
-    /** now you're talking
+    /**
      * inject an object with multiple requests
      * for view
      */
@@ -135,19 +139,21 @@ public class Jujuj {
             return;
         }
 
-        View view = setContentView(context, m.getEntity());
+        View view = null;
+        if(m instanceof Loadable){
+            //when m is a Loadable
+            view = setContentView(context, m);
+        }else{
+            view = setContentView(context, m.getEntity());
+        }
         inject(context, view, m);
     }
 
     /**
      * inject a mutable entity
      * for view
-     * @param context
-     * @param view
-     * @param m
-     * @return
      */
-    public  boolean inject(Context context, View view, MutableEntity m) {
+    public boolean inject(Context context, View view, MutableEntity m) {
         checkInit();
         if (m == null || m.getEntity() == null) {
             return false;
@@ -155,22 +161,32 @@ public class Jujuj {
 
         Object bean = m.getEntity();
         if (bean instanceof Postable) {
-            setDataPost(context, view, (Postable) m.getEntity());
+            setDataPost(context, view, (Postable) bean);
         }
-//        else if (bean instanceof Getable){
-//            setDataPost(context, view, (Getable) m.getEntity());
-//        }
 
-        /**
-         * if the state is stored
-         */
-        if (m.isStateStored()){
-            setContent(context, view, bean);
-            return true;
-        }
-        if (bean instanceof Downloadable){
-            loadEntity(context, view, (MutableEntity) m);
-            return true;
+        if(m instanceof Loadable){
+            Loadable loadable = (Loadable) m;
+            if(m.isStateStored()){
+                //notice here it's set by method
+                //a loadable
+                setContentByMethod(context, view, loadable);
+                return true;
+            }else{
+                loadEntity(context, view, loadable, loadable, loadable.getEntity().getClass());
+                return true;
+            }
+        }else{
+            /**
+             * if the state is stored
+             */
+            if (m.isStateStored()){
+                setContent(context, view, bean);
+                return true;
+            }
+            if (bean instanceof Downloadable){
+                loadEntity(context, view, m, (Downloadable) bean, bean.getClass());
+                return true;
+            }
         }
 
         setContent(context, view, bean);
@@ -180,10 +196,8 @@ public class Jujuj {
     /**
      * inject a normal bean, for post
      * used for Activity
-     * @param context
-     * @param bean
      */
-    public  void inject(Context context, Object bean){
+    public void inject(Context context, Object bean){
         if (bean == null) {
             return;
         }
@@ -195,10 +209,6 @@ public class Jujuj {
     /**
      * inject a normal bean, for post mostly
      * used for view
-     * @param context
-     * @param view
-     * @param bean
-     * @return
      */
     public  boolean inject(Context context, View view, Object bean) {
         checkInit();
@@ -209,9 +219,6 @@ public class Jujuj {
         if (bean instanceof Postable) {
             setDataPost(context, view, (Postable) bean);
         }
-//        else if (bean instanceof Getable){
-//            setDataPost(context, view, (Getable) bean);
-//        }
         setContent(context, view, bean);
         return false;
     }
@@ -220,10 +227,14 @@ public class Jujuj {
      *
      * @param context
      * @param view
-     * @param bean
-     * @return true if a ViewFoundException is supposed to throw
+     * @param bean it must defines
      */
     public void setContent(Context context, View view, Object bean) {
+        setContentByField(context, view, bean);
+        setContentByMethod(context, view ,bean);
+    }
+
+    void setContentByField(Context context, View view, Object bean){
         for (Field field : bean.getClass().getDeclaredFields()) {
             Annotation annotation = field.getAnnotation(ViewInj.class);
             if (annotation == null) {
@@ -233,9 +244,7 @@ public class Jujuj {
             int resId = inj.value();
             View v = findViewById(view, resId);
             if (v == null) {
-                //TODO
-                Log.w(TAG, "View not find, in class " + bean.getClass().getName() + ", resource id " + resId);
-                continue;
+                throw new ViewNotFoundException("Can't find this View for method:"+field.getName());
             }
             for(ViewInjector injector:injectors){
                 if(injector.setContent(context, v, bean, field)){
@@ -243,11 +252,42 @@ public class Jujuj {
                 }
             }
         }
-
     }
 
-    private View findViewById(View view, int id) {
-        return view.findViewById(id);
+    void setContentByMethod(Context context, View view, Object bean){
+        for (Method method : bean.getClass().getDeclaredMethods()) {
+            Annotation annotation = method.getAnnotation(ViewValueInj.class);
+            if (annotation == null) {
+                continue;
+            }
+            ViewValueInj inj = (ViewValueInj) annotation;
+            int resId = inj.value();
+            View v = findViewById(view, resId);
+            if (v == null) {
+                throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
+            }
+            for(ViewInjector injector:injectors){
+                if(injector.setContent(context, v, bean, method)){
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * save a tag for this view
+     */
+    View findViewById(View view, int id) {
+        View v = null;
+        //TODO Build.VERSION below 4.0
+        Object tag = view.getTag(id);
+        if(tag != null && tag instanceof View){
+            v = (View) tag;
+        }else{
+            v = view.findViewById(id);
+            view.setTag(id, v);
+        }
+        return v;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -258,7 +298,7 @@ public class Jujuj {
             if (annotation != null) {
                 GroupViewInj contentInj = (GroupViewInj) annotation;
                 int resId = contentInj.value();
-                view = LayoutInflater.from(context).inflate(resId, null);
+                view = LayoutInflater.from(context).inflate(resId, parent, false);
             }
         }
         return view;
@@ -266,9 +306,6 @@ public class Jujuj {
 
     /**
      * setContentView for Activity
-     * @param context
-     * @param bean contains layout
-     * @return
      */
     private View setContentView(Context context, Object bean) {
         if (bean.getClass().isAnnotationPresent(ActivityInj.class)) {
@@ -287,7 +324,7 @@ public class Jujuj {
         return null;
     }
 
-    private void setDataPost(final Context context, final View view, final Postable request) {
+    void setDataPost(final Context context, final View view, final Postable request) {
         int submitId = request.getSubmitButtonId();
         Button button = (Button) findViewById(view, submitId);
         if(button == null){
@@ -312,11 +349,12 @@ public class Jujuj {
              * @param dataProvider
              */
             private void handleData(final AbsDataProvider dataProvider, final HashMap<String, String> params){
-                final Object obj = null;
-                dataProvider.handleData(request.onPostUrl(context), params, obj,
-                        new Listener.Response<JSONArray>() {
+                //notice the target here is set to null
+                //
+                dataProvider.handleData(request.onPostUrl(context), params, null,
+                        new Listener.Response<Postable>() {
                             @Override
-                            public void onResponse(JSONArray obj) {
+                            public void onResponse(Postable obj) {
                                 if (obj == null) {
                                     //get nothing, let supervisor handle it
                                     AbsDataProvider supervisor = dataProvider.getSupervisor();
@@ -324,7 +362,11 @@ public class Jujuj {
                                         handleData(supervisor, params);
                                     }
                                 } else {
-                                    ((ArrayPostable) request).onPostResponse(context, obj);
+                                    request.onPostResponse(context, obj);
+
+                                    if(request instanceof Following) {
+                                        setFollowing(context, (Following) request);
+                                    }
                                 }
                             }
                         },
@@ -336,6 +378,23 @@ public class Jujuj {
                         });
             }
         });
+    }
+
+    /**
+     * set a following
+     */
+    private void setFollowing(Context context, Following following){
+            Downloadable dlb = null;
+            try {
+                dlb = (Downloadable) following.getClass().getGenericSuperclass().getClass().newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            if(dlb != null){
+                inject(context, new MutableEntity(dlb));
+            }
     }
 
     /**
@@ -387,8 +446,8 @@ public class Jujuj {
                                     field.getName(), value);
                             if(validate != null){
                                 //error!
-                                if(request instanceof Getable){
-                                    ((Getable) request).onError(context, validate);
+                                if(request instanceof Postable){
+                                    ((Postable) request).onError(context, validate);
                                 }
                                 return null;
                             }
@@ -422,29 +481,15 @@ public class Jujuj {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-//        try {
-//            String str = new Gson().toJson(obj);
-//            JSONObject json = new JSONObject(str);
-//            Iterator<String> it = json.keys();
-//            while(it.hasNext()){
-//                String key = it.next();
-//                Object value = json.get(key);
-//                if(value instanceof Integer ||
-//                        value instanceof Long || value instanceof Double ||
-//                        value instanceof Float || value instanceof String){
-//                    map.put(key, value+"");
-//                }
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
         return map;
     }
 
-    private  void loadEntity(final Context context, final View view,
-                             final MutableEntity m) {
-        final Downloadable downloadable = (Downloadable) m.getEntity();
+    /**
+     * @param target the target entity supposed to be loaded, could be either Downloadable or Loadable
+     */
+    void loadEntity(final Context context, final View view, final MutableEntity m, final Downloadable downloadable, Class target) {
+
         Object downloadParams = downloadable.onDownloadParams();
 
         Map<String, String> params = objToMap(downloadParams);
@@ -452,27 +497,32 @@ public class Jujuj {
         String uri = downloadable.onDownLoadUrl(context);
 
         AbsDataProvider dataProvider = configurations.dataProvider;
-        handleData(dataProvider, context, view, m, uri, downloadable, params);
+        handleData(dataProvider, context, view, m, downloadable, target, uri, params);
     }
 
     /**
-     * handle data with RoC
+     *
+     * @param m could be a Loadable
+     * @param downloadable to receive onError
+     * @param target the target entity the data should be
      */
-    private void handleData(final AbsDataProvider dataProvider, final Context context, final View view, final MutableEntity m,
-                            final String uri, final Downloadable downloadable, final Map<String, String> params){
+    private void handleData(final AbsDataProvider dataProvider, final Context context, final View view,
+                            final MutableEntity m, final Downloadable downloadable, final Class target,
+                            final String uri, final Map<String, String> params){
         Log.d(TAG, "provider:"+dataProvider.getClass());
-        dataProvider.handleData(uri, params, downloadable,
-                new Listener.Response<Downloadable>() {
+        dataProvider.handleData(uri, params, target,
+                new Listener.Response<Object>() {
                     @Override
-                    public void onResponse(Downloadable obj) {
+                    public void onResponse(Object obj) {
                         if (obj == null) {
                             //get nothing, let supervisor handle it
                             AbsDataProvider supervisor = dataProvider.getSupervisor();
                             if(supervisor != null){
-                                handleData(supervisor, context, view, m, uri, downloadable, params);
+                                handleData(supervisor, context, view, m, downloadable, target, uri, params);
                             }
                         } else {
-                            handleDownloadObject(context, view, m, obj);
+                            handleDownloadObject(context, view, m, obj, downloadable);
+
                         }
                     }
                 },
@@ -484,7 +534,7 @@ public class Jujuj {
                 });
     }
 
-    private void handleDownloadObject(Context context, View view, MutableEntity m, Downloadable obj){
+    private void handleDownloadObject(Context context, View view, MutableEntity m, Object obj, Downloadable downloadable){
         if (obj != null) {
             //TODO save in local?
 //            if(obj instanceof Entity){
@@ -503,13 +553,18 @@ public class Jujuj {
 //            }else{
 //            }
 
-            setContent(context, view, obj);
 //			if(obj instanceof Downloadable){
             m.setEntity(obj);
             m.onStoring();
-            obj.onDownLoadResponse(context);
+            downloadable.onDownLoadResponse(context);
             if(m.getNotifiable() != null){
                 m.getNotifiable().onDownloadResponse();
+            }
+            //
+            if(m instanceof Loadable){
+                setContent(context, view, m);
+            }else{
+                setContent(context, view, obj);
             }
 //			}
         }

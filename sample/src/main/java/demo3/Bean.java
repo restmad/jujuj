@@ -7,7 +7,7 @@ import framework.inj.entity.Multipleable;
 import framework.inj.entity.MutableEntity;
 
 @ActivityInj(R.layout.activity_demo2n3)
-public class Bean implements Multipleable{
+class Bean implements Multipleable{
 
 	public Bean(String userName){
 		UserBean bean = new UserBean();

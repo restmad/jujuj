@@ -19,7 +19,7 @@ import framework.inj.entity.Downloadable;
 
 @ActivityInj(R.layout.activity_demo2n3)
 @Table(name = "User")
-public class UserBean extends Entity implements Downloadable{
+class UserBean extends Entity implements Downloadable{
 	
 	@ViewInj(R.id.user_portrait)
 	@Column(name = "portrait")

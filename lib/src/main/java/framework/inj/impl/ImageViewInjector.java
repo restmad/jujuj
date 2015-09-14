@@ -1,5 +1,13 @@
 package framework.inj.impl;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.ImageView;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -9,25 +17,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import framework.core.Jujuj;
 import framework.inj.ImageViewInj;
-import framework.inj.exception.FieldNotPublicException;
 import framework.net.image.AbsImageProvider;
 import framework.net.image.Uploadable;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
-import android.widget.ImageView;
 
 /**
  * 
  * @author ss
  * supported type
  */
-public class ImageViewInjector extends ViewInjector{
+public class ImageViewInjector extends ViewInjector {
 
 	private AbsImageProvider mProvider;
 
@@ -107,19 +106,12 @@ public class ImageViewInjector extends ViewInjector{
 			}
 		}
 	};
-	
+
+
 	@Override
-	public boolean setContent(Context context, View view, Object bean, Field field) {
+	public boolean setContent(Context context, View view, Object bean, String name, Object value){
 		if(view instanceof ImageView){
-			Object value = null;
-			try {
-				value = field.get(bean);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				throw new FieldNotPublicException("The field is not public. In class " +
-						bean.getClass().getName() + ", field " + field.getName());
-			}
+
 			if (value instanceof Integer){
 				((ImageView) view).setImageResource((Integer) value);
 			}else {

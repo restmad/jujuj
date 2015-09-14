@@ -10,8 +10,7 @@ import com.shinado.netframe.sample.R;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
 
-
-public class UserBean implements Downloadable{
+class UserBean implements Downloadable{
 	
 	@ViewInj(R.id.user_portrait)
 	public String userPortrait;
