@@ -96,7 +96,7 @@ public class Jujuj {
         inject(context, view, mtp);
     }
 
-    /**
+    /** now you're talking
      * inject an object with multiple requests
      * for view
      */
