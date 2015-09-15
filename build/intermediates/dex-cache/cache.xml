@@ -2,10 +2,17 @@
 <items version="2" >
 
     <item
+        jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/lib/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="23cf950b9438d20715ebd3a075c5abaeba23e1ff">
+        <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-90bf83e2d64bce34c243cb753e19d734f14fad6e.jar" />
+    </item>
+    <item
         jar="/Users/shinado/netframe/sample/build/intermediates/exploded-aar/netframe/dependency/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="481993ced4baa9fb8b09314bfcb2bb78e0d798fb">
+        sha1="0805689eabdbcd38c535617020ffb8ad8818a9aa">
         <dex dex="/Users/shinado/netframe/sample/build/intermediates/pre-dexed/debug/classes-1745f28f2146954edb1f14f2f18c5707f5c66677.jar" />
     </item>
 
