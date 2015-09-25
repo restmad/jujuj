@@ -62,9 +62,5 @@ public class DefaultApplication extends Application{
         Jujuj.getInstance().init(ConfigBuilder.getDefault());
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        CacheProvider.destroy();
-    }
+
 }

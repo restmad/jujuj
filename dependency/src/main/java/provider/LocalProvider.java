@@ -33,7 +33,6 @@ public class LocalProvider extends AbsDataProvider {
 //        }
     }
 
-
     private Gson generateGson(){
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss.S")

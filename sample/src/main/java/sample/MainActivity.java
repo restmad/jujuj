@@ -8,6 +8,7 @@ import demo3.Demo3Activity;
 import demo4.Demo4Activity;
 import demo5.Demo5Activity;
 import demo6.Demo6Activity;
+import provider.CacheProvider;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -61,4 +62,9 @@ public class MainActivity extends ListActivity{
         setListAdapter(adapter);
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		CacheProvider.destroy();
+	}
 }

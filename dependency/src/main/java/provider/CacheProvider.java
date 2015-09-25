@@ -37,8 +37,10 @@ public class CacheProvider extends AbsDataProvider{
         String key = cls.getName() + params.toString();
         SoftReference<Object> ref = cache.get(key);
         if(ref != null){
+            Log.d(TAG, "get");
             response.onResponse(ref.get());
         }else{
+            Log.d(TAG, "passed...");
             response.onResponse(null);
         }
     }
@@ -47,6 +49,7 @@ public class CacheProvider extends AbsDataProvider{
         String key = cls.getName() + params.toString();
         SoftReference<Object> ref = cache.get(key);
         if(ref == null){
+            Log.d(TAG, "put item");
             cache.put(key, new SoftReference(target));
         }
     }
