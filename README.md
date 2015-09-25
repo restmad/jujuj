@@ -8,6 +8,7 @@ In module ‘dependency’, it implements data providers using Volley as network
 
 ## Why Jujuj
 - No heavy Activity. All data fetching flow is done in another class, nice and clean.
+- Lazy loading. Just display a view without even knowing where the data comes from, like what ImageLoader does.
 - MVVM. Jujuj makes you write codes in a MVVM pattern.
 - Independent. of UI, of any data agency.
 - Testable. network and data can be tested separately. 
@@ -117,7 +118,6 @@ Jujuj also provides with handful of functional interfaces, such as Validatable, 
 - Moreable, to load more data, which is very basic for data-fetching apps.
 - Magic class. Everyone is using magic class instead of relection so will us.
 - ListView. ListView works pretty bad currently.
-- Loadable. it works for MVVM pattern. Problems remain. 
 
 ## Copyright
 
