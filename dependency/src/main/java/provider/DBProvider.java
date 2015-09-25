@@ -28,7 +28,9 @@ public class DBProvider extends AbsDataProvider {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            response.onResponse(entity.query());
+            Entity target = entity.query();
+            CacheProvider.getInstance().put(params, cls, target);
+            response.onResponse(target);
         }else{
             Log.d(TAG, "passed....");
             response.onResponse(null);

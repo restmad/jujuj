@@ -1,10 +1,16 @@
 package demo5;
 
+import android.content.Context;
+import android.view.View;
+import android.widget.Toast;
+
 import com.shinado.netframe.sample.R;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
 import framework.inj.GroupViewInj;
+import framework.inj.OnClick;
 import framework.inj.ViewValueInj;
 import framework.inj.groupview.Listable;
 
@@ -35,6 +41,11 @@ public class LayoutPresenter {
     @ViewValueInj(R.id.married)
     public boolean married(){
         return bean.married;
+    }
+
+    @OnClick(R.id.user_portrait)
+    public void onPortraitClick(Context context, View view){
+        Toast.makeText(context, "url:"+userPortrait(), Toast.LENGTH_LONG).show();
     }
 
     public static class Wrapper implements Listable<LayoutPresenter>{

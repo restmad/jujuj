@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import framework.core.Jujuj;
+import provider.CacheProvider;
 import provider.ConfigBuilder;
 
 public class DefaultApplication extends Application{
@@ -61,4 +62,9 @@ public class DefaultApplication extends Application{
         Jujuj.getInstance().init(ConfigBuilder.getDefault());
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        CacheProvider.destroy();
+    }
 }

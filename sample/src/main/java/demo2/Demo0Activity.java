@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import framework.provider.Listener;
-import provider.volley.NetworkRequest;
 import provider.volley.VolleyProvider;
 import sample.MyApplication;
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -23,6 +24,9 @@ import java.util.Objects;
 import framework.core.exception.NotInitiatedException;
 import framework.inj.ActivityInj;
 import framework.inj.GroupViewInj;
+import framework.inj.OnClick;
+import framework.inj.OnItemClick;
+import framework.inj.ViewDisplay;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
 import framework.inj.entity.Following;
@@ -31,6 +35,7 @@ import framework.inj.entity.Multipleable;
 import framework.inj.entity.MutableEntity;
 import framework.inj.entity.Postable;
 import framework.inj.entity.utility.Validatable;
+import framework.inj.exception.FieldNotPublicException;
 import framework.inj.exception.ViewNotFoundException;
 import framework.inj.impl.AbsListViewInjector;
 import framework.inj.impl.CheckBoxInjector;
@@ -50,9 +55,10 @@ import framework.provider.Listener;
  */
 public class Jujuj {
 
+    private final int TAG_FOR_LISTENER = -0xeeee;
     private final String TAG = "Jujuj";
     private Configurations configurations;
-    private ArrayList<ViewInjector> injectors;
+    ArrayList<ViewInjector> injectors;
     private static Jujuj instance;
 
     public static Jujuj getInstance(){
@@ -207,8 +213,7 @@ public class Jujuj {
     }
 
     /**
-     * inject a normal bean, for post mostly
-     * used for view
+     * the difference with MutableEntity is the states in bean here won't be stored
      */
     public  boolean inject(Context context, View view, Object bean) {
         checkInit();
@@ -218,6 +223,11 @@ public class Jujuj {
 
         if (bean instanceof Postable) {
             setDataPost(context, view, (Postable) bean);
+        }
+
+        if (bean instanceof Downloadable){
+            loadEntity(context, view, null, (Downloadable) bean, bean.getClass());
+            return true;
         }
         setContent(context, view, bean);
         return false;
@@ -231,7 +241,7 @@ public class Jujuj {
      */
     public void setContent(Context context, View view, Object bean) {
         setContentByField(context, view, bean);
-        setContentByMethod(context, view ,bean);
+        setContentByMethod(context, view, bean);
     }
 
     void setContentByField(Context context, View view, Object bean){
@@ -242,6 +252,10 @@ public class Jujuj {
             }
             ViewInj inj = (ViewInj) annotation;
             int resId = inj.value();
+            if(resId == -1){
+                //default, get id by name
+                resId = context.getResources().getIdentifier(field.getName() , "id", context.getPackageName());
+            }
             View v = findViewById(view, resId);
             if (v == null) {
                 throw new ViewNotFoundException("Can't find this View for method:"+field.getName());
@@ -256,13 +270,23 @@ public class Jujuj {
 
     void setContentByMethod(Context context, View view, Object bean){
         for (Method method : bean.getClass().getDeclaredMethods()) {
-            Annotation annotation = method.getAnnotation(ViewValueInj.class);
+            findOnClickListener(context, view, bean, method);
+            findOnItemClickListener(context, view, bean, method);
+            setContentWithViewValueInj(context, view, bean, method);
+        }
+    }
+
+    void setContentWithViewDisplay(Context context, View view, Object bean, final Method method){
+        //get the item
+        if(bean instanceof Loadable){
+
+            Annotation annotation = method.getAnnotation(ViewDisplay.class);
             if (annotation == null) {
-                continue;
+                return;
             }
-            ViewValueInj inj = (ViewValueInj) annotation;
-            int resId = inj.value();
+            int resId = ((ViewDisplay) annotation).value();
             View v = findViewById(view, resId);
+
             if (v == null) {
                 throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
             }
@@ -274,8 +298,107 @@ public class Jujuj {
         }
     }
 
+    void setContentWithViewValueInj(Context context, View view, Object bean, final Method method){
+        Annotation annotation = method.getAnnotation(ViewValueInj.class);
+        if (annotation == null) {
+            return;
+        }
+        ViewValueInj inj = (ViewValueInj) annotation;
+        int resId = inj.value();
+        if(resId == -1){
+            //default, get id by name
+            resId = context.getResources().getIdentifier(method.getName() , "id", context.getPackageName());
+        }
+        View v = findViewById(view, resId);
+        if (v == null) {
+            throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
+        }
+        for(ViewInjector injector:injectors){
+            if(injector.setContent(context, v, bean, method)){
+                break;
+            }
+        }
+    }
+
+    void findOnItemClickListener(final Context context, View view, final Object bean, final Method method){
+        Annotation annotation = method.getAnnotation(OnItemClick.class);
+        if (annotation == null) {
+            return;
+        }
+        int resId = ((OnItemClick) annotation).value();
+        AdapterView v = (AdapterView) findViewById(view, resId);
+        if (v == null) {
+            throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
+        }
+        AdapterView.OnItemClickListener onItemClickListener = null;
+        Object tag = v.getTag(TAG_FOR_LISTENER);
+        if(tag == null){
+            onItemClickListener = new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        method.invoke(bean, context, parent, position);
+                    } catch (IllegalAccessException e) {
+                        throw new FieldNotPublicException("The method is not public. In class " +
+                                bean.getClass().getName() + ", method " + method.getName());
+                    } catch (InvocationTargetException e) {
+                        throw new IllegalArgumentException(e.getTargetException());
+                    }
+                }
+            };
+            v.setTag(TAG_FOR_LISTENER, onItemClickListener);
+        }else{
+            if(tag instanceof AdapterView.OnItemClickListener){
+                onItemClickListener = (AdapterView.OnItemClickListener) tag;
+            }else{
+                //TODO onClickListener might be null
+            }
+        }
+        v.setOnItemClickListener(onItemClickListener);
+    }
+
+    void findOnClickListener(final Context context, View view, final Object bean, final Method method){
+        Annotation annotation = method.getAnnotation(OnClick.class);
+        if (annotation == null) {
+            return;
+        }
+        OnClick onClick = (OnClick) annotation;
+        int resId = onClick.value();
+        View v = findViewById(view, resId);
+        if (v == null) {
+            throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
+        }
+        View.OnClickListener onClickListener = null;
+        Object tag = v.getTag(TAG_FOR_LISTENER);
+        if(tag == null){
+            onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        method.invoke(bean, context, v);
+                    } catch (IllegalAccessException e) {
+                        throw new FieldNotPublicException("The method is not public. In class " +
+                                bean.getClass().getName() + ", method " + method.getName());
+                    } catch (InvocationTargetException e) {
+                        throw new IllegalArgumentException(e.getTargetException());
+                    }
+                }
+            };
+            v.setTag(TAG_FOR_LISTENER, onClickListener);
+        }else{
+            if(tag instanceof View.OnClickListener){
+                onClickListener = (View.OnClickListener) tag;
+            }else{
+                //TODO onClickListener might be null
+            }
+        }
+        v.setOnClickListener(onClickListener);
+    }
+
     /**
-     * save a tag for this view
+     * save tags for this view
+     * useful in ListView
+     * I'm not really sure this works fine
      */
     View findViewById(View view, int id) {
         View v = null;
@@ -486,6 +609,8 @@ public class Jujuj {
     }
 
     /**
+     * notice that m could be null.
+     * When m is null, the state won't be stored
      * @param target the target entity supposed to be loaded, could be either Downloadable or Loadable
      */
     void loadEntity(final Context context, final View view, final MutableEntity m, final Downloadable downloadable, Class target) {
@@ -553,20 +678,22 @@ public class Jujuj {
 //            }else{
 //            }
 
-//			if(obj instanceof Downloadable){
-            m.setEntity(obj);
-            m.onStoring();
-            downloadable.onDownLoadResponse(context);
-            if(m.getNotifiable() != null){
-                m.getNotifiable().onDownloadResponse();
-            }
-            //
-            if(m instanceof Loadable){
-                setContent(context, view, m);
+            if(m != null){
+                m.setEntity(obj);
+                m.onStoring();
+                if(m.getNotifiable() != null){
+                    m.getNotifiable().onDownloadResponse();
+                }
+                //
+                if(m instanceof Loadable){
+                    setContent(context, view, m);
+                }else{
+                    setContent(context, view, obj);
+                }
             }else{
                 setContent(context, view, obj);
             }
-//			}
+            downloadable.onDownLoadResponse(context);
         }
     }
 

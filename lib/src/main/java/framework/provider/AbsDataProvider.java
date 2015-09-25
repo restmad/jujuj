@@ -17,5 +17,4 @@ public abstract class AbsDataProvider{
     public abstract void handleData(String uri, Map<String, String> params, Class cls,
                                      Listener.Response response, Listener.Error error);
 
-
 }

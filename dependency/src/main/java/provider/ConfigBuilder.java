@@ -11,6 +11,7 @@ public class ConfigBuilder {
     public static Configurations getDefault(){
         return new Configurations.Builder()
                 .setImageProvider(new ImageProvider())
+                .addDataProvider(CacheProvider.getInstance())
                 .addDataProvider(new DBProvider())
                 .addDataProvider(new LocalProvider())
                 .addDataProvider(new VolleyProvider())

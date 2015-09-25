@@ -10,7 +10,8 @@ import framework.inj.entity.utility.Notifiable;
  */
 public class MutableEntity<T> {
 
-	public MutableEntity(){}
+	public MutableEntity(){
+	}
 
 	public MutableEntity(T t){
 		this.target = t;

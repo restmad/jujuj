@@ -16,6 +16,7 @@ import framework.inj.entity.Downloadable;
 import framework.provider.AbsDataProvider;
 import framework.provider.Listener;
 import jujuj.shinado.com.dependency.DefaultApplication;
+import provider.CacheProvider;
 
 /**
  * Created by shinado on 15/8/27.
@@ -34,7 +35,7 @@ public class VolleyProvider extends AbsDataProvider {
     };
 
     @Override
-    public void handleData(String uri, Map<String, String> params, final Class cls,
+    public void handleData(String uri, final Map<String, String> params, final Class cls,
                            final Listener.Response response, final Listener.Error error) {
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
 
@@ -44,6 +45,7 @@ public class VolleyProvider extends AbsDataProvider {
 
                 Gson gson = generateGson();
                 Object obj = gson.fromJson(json.toString(), cls);
+                CacheProvider.getInstance().put(params, cls, obj);
 
                 response.onResponse(obj);
             }

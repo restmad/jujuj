@@ -7,6 +7,7 @@ import demo2.Demo2Activity;
 import demo3.Demo3Activity;
 import demo4.Demo4Activity;
 import demo5.Demo5Activity;
+import demo6.Demo6Activity;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -43,12 +44,16 @@ public class MainActivity extends ListActivity{
 					case 4:
 						intent = new Intent(MainActivity.this, Demo5Activity.class);
 						break;
+					case 5:
+						intent = new Intent(MainActivity.this, Demo6Activity.class);
+						break;
 				}
 				startActivity(intent);
 			}
 		});
 		
-		String[] items = { "Posting a request", "Loading from server", "Handling multiple requests", "Using Loadable", "Setting from different presenter"};
+		String[] items = { "Posting a request", "Loading from server", "Handling multiple requests",
+				"Using Loadable", "Setting from different presenter", "Using lazy loading"};
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, items);
