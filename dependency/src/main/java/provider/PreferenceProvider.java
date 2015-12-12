@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import framework.provider.AbsDataProvider;
@@ -12,40 +13,44 @@ import framework.provider.Listener;
 public class PreferenceProvider extends AbsDataProvider {
 
     @Override
-    public void handleData(Context context, String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
+    public void handleData(Context context, String uri, Map<String, String> params, Class target, Listener.Response response, Listener.Error error) {
         if (uri.equals("pref.get")){
-            Object obj = getItem(context, cls);
+            Object obj = getItem(context, target);
             response.onResponse(obj);
         } else if(uri.equals("pref.save")){
-            save(context, params);
+            save(context, params, target);
             response.onResponse(null);
         }
     }
 
-    public void save(Context context, Map<String, String> params){
+    //TODO not taking transforming into consideration
+    private void save(Context context, Map<String, String> params, Class target){
+        Object item;
+        try {
+            item = target.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
         SharedPreferences sp = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        for (String key : params.keySet()){
+
+        for (Field field : item.getClass().getDeclaredFields()){
+            String key = field.getName();
             String val = params.get(key);
-            try {
-                Integer iVal = Integer.parseInt(val);
-                editor.putInt(key, iVal);
-                continue;
-            }catch (NumberFormatException ignored){
+            Type type = field.getType();
+            if (type == String.class){
+                editor.putString(key, val);
+            } else if (type == Integer.class){
+                editor.putInt(key, Integer.parseInt(val));
+            } else if (type == Float.class){
+                editor.putFloat(key, Float.parseFloat(val));
+            } else if (type == Boolean.class){
+                editor.putBoolean(key, Boolean.parseBoolean(val));
+            } else if (type == Long.class){
+                editor.putLong(key, Long.parseLong(val));
             }
-            try {
-                Float fVal = Float.parseFloat(val);
-                editor.putFloat(key, fVal);
-                continue;
-            }catch (NumberFormatException ignored){
-            }
-            try {
-                Long lVal = Long.parseLong(val);
-                editor.putLong(key, lVal);
-                continue;
-            } catch (NumberFormatException ignored) {
-            }
-            editor.putString(key, val);
         }
         editor.apply();
     }

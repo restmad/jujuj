@@ -49,6 +49,8 @@ import framework.provider.Listener;
 
 /**
  * Created by shinado on 15/8/28.
+ * inject -> (loadEntity)* -> setContent
+ *   -> post(set on post)
  */
 public class Jujuj {
 
@@ -489,9 +491,15 @@ public class Jujuj {
         AbsDataProvider dataProvider = configurations.dataProvider;
         Type typeOfGeneric = request.getClass().getGenericSuperclass();
 //        Type typeOfGeneric = ((ParameterizedType) type).getActualTypeArguments()[0];
-        Class classOfGeneric = null;
+        Class classOfGeneric;
         if (typeOfGeneric != null){
             classOfGeneric = typeOfGeneric.getClass();
+            //not specified
+            if (classOfGeneric == Class.class){
+                classOfGeneric = request.getClass();
+            }
+        }else{
+            classOfGeneric = request.getClass();
         }
         handleData(context, request, dataProvider, params, classOfGeneric);
     }

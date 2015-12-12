@@ -25,18 +25,18 @@ public class TextViewInjector extends ViewInjector {
 //			if(view.getClass().isAssignableFrom(TextView.class)){
 //				return false;
 //			}else{
-				String value = ((TextView) view).getText().toString();
+				Object value = ((TextView) view).getText().toString();
 				if (bean instanceof Transformable) {
 					//get value for model
-					String valueToServer = (String) ((Transformable) bean).toServer(field.getName(), value);
+					Object valueToServer = ((Transformable) bean).toServer(field.getName(), value);
 					if(valueToServer != null){
 						value = valueToServer;
 					}
 				}
 				String key = field.getName();
-				params.put(key, value);
+				params.put(key, value+"");
 				field.set(bean, value);
-				return value;
+				return value+"";
 //			}
 		}else{
 			return null;
