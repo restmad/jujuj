@@ -1,6 +1,12 @@
 package sample;
 
-import java.util.ArrayList;
+import android.app.ListActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 
 import demo1.Demo1Activity;
 import demo2.Demo2Activity;
@@ -9,14 +15,6 @@ import demo4.Demo4Activity;
 import demo5.Demo5Activity;
 import demo6.Demo6Activity;
 import provider.CacheProvider;
-
-import android.app.ListActivity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 
 public class MainActivity extends ListActivity{
 	
@@ -54,7 +52,7 @@ public class MainActivity extends ListActivity{
 		});
 		
 		String[] items = { "Posting a request", "Loading from server", "Handling multiple requests",
-				"Using Loadable", "Setting from different presenter", "Using lazy loading"};
+				"Using Loadable", "Setting from different presenter", "Using lazy loading", "Tell me about it"};
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, items);

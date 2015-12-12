@@ -1,6 +1,6 @@
 package provider;
 
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.util.Log;
 
 import java.lang.ref.SoftReference;
@@ -32,7 +32,10 @@ public class CacheProvider extends AbsDataProvider{
     private Map<String, SoftReference<Object>> cache = new HashMap<>();
 
     @Override
-    public void handleData(String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
+    public void handleData(Context context, String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
+        if (cls == null){
+            response.onResponse(null);
+        }
         Log.d(TAG, "handling....");
         String key = cls.getName() + params.toString();
         SoftReference<Object> ref = cache.get(key);

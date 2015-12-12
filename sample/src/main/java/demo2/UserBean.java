@@ -54,7 +54,7 @@ class UserBean extends Entity implements Downloadable{
 		UserBean entity = new Select().from(UserBean.class).where("userName = ?", userName).executeSingle();
 		if(entity != null){
 			entity.numbers = entity.numbers();
-		} 
+		}
 		return entity;
 	}
 

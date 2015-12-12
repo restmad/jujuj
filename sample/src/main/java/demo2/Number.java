@@ -9,7 +9,7 @@ import framework.inj.ViewInj;
 import provider.Entity;
 
 @GroupViewInj(R.layout.layout_demo2n3_number)
-@Table(name = "Number")
+@Table(name = "Numbers")
 class Number extends Entity {
 	
 	public Number(){

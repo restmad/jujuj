@@ -1,8 +1,8 @@
 package provider;
 
+import android.content.Context;
 import android.util.Log;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import framework.provider.AbsDataProvider;
@@ -16,8 +16,10 @@ public class DBProvider extends AbsDataProvider {
     private final String TAG = "DBProvider";
 
     @Override
-    public void handleData(String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
-
+    public void handleData(Context context, String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
+        if (cls == null){
+            response.onResponse(null);
+        }
         if(cls.isAssignableFrom(Entity.class)){
             Log.d(TAG, "handling....");
             Entity entity = null;

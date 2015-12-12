@@ -2,13 +2,11 @@ package framework.core;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -16,10 +14,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import framework.core.exception.NotInitiatedException;
 import framework.inj.ActivityInj;
@@ -28,12 +26,14 @@ import framework.inj.OnClick;
 import framework.inj.OnItemClick;
 import framework.inj.ViewDisplay;
 import framework.inj.ViewInj;
+import framework.inj.ViewValueInj;
 import framework.inj.entity.Downloadable;
 import framework.inj.entity.Following;
 import framework.inj.entity.Loadable;
 import framework.inj.entity.Multipleable;
 import framework.inj.entity.MutableEntity;
 import framework.inj.entity.Postable;
+import framework.inj.entity.utility.PostButtonListenable;
 import framework.inj.entity.utility.Validatable;
 import framework.inj.exception.FieldNotPublicException;
 import framework.inj.exception.ViewNotFoundException;
@@ -43,15 +43,12 @@ import framework.inj.impl.ImageViewInjector;
 import framework.inj.impl.SpinnerInjector;
 import framework.inj.impl.TextViewInjector;
 import framework.inj.impl.ViewInjector;
-import framework.inj.ViewValueInj;
 import framework.inj.impl.WebViewInjector;
 import framework.provider.AbsDataProvider;
 import framework.provider.Listener;
 
 /**
  * Created by shinado on 15/8/28.
- * inject -> (loadEntity)* -> setContent
- *   -> post(set on post)
  */
 public class Jujuj {
 
@@ -140,7 +137,7 @@ public class Jujuj {
      * inject a mutable entity
      * used for Activity
      */
-    public  void inject(Context context, MutableEntity m) {
+    public void inject(Context context, MutableEntity m) {
         if (m == null || m.getEntity() == null) {
             return;
         }
@@ -247,21 +244,31 @@ public class Jujuj {
     void setContentByField(Context context, View view, Object bean){
         for (Field field : bean.getClass().getDeclaredFields()) {
             Annotation annotation = field.getAnnotation(ViewInj.class);
+            int resId;
             if (annotation == null) {
-                continue;
-            }
-            ViewInj inj = (ViewInj) annotation;
-            int resId = inj.value();
-            if(resId == -1){
                 //default, get id by name
                 resId = context.getResources().getIdentifier(field.getName() , "id", context.getPackageName());
+                //not found
+                if(resId == 0){
+                    continue;
+                }
+            }else {
+                ViewInj inj = (ViewInj) annotation;
+                resId = inj.value();
             }
             View v = findViewById(view, resId);
             if (v == null) {
                 throw new ViewNotFoundException("Can't find this View for method:"+field.getName());
             }
+            Object value = null;
+            try {
+                value = field.get(bean);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
             for(ViewInjector injector:injectors){
-                if(injector.setContent(context, v, bean, field)){
+                if(injector.setContent(context, v, bean, field, value)){
                     break;
                 }
             }
@@ -448,8 +455,18 @@ public class Jujuj {
     }
 
     void setDataPost(final Context context, final View view, final Postable request) {
+        if (request instanceof PostButtonListenable){
+            ((PostButtonListenable) request).listen(new PostButtonListenable.Listener() {
+                @Override
+                public void onClick() {
+                    postData(context, view, request);
+                }
+            });
+            return;
+        }
+
         int submitId = request.getSubmitButtonId();
-        Button button = (Button) findViewById(view, submitId);
+        View button = findViewById(view, submitId);
         if(button == null){
             return;
         }
@@ -457,50 +474,61 @@ public class Jujuj {
 
             @Override
             public void onClick(View v) {
-
-                HashMap<String, String> params = getParams(context, view, request);
-                if(params == null){
-                    return;
-                }
-
-                final AbsDataProvider dataProvider = configurations.dataProvider;
-                handleData(dataProvider, params);
+                postData(context, view, request);
             }
 
-            /**
-             * handle data with RoC
-             * @param dataProvider
-             */
-            private void handleData(final AbsDataProvider dataProvider, final HashMap<String, String> params){
-                //notice the target here is set to null
-                //
-                dataProvider.handleData(request.onPostUrl(context), params, null,
-                        new Listener.Response<Postable>() {
-                            @Override
-                            public void onResponse(Postable obj) {
-                                if (obj == null) {
-                                    //get nothing, let supervisor handle it
-                                    AbsDataProvider supervisor = dataProvider.getSupervisor();
-                                    if(supervisor != null){
-                                        handleData(supervisor, params);
-                                    }
-                                } else {
-                                    request.onPostResponse(context, obj);
-
-                                    if(request instanceof Following) {
-                                        setFollowing(context, (Following) request);
-                                    }
-                                }
-                            }
-                        },
-                        new Listener.Error() {
-                            @Override
-                            public void onError(String msg) {
-                                request.onError(context, msg);
-                            }
-                        });
-            }
         });
+    }
+
+    private void postData(final Context context, final View view, final Postable request){
+        HashMap<String, String> params = getParams(context, view, request);
+        if(params == null){
+            return;
+        }
+
+        AbsDataProvider dataProvider = configurations.dataProvider;
+        Type typeOfGeneric = request.getClass().getGenericSuperclass();
+//        Type typeOfGeneric = ((ParameterizedType) type).getActualTypeArguments()[0];
+        Class classOfGeneric = null;
+        if (typeOfGeneric != null){
+            classOfGeneric = typeOfGeneric.getClass();
+        }
+        handleData(context, request, dataProvider, params, classOfGeneric);
+    }
+
+    /**
+     * handle data in post method
+     * @param dataProvider
+     */
+    private void handleData(final Context context, final Postable request, final AbsDataProvider dataProvider,
+                            final HashMap<String, String> params, final Class target){
+        //notice the target here is set to null
+        //so what?
+        dataProvider.handleData(context, request.onPostUrl(context), params, target,
+                new Listener.Response<Postable>() {
+                    @Override
+                    public void onResponse(Postable obj) {
+                        if (obj == null) {
+                            //get nothing, let supervisor handle it
+                            AbsDataProvider supervisor = dataProvider.getSupervisor();
+                            if (supervisor != null) {
+                                handleData(context, request, supervisor, params, target);
+                            }
+                        } else {
+                            request.onPostResponse(context, obj);
+
+                            if (request instanceof Following) {
+                                setFollowing(context, (Following) request);
+                            }
+                        }
+                    }
+                },
+                new Listener.Error() {
+                    @Override
+                    public void onError(String msg) {
+                        request.onError(context, msg);
+                    }
+                });
     }
 
     /**
@@ -528,8 +556,9 @@ public class Jujuj {
      * @return null if it fails validating provided by request
      */
     private  HashMap<String, String> getParams(Context context, View view, Object request){
-        HashMap<String, String> params = new HashMap<String, String>();
+        HashMap<String, String> params = new HashMap<>();
         for (Field field : request.getClass().getDeclaredFields()) {
+            int resId = -1;
             Annotation annotation = field.getAnnotation(ViewInj.class);
             //not from view
             if (annotation == null) {
@@ -540,22 +569,26 @@ public class Jujuj {
                     Object value = field.get(request);
                     if (value instanceof MutableEntity){
                         Object entity = ((MutableEntity) value).getEntity();
-//						if(entity instanceof Getable){
                         HashMap<String, String> map = getParams(context, view, entity);
                         params.putAll(map);
-//						}
+                        continue;
                     }else{
-                        //not from view
-                        params.put(field.getName(), field.get(request).toString());
+                        //get id by name
+                        resId = context.getResources().getIdentifier(field.getName() , "id", context.getPackageName());
+                        //not found
+                        if (resId == 0){
+                            //not from view
+                            params.put(field.getName(), field.get(request).toString());
+                            continue;
+                        }
                     }
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-
-                continue;
+            }else{
+                ViewInj inj = (ViewInj) annotation;
+                resId = inj.value();
             }
-            ViewInj inj = (ViewInj) annotation;
-            int resId = inj.value();
             View childView = findViewById(view, resId);
             if (childView == null) {
                 continue;
@@ -635,14 +668,14 @@ public class Jujuj {
                             final MutableEntity m, final Downloadable downloadable, final Class target,
                             final String uri, final Map<String, String> params){
         Log.d(TAG, "provider:"+dataProvider.getClass());
-        dataProvider.handleData(uri, params, target,
+        dataProvider.handleData(context, uri, params, target,
                 new Listener.Response<Object>() {
                     @Override
                     public void onResponse(Object obj) {
                         if (obj == null) {
                             //get nothing, let supervisor handle it
                             AbsDataProvider supervisor = dataProvider.getSupervisor();
-                            if(supervisor != null){
+                            if (supervisor != null) {
                                 handleData(supervisor, context, view, m, downloadable, target, uri, params);
                             }
                         } else {
@@ -696,5 +729,6 @@ public class Jujuj {
             downloadable.onDownLoadResponse(context);
         }
     }
+
 
 }

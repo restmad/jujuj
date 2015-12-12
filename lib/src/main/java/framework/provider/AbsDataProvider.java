@@ -1,5 +1,7 @@
 package framework.provider;
 
+import android.content.Context;
+
 import java.util.Map;
 
 public abstract class AbsDataProvider{
@@ -14,7 +16,7 @@ public abstract class AbsDataProvider{
         return supervisor;
     }
 
-    public abstract void handleData(String uri, Map<String, String> params, Class cls,
+    public abstract void handleData(Context context, String uri, Map<String, String> params, Class cls,
                                      Listener.Response response, Listener.Error error);
 
 }

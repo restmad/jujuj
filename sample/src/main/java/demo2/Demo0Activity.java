@@ -9,18 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shinado.netframe.sample.R;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -49,7 +42,7 @@ public class Demo0Activity extends Activity{
             //load from server
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("userName", userName);
-            new VolleyProvider().handleData(MyApplication.URL + "netframe_get_user.php", params, UserBean.class,
+            new VolleyProvider().handleData(this, MyApplication.URL + "netframe_get_user.php", params, UserBean.class,
                     new Listener.Response<UserBean>(){
 
                         @Override

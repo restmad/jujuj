@@ -1,7 +1,6 @@
 package framework.inj.impl;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import java.lang.reflect.Field;
@@ -62,21 +61,13 @@ public abstract class ViewInjector {
 		}
 	}
 
-	public boolean setContent(Context context, View view, Object bean, Field field){
-		try {
+	public boolean setContent(Context context, View view, Object bean, Field field, Object value){
 			String name = field.getName();
-			Object value = field.get(bean);
 			value = transform(bean, value, name);
 			if(value == null){
 				L.w("The value from field " + name + " is null. Are you sure that's what you really want?");
 			}
 			return setContent(context, view, bean, field.getName(), value);
-		} catch (IllegalArgumentException e) {
-			throw e;
-		} catch (IllegalAccessException e) {
-			throw new FieldNotPublicException("The field is not public. In class " +
-					bean.getClass().getName() + ", field " + field.getName());
-		}
 	}
 
 	/**
