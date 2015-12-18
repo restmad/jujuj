@@ -1,1 +1,1 @@
-include ':lib', ':sample', ':dependency', ':compiler'
+include ':lib', ':sample', ':dependency', ':annotation', ':compiler'

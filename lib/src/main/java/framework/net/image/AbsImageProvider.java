@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 public interface AbsImageProvider {
 
+    public static final int TAG = 1;
     public void displayImage(String url, ImageView view);
     public String upload(String url, Object params, InputStream in);
 

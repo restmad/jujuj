@@ -2,60 +2,25 @@
 <items version="2" >
 
     <item
-        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\libs\volley.jar"
+        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\libs\commons-beanutils-1.9.2.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="7eb90d3407943ccbac85ddb1406522baa36ef0ba">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\volley-3f6ae5df54970b5bf4ad1c32f35376f8e49b4e61.jar" />
+        sha1="0c41fee1b50b22ac23ac99388f649b9a634e8346">
+        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\commons-beanutils-1.9.2-e0832a2c4c604b6dabac4d3b659cc57adf544e8f.jar" />
     </item>
     <item
-        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\classes.jar"
+        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="03793f0ebd98e99adb66d224511e388a2752b9eb">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\classes-c502add6f1efa6cf477a7f6df657d1edb4817f8f.jar" />
+        sha1="740a05d039382ad092d7d153ff52c4cd366d7b3c">
+        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\classes-0f4daaea2227d43b5ff1a25f99978c4ab315675d.jar" />
     </item>
     <item
-        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\libs\universal-image-loader-1.9.3.jar"
+        jar="E:\workspace\jujuj\annotation\build\libs\annotation.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.3-a9e7548d87a83581f5e148d3f1d2b234fcff66c5.jar" />
-    </item>
-    <item
-        jar="E:\workspace\jujuj\sample\libs\butterknife-7.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\butterknife-7.0.1-bc8ed00cd0781706529747fa5b99258a173cd64b.jar" />
-    </item>
-    <item
-        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\libs\gson-1.7.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="7291c9de7f574b15502f73f0ac2ae6d3af36c751">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\gson-1.7.1-4640906b2efc53472509bf89059aa69b7d60b713.jar" />
-    </item>
-    <item
-        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\libs\javapoet-1.3.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d59c8a75d228c95abfc8977bbe4c18d4beaf286c">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\javapoet-1.3.0-f0b0efff74349e26e43c0d7377a29ca4e2470bba.jar" />
-    </item>
-    <item
-        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\libs\activeandroid-3.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="8cdfaba830e02c56967e946078b60fc476432f36">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\activeandroid-3.0-410bb53c86c75a93f73f2924578c3026b48f73ca.jar" />
-    </item>
-    <item
-        jar="E:\workspace\jujuj\lib\build\libs\lib.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="bcce118b89ae8f9a5d84bd55d9379ae85729acfa">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\lib-00a26feb1fa8eab6a1c9c9bb8933988115f5eaa7.jar" />
+        sha1="33f1d31fdb2fae7a8ff826c01c5250fa8dee5fe2">
+        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\annotation-1cf577136115c25fe7f47d4683fb4e5837dc05ca.jar" />
     </item>
 
 </items>

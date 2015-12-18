@@ -6,7 +6,14 @@ sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
-    compile project (':lib')
+    compile project (':annotation')
     compile 'com.google.auto.service:auto-service:1.0-rc2'
     compile 'com.squareup:javapoet:1.0.0'
+
+    testCompile deps.festandroid
+    testCompile deps.festassert
+    testCompile deps.junit
+    testCompile deps.robolectric
+    testCompile deps.compiletesting
+    testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }

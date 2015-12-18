@@ -24,7 +24,7 @@ import framework.inj.groupview.ListableAdapter;
 public class AbsListViewInjector extends ViewInjector {
 
 	@Override
-	public String addParams(View view, HashMap<String, String> params, Object bean, Field field)
+	public String addParams(View view, HashMap<String, String> params, Object bean, String fieldName)
 			throws Exception{
 		return null;
 	}

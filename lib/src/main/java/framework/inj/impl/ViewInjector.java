@@ -61,13 +61,12 @@ public abstract class ViewInjector {
 		}
 	}
 
-	public boolean setContent(Context context, View view, Object bean, Field field, Object value){
-			String name = field.getName();
-			value = transform(bean, value, name);
+	public boolean setViewContent(Context context, View view, Object bean, String fieldName, Object value){
+			value = transform(bean, value, fieldName);
 			if(value == null){
-				L.w("The value from field " + name + " is null. Are you sure that's what you really want?");
+				L.w("The value from field " + fieldName + " is null. Are you sure that's what you really want?");
 			}
-			return setContent(context, view, bean, field.getName(), value);
+			return setContent(context, view, bean, fieldName, value);
 	}
 
 	/**
@@ -75,11 +74,11 @@ public abstract class ViewInjector {
 	 * @param view
 	 * @param params
 	 * @param bean
-	 * @param field
+	 * @param fieldName
 	 * @return the value of this field, null if not his obligation
 	 * @throws Exception
 	 */
-	public abstract String addParams(View view, HashMap<String, String> params, Object bean, Field field)
+	public abstract String addParams(View view, HashMap<String, String> params, Object bean, String fieldName)
 			throws Exception;
 
 	public abstract boolean setContent(Context context, View view, Object bean, String name, Object value);

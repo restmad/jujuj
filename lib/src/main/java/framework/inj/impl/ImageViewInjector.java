@@ -35,18 +35,18 @@ public class ImageViewInjector extends ViewInjector {
 	}
 
 	@Override
-	public String addParams(View view, final HashMap<String, String> params, final Object bean, final Field field)
+	public String addParams(View view, final HashMap<String, String> params, final Object bean, final String fieldName)
 			throws Exception{
 		if(view instanceof ImageView){
-			Annotation anno = field.getAnnotation(ImageViewInj.class);
-			final ImageViewInj imageInj = (ImageViewInj) anno;
-			final String uploadUrl = imageInj.value();
-			final String fieldUrl = (String) field.get(bean);
+//			Annotation anno = field.getAnnotation(ImageViewInj.class);
+//			final ImageViewInj imageInj = (ImageViewInj) anno;
+			final String uploadUrl = "";//TODO
+			final String fieldUrl = (String) view.getTag(AbsImageProvider.TAG);
 			if(bean instanceof Uploadable){
 				new Thread(){
 					public void run(){
 						Uploadable uploadable = (Uploadable) bean;
-						Bundle b1 = new Bundle(uploadable, "", field.getName());
+						Bundle b1 = new Bundle(uploadable, "", fieldName);
 						mHandler.obtainMessage(WHAT_START_UPLOAD, b1).sendToTarget();
 						
 						String response = "";
@@ -66,7 +66,7 @@ public class ImageViewInjector extends ViewInjector {
 						}
 
 						mProvider.upload(uploadUrl, params, is);
-						Bundle b2 = new Bundle(uploadable, response, field.getName());
+						Bundle b2 = new Bundle(uploadable, response, fieldName);
 						mHandler.obtainMessage(WHAT_UPLOAD_FINISH, b2).sendToTarget();
 					}
 				}.start();

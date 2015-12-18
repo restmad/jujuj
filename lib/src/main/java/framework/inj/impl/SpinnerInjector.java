@@ -21,15 +21,16 @@ import framework.inj.exception.TypeNotSupportedException;
 public class SpinnerInjector extends ViewInjector {
 
 	@Override
-	public String addParams(View view, HashMap<String, String> params, Object bean, Field field)
+	public String addParams(View view, HashMap<String, String> params, Object bean, String fieldName)
 			throws Exception{
 		if(view instanceof Spinner){
 			String value = "";
 			Spinner spinner = (Spinner) view;
 			String key = spinner.getSelectedItem().toString();
-			Object mapValue = field.get(bean);
+			//TODO
+			Object mapValue = null;
 			if (bean instanceof Transformable) {
-				Object valueToServer = ((Transformable) bean).toServer(field.getName(), mapValue);
+				Object valueToServer = ((Transformable) bean).toServer(fieldName, mapValue);
 				if(valueToServer != null){
 					mapValue = valueToServer;
 				}
@@ -37,10 +38,10 @@ public class SpinnerInjector extends ViewInjector {
 			if(mapValue instanceof Map){
 				Map<String, String> map = (Map<String, String>) mapValue;
 				value = map.get(key);
-				params.put(field.getName(), value+"");
+				params.put(fieldName, value+"");
 			}else{
 				throw new TypeNotSupportedException("The type of the field is not a Map. In class " +
-						bean.getClass().getName() + ", field " + field.getName());
+						bean.getClass().getName() + ", field " + fieldName);
 			}
 			return value;
 		}else{

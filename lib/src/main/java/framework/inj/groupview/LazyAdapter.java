@@ -12,7 +12,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import framework.core.Jujuj;
-import framework.inj.exception.ViewNotFoundException;
 
 public class LazyAdapter extends BaseAdapter{
 
@@ -63,7 +62,7 @@ public class LazyAdapter extends BaseAdapter{
         View v = null;
         if (convertView == null) {
         	if(mData !=null && mData.size() > 0){
-                v = Jujuj.getInstance().findView(mContext, parent, mData.toArray()[0].getClass());
+                v = Jujuj.getInstance().findViewForGroup(mContext, parent, mData.toArray()[0].getClass());
         	}
         } else {
             v = convertView;

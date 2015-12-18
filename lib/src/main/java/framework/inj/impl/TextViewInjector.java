@@ -19,7 +19,7 @@ import framework.inj.exception.TypeNotSupportedException;
 public class TextViewInjector extends ViewInjector {
 
 	@Override
-	public String addParams(View view, HashMap<String, String> params, Object bean, Field field)
+	public String addParams(View view, HashMap<String, String> params, Object bean, String fieldName)
 			throws Exception{
 		if(view instanceof TextView){
 //			if(view.getClass().isAssignableFrom(TextView.class)){
@@ -28,14 +28,12 @@ public class TextViewInjector extends ViewInjector {
 				Object value = ((TextView) view).getText().toString();
 				if (bean instanceof Transformable) {
 					//get value for model
-					Object valueToServer = ((Transformable) bean).toServer(field.getName(), value);
+					Object valueToServer = ((Transformable) bean).toServer(fieldName, value);
 					if(valueToServer != null){
 						value = valueToServer;
 					}
 				}
-				String key = field.getName();
-				params.put(key, value+"");
-				field.set(bean, value);
+				params.put(fieldName, value+"");
 				return value+"";
 //			}
 		}else{

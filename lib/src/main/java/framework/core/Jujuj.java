@@ -6,27 +6,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.annotation.Annotation;
+//import java.lang.reflect.Field;
+//import java.lang.reflect.InvocationTargetException;
+//import java.lang.reflect.Method;
+//import java.lang.reflect.Type;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import framework.core.exception.NotInitiatedException;
 import framework.inj.ActivityInj;
 import framework.inj.GroupViewInj;
-import framework.inj.OnClick;
-import framework.inj.OnItemClick;
-import framework.inj.ViewDisplay;
-import framework.inj.ViewInj;
-import framework.inj.ViewValueInj;
 import framework.inj.entity.Downloadable;
 import framework.inj.entity.Following;
 import framework.inj.entity.Loadable;
@@ -35,8 +33,6 @@ import framework.inj.entity.MutableEntity;
 import framework.inj.entity.Postable;
 import framework.inj.entity.utility.PostButtonListenable;
 import framework.inj.entity.utility.Validatable;
-import framework.inj.exception.FieldNotPublicException;
-import framework.inj.exception.ViewNotFoundException;
 import framework.inj.impl.AbsListViewInjector;
 import framework.inj.impl.CheckBoxInjector;
 import framework.inj.impl.ImageViewInjector;
@@ -54,10 +50,13 @@ import framework.provider.Listener;
  */
 public class Jujuj {
 
+    private final Map<Class<?>, ViewInject> BINDERS = new LinkedHashMap<>();
     private final int TAG_FOR_LISTENER = -0xeeee;
-    private final String TAG = "Jujuj";
+    private static boolean debug = false;
+    private final static String TAG = "Jujuj";
     private Configurations configurations;
-    ArrayList<ViewInjector> injectors;
+    private ArrayList<ViewInjector> injectors;
+    private ViewInjectHelper mInjectHelper;
     private static Jujuj instance;
 
     public static Jujuj getInstance(){
@@ -93,6 +92,7 @@ public class Jujuj {
     }
 
     /**
+     * Notice that Multipleable is implemented with reflection
      * inject an object with multiple requests
      * used for Activity
      */
@@ -106,6 +106,7 @@ public class Jujuj {
     }
 
     /**
+     * Notice that Multipleable is implemented with reflection
      * inject an object with multiple requests
      * for view
      */
@@ -115,9 +116,6 @@ public class Jujuj {
         if (mtp instanceof Postable) {
             setDataPost(context, view, (Postable) mtp);
         }
-//        else if (mtp instanceof Getable){
-//            setDataPost(context, view, (Getable) mtp);
-//        }
         setContent(context, view, mtp);
 
         //inject for objects
@@ -151,6 +149,7 @@ public class Jujuj {
         }else{
             view = setContentView(context, m.getEntity());
         }
+        generateViewInject(context, view, m.getEntity());
         inject(context, view, m);
     }
 
@@ -174,7 +173,8 @@ public class Jujuj {
             if(m.isStateStored()){
                 //notice here it's set by method
                 //a loadable
-                setContentByMethod(context, view, loadable);
+                //TODO setContentByMethod
+                //setContentByMethod(context, view, loadable);
                 return true;
             }else{
                 loadEntity(context, view, loadable, loadable, loadable.getEntity().getClass());
@@ -208,6 +208,7 @@ public class Jujuj {
         }
 
         View view = setContentView(context, bean);
+        generateViewInject(context, view, bean);
         inject(context, view, bean);
     }
 
@@ -232,198 +233,8 @@ public class Jujuj {
         return false;
     }
 
-    /**
-     *
-     * @param context
-     * @param view
-     * @param bean it must defines
-     */
-    public void setContent(Context context, View view, Object bean) {
-        setContentByField(context, view, bean);
-        setContentByMethod(context, view, bean);
-    }
-
-    void setContentByField(Context context, View view, Object bean){
-        for (Field field : bean.getClass().getDeclaredFields()) {
-            Annotation annotation = field.getAnnotation(ViewInj.class);
-            int resId;
-            if (annotation == null) {
-                //default, get id by name
-                resId = context.getResources().getIdentifier(field.getName() , "id", context.getPackageName());
-                //not found
-                if(resId == 0){
-                    continue;
-                }
-            }else {
-                ViewInj inj = (ViewInj) annotation;
-                resId = inj.value();
-            }
-            View v = findViewById(view, resId);
-            if (v == null) {
-                throw new ViewNotFoundException("Can't find this View for method:"+field.getName());
-            }
-            Object value = null;
-            try {
-                value = field.get(bean);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-            for(ViewInjector injector:injectors){
-                if(injector.setContent(context, v, bean, field, value)){
-                    break;
-                }
-            }
-        }
-    }
-
-    void setContentByMethod(Context context, View view, Object bean){
-        for (Method method : bean.getClass().getDeclaredMethods()) {
-            findOnClickListener(context, view, bean, method);
-            findOnItemClickListener(context, view, bean, method);
-            setContentWithViewValueInj(context, view, bean, method);
-        }
-    }
-
-    void setContentWithViewDisplay(Context context, View view, Object bean, final Method method){
-        //get the item
-        if(bean instanceof Loadable){
-
-            Annotation annotation = method.getAnnotation(ViewDisplay.class);
-            if (annotation == null) {
-                return;
-            }
-            int resId = ((ViewDisplay) annotation).value();
-            View v = findViewById(view, resId);
-
-            if (v == null) {
-                throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
-            }
-            for(ViewInjector injector:injectors){
-                if(injector.setContent(context, v, bean, method)){
-                    break;
-                }
-            }
-        }
-    }
-
-    void setContentWithViewValueInj(Context context, View view, Object bean, final Method method){
-        Annotation annotation = method.getAnnotation(ViewValueInj.class);
-        if (annotation == null) {
-            return;
-        }
-        ViewValueInj inj = (ViewValueInj) annotation;
-        int resId = inj.value();
-        if(resId == -1){
-            //default, get id by name
-            resId = context.getResources().getIdentifier(method.getName() , "id", context.getPackageName());
-        }
-        View v = findViewById(view, resId);
-        if (v == null) {
-            throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
-        }
-        for(ViewInjector injector:injectors){
-            if(injector.setContent(context, v, bean, method)){
-                break;
-            }
-        }
-    }
-
-    void findOnItemClickListener(final Context context, View view, final Object bean, final Method method){
-        Annotation annotation = method.getAnnotation(OnItemClick.class);
-        if (annotation == null) {
-            return;
-        }
-        int resId = ((OnItemClick) annotation).value();
-        AdapterView v = (AdapterView) findViewById(view, resId);
-        if (v == null) {
-            throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
-        }
-        AdapterView.OnItemClickListener onItemClickListener = null;
-        Object tag = v.getTag(TAG_FOR_LISTENER);
-        if(tag == null){
-            onItemClickListener = new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        method.invoke(bean, context, parent, position);
-                    } catch (IllegalAccessException e) {
-                        throw new FieldNotPublicException("The method is not public. In class " +
-                                bean.getClass().getName() + ", method " + method.getName());
-                    } catch (InvocationTargetException e) {
-                        throw new IllegalArgumentException(e.getTargetException());
-                    }
-                }
-            };
-            v.setTag(TAG_FOR_LISTENER, onItemClickListener);
-        }else{
-            if(tag instanceof AdapterView.OnItemClickListener){
-                onItemClickListener = (AdapterView.OnItemClickListener) tag;
-            }else{
-                //TODO onClickListener might be null
-            }
-        }
-        v.setOnItemClickListener(onItemClickListener);
-    }
-
-    void findOnClickListener(final Context context, View view, final Object bean, final Method method){
-        Annotation annotation = method.getAnnotation(OnClick.class);
-        if (annotation == null) {
-            return;
-        }
-        OnClick onClick = (OnClick) annotation;
-        int resId = onClick.value();
-        View v = findViewById(view, resId);
-        if (v == null) {
-            throw new ViewNotFoundException("Can't find this View for method:"+method.getName());
-        }
-        View.OnClickListener onClickListener = null;
-        Object tag = v.getTag(TAG_FOR_LISTENER);
-        if(tag == null){
-            onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        method.invoke(bean, context, v);
-                    } catch (IllegalAccessException e) {
-                        throw new FieldNotPublicException("The method is not public. In class " +
-                                bean.getClass().getName() + ", method " + method.getName());
-                    } catch (InvocationTargetException e) {
-                        throw new IllegalArgumentException(e.getTargetException());
-                    }
-                }
-            };
-            v.setTag(TAG_FOR_LISTENER, onClickListener);
-        }else{
-            if(tag instanceof View.OnClickListener){
-                onClickListener = (View.OnClickListener) tag;
-            }else{
-                //TODO onClickListener might be null
-            }
-        }
-        v.setOnClickListener(onClickListener);
-    }
-
-    /**
-     * save tags for this view
-     * useful in ListView
-     * I'm not really sure this works fine
-     */
-    View findViewById(View view, int id) {
-        View v = null;
-        //TODO Build.VERSION below 4.0
-        Object tag = view.getTag(id);
-        if(tag != null && tag instanceof View){
-            v = (View) tag;
-        }else{
-            v = view.findViewById(id);
-            view.setTag(id, v);
-        }
-        return v;
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public View findView(Context context, ViewGroup parent, Class cls) {
+    public View findViewForGroup(Context context, ViewGroup parent, Class cls) {
         View view = null;
         if (cls.isAnnotationPresent(GroupViewInj.class)) {
             Annotation annotation = cls.getAnnotation(GroupViewInj.class);
@@ -468,7 +279,7 @@ public class Jujuj {
         }
 
         int submitId = request.getSubmitButtonId();
-        View button = findViewById(view, submitId);
+        View button = view.findViewById(submitId);
         if(button == null){
             return;
         }
@@ -483,7 +294,8 @@ public class Jujuj {
     }
 
     private void postData(final Context context, final View view, final Postable request){
-        HashMap<String, String> params = getParams(context, view, request);
+        ViewInject viewBinder = findViewInject(context, request.getClass());
+        HashMap<String, String> params = viewBinder.getParams(view, request, mInjectHelper);
         if(params == null){
             return;
         }
@@ -501,14 +313,13 @@ public class Jujuj {
         }else{
             classOfGeneric = request.getClass();
         }
-        handleData(context, request, dataProvider, params, classOfGeneric);
+        handlePost(context, request, dataProvider, params, classOfGeneric);
     }
 
     /**
      * handle data in post method
-     * @param dataProvider
      */
-    private void handleData(final Context context, final Postable request, final AbsDataProvider dataProvider,
+    private void handlePost(final Context context, final Postable request, final AbsDataProvider dataProvider,
                             final HashMap<String, String> params, final Class target){
         //notice the target here is set to null
         //so what?
@@ -520,7 +331,7 @@ public class Jujuj {
                             //get nothing, let supervisor handle it
                             AbsDataProvider supervisor = dataProvider.getSupervisor();
                             if (supervisor != null) {
-                                handleData(context, request, supervisor, params, target);
+                                handlePost(context, request, supervisor, params, target);
                             }
                         } else {
                             request.onPostResponse(context, obj);
@@ -554,76 +365,6 @@ public class Jujuj {
             if(dlb != null){
                 inject(context, new MutableEntity(dlb));
             }
-    }
-
-    /**
-     *
-     * @param context
-     * @param view
-     * @param request
-     * @return null if it fails validating provided by request
-     */
-    private  HashMap<String, String> getParams(Context context, View view, Object request){
-        HashMap<String, String> params = new HashMap<>();
-        for (Field field : request.getClass().getDeclaredFields()) {
-            int resId = -1;
-            Annotation annotation = field.getAnnotation(ViewInj.class);
-            //not from view
-            if (annotation == null) {
-				/*
-				 * maybe it's an mutable, which wraps entities
-				 */
-                try {
-                    Object value = field.get(request);
-                    if (value instanceof MutableEntity){
-                        Object entity = ((MutableEntity) value).getEntity();
-                        HashMap<String, String> map = getParams(context, view, entity);
-                        params.putAll(map);
-                        continue;
-                    }else{
-                        //get id by name
-                        resId = context.getResources().getIdentifier(field.getName() , "id", context.getPackageName());
-                        //not found
-                        if (resId == 0){
-                            //not from view
-                            params.put(field.getName(), field.get(request).toString());
-                            continue;
-                        }
-                    }
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }else{
-                ViewInj inj = (ViewInj) annotation;
-                resId = inj.value();
-            }
-            View childView = findViewById(view, resId);
-            if (childView == null) {
-                continue;
-            }
-            try {
-                for(ViewInjector injector:injectors){
-                    String value = injector.addParams(childView, params, request, field);
-                    if(value != null){
-                        if(request instanceof Validatable){
-                            String validate = ((Validatable) request).validate(
-                                    field.getName(), value);
-                            if(validate != null){
-                                //error!
-                                if(request instanceof Postable){
-                                    ((Postable) request).onError(context, validate);
-                                }
-                                return null;
-                            }
-                        }
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return params;
     }
 
     private Map<String, String> objToMap(Object obj){
@@ -663,7 +404,7 @@ public class Jujuj {
         String uri = downloadable.onDownLoadUrl(context);
 
         AbsDataProvider dataProvider = configurations.dataProvider;
-        handleData(dataProvider, context, view, m, downloadable, target, uri, params);
+        handleLoad(dataProvider, context, view, m, downloadable, target, uri, params);
     }
 
     /**
@@ -672,7 +413,7 @@ public class Jujuj {
      * @param downloadable to receive onError
      * @param target the target entity the data should be
      */
-    private void handleData(final AbsDataProvider dataProvider, final Context context, final View view,
+    private void handleLoad(final AbsDataProvider dataProvider, final Context context, final View view,
                             final MutableEntity m, final Downloadable downloadable, final Class target,
                             final String uri, final Map<String, String> params){
         Log.d(TAG, "provider:"+dataProvider.getClass());
@@ -684,7 +425,7 @@ public class Jujuj {
                             //get nothing, let supervisor handle it
                             AbsDataProvider supervisor = dataProvider.getSupervisor();
                             if (supervisor != null) {
-                                handleData(supervisor, context, view, m, downloadable, target, uri, params);
+                                handleLoad(supervisor, context, view, m, downloadable, target, uri, params);
                             }
                         } else {
                             handleDownloadObject(context, view, m, obj, downloadable);
@@ -703,21 +444,7 @@ public class Jujuj {
     private void handleDownloadObject(Context context, View view, MutableEntity m, Object obj, Downloadable downloadable){
         if (obj != null) {
             //TODO save in local?
-//            if(obj instanceof Entity){
-//                saveInDatabase((Entity) obj);
-//            }
-
             //TODO what about more
-//            if(obj instanceof Moreable){
-//                //clone params etc
-//                Object original = (Object) m.getEntity();
-//                if(original != null){
-//                    ((Moreable)obj).loadMore(original);
-//                }
-//                //set content
-////				setContent(context, view, obj, m);
-//            }else{
-//            }
 
             if(m != null){
                 m.setEntity(obj);
@@ -725,7 +452,6 @@ public class Jujuj {
                 if(m.getNotifiable() != null){
                     m.getNotifiable().onDownloadResponse();
                 }
-                //
                 if(m instanceof Loadable){
                     setContent(context, view, m);
                 }else{
@@ -738,5 +464,148 @@ public class Jujuj {
         }
     }
 
+    /**
+     * set content for view
+     * using ViewInject that's been generated
+     * @param context  context
+     * @param view      view
+     * @param target   the target object to be casted to the view
+     */
+    public void setContent(Context context, View view, Object target){
+        ViewInject viewInject = findViewInject(context, target.getClass());
+        viewInject.setContent(view, target, mInjectHelper);
+    }
 
+    /**
+     * the entrance for generating ViewInject class
+     *
+     * @param context    you know
+     * @param view        you know
+     * @param target     the target object to be casted to the view
+     */
+    private void generateViewInject(Context context, View view, Object target) {
+        Class<?> targetClass =  target.getClass();
+        try {
+            if (debug) Log.d(TAG, "Looking up view inject for " + targetClass.getName());
+            ViewInject viewBinder = findViewInject(context, targetClass);
+            if (viewBinder != null) {
+                viewBinder.setContent(view, target, mInjectHelper);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to bind views for " + targetClass.getName(), e);
+        }
+    }
+
+    /**
+     * @param context that mInjectHelper relies on
+     * @param cls the target class of that to be casted to the view
+     * @return the ViewInject created by JujujProcessor
+     */
+    private ViewInject findViewInject(Context context, Class<?> cls){
+        //new one when it is null or the context is not same
+        if (mInjectHelper == null || !mInjectHelper.same(context)){
+            mInjectHelper = new ViewInjectHelper(context);
+        }
+        ViewInject viewBinder = BINDERS.get(cls);
+        if (viewBinder != null) {
+            if (debug) Log.d(TAG, "HIT: Cached in view binder map.");
+            return viewBinder;
+        }
+        String clsName = cls.getName();
+
+        try {
+            Class<?> viewBindingClass = Class.forName(clsName + "$$ViewBinder");
+            viewBinder = (ViewInject) viewBindingClass.newInstance();
+            if (debug) Log.d(TAG, "HIT: Loaded view binder class.");
+        } catch (ClassNotFoundException e) {
+            if (debug) Log.d(TAG, "Not found. Trying superclass " + cls.getSuperclass().getName());
+            viewBinder = findViewInject(context, cls.getSuperclass());
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        BINDERS.put(cls, viewBinder);
+        return viewBinder;
+    }
+
+    /**
+     * The generated class will implement this interface
+     * as defined in JujujProcessor
+     */
+    public interface ViewInject<T>{
+        public void setContent(View view, T target, ViewInjectHelper helper);
+        public HashMap<String, String> getParams(View view, T target, ViewInjectHelper helper);
+    }
+
+
+    public class ViewInjectHelper{
+
+        private Context context;
+
+        public ViewInjectHelper(Context context){
+            this.context = context;
+        }
+
+        public boolean same(Context context){
+            return  context == context;
+        }
+
+        /**
+         * invoke by ViewInject
+         * @param v           the view
+         * @param bean       the object of the target
+         * @param fieldName the name of the field
+         * @param value      the value of the field
+         */
+        public void setContent(View v, Object bean, String fieldName, Object value){
+            for (ViewInjector injector : injectors) {
+                if (injector.setViewContent(context, v, bean, fieldName, value)) {
+                    break;
+                }
+            }
+        }
+
+        /**
+         * invoke by ViewInject
+         */
+        public void getParams(View childView, HashMap<String, String> params, Object request, String fieldName){
+            try {
+                for (ViewInjector injector : injectors) {
+                    String value = injector.addParams(childView, params, request, fieldName);
+                    if (value != null) {
+                        if (request instanceof Validatable) {
+                            String validate = ((Validatable) request).validate(fieldName, value);
+                            if (validate != null) {
+                                //error!
+                                if (request instanceof Postable) {
+                                    ((Postable) request).onError(context, validate);
+                                }
+                                return;
+                            }
+                        }
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * invoke by ViewInject
+         * @param id could be int or identifier
+         */
+        public View findViewById(View view, String id) {
+            int intId;
+            try {
+                intId = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                intId = context.getResources().getIdentifier(id , "id", context.getPackageName());
+            }
+            return view.findViewById(intId);
+        }
+
+    }
 }

@@ -19,20 +19,18 @@ public class CheckBoxInjector extends ViewInjector {
 
 	@Override
 	public String addParams(View view, HashMap<String, String> params,
-			Object bean, Field field) throws Exception {
+			Object bean, String  fieldName) throws Exception {
 		if (view instanceof CheckBox) {
-			String key = field.getName(); 
 			boolean isChecked = ((CheckBox) view).isChecked();
 			Object value = isChecked;
 			if (bean instanceof Transformable) {
 				//get value for model
-				Object valueToServer = ((Transformable) bean).toServer(field.getName(), isChecked);
+				Object valueToServer = ((Transformable) bean).toServer(fieldName, isChecked);
 				if(valueToServer != null){
 					value = valueToServer;
 				}
 			}
-			params.put(key, value+"");
-			field.set(bean, value);
+			params.put(fieldName, value+"");
 			return value+"";
 		} else {
 			return null;

@@ -1,7 +1,6 @@
 package framework.inj.groupview;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -40,7 +39,7 @@ public class ListableAdapter<T> extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         T item = getItem(i);
         if(view == null){
-            view = Jujuj.getInstance().findView(context, viewGroup, item.getClass());
+            view = Jujuj.getInstance().findViewForGroup(context, viewGroup, item.getClass());
         }
         Jujuj.getInstance().setContent(context, view, item);
         return view;
