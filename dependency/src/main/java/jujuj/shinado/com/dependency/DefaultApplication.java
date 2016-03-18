@@ -1,7 +1,6 @@
 package jujuj.shinado.com.dependency;
 
 import android.app.Application;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.activeandroid.ActiveAndroid;
@@ -12,7 +11,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import framework.core.Jujuj;
-import provider.CacheProvider;
 import provider.ConfigBuilder;
 
 public class DefaultApplication extends Application{

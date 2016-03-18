@@ -1,16 +1,6 @@
 package demo1;
 
 
-import framework.core.Jujuj;
-import sample.MyApplication;
-
-import com.shinado.netframe.sample.R;
-
-import demo2.Demo2Activity;
-import framework.inj.ActivityInj;
-import framework.inj.ViewInj;
-import framework.inj.entity.MutableEntity;
-import framework.inj.entity.Postable;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,8 +8,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.shinado.netframe.sample.R;
+
+import demo2.Demo2Activity;
+import framework.core.Jujuj;
+import framework.inj.ActivityInj;
+import framework.inj.ViewInj;
+import framework.inj.entity.MutableEntity;
+import framework.inj.entity.Postable;
+import sample.Constants;
+
 public class Demo1Activity extends Activity{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class Demo1Activity extends Activity{
 				dialog = new ProgressDialog(context);
 			}
 			dialog.show();
-			return MyApplication.URL + "netframe_sign_in.php";
+			return Constants.URL + "netframe_sign_in.php";
 		}
 
 		@Override

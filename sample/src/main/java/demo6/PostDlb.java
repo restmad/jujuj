@@ -1,21 +1,16 @@
 package demo6;
 
 import android.content.Context;
-import android.content.Intent;
-import android.view.View;
 
 import com.shinado.netframe.sample.R;
 
 import java.util.ArrayList;
 
-import framework.core.Jujuj;
 import framework.inj.ActivityInj;
-import framework.inj.OnItemClick;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
-import framework.inj.entity.Following;
 import framework.inj.entity.utility.Transformable;
-import sample.MyApplication;
+import sample.Constants;
 
 @ActivityInj(R.layout.activity_demo6)
 public class PostDlb implements Downloadable, Transformable{
@@ -25,7 +20,7 @@ public class PostDlb implements Downloadable, Transformable{
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return MyApplication.URL + "netframe_get_all_posts.php";
+        return Constants.URL + "netframe_get_all_posts.php";
     }
 
     @Override

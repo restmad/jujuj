@@ -31,13 +31,15 @@ public class CacheProvider extends AbsDataProvider{
 
     private Map<String, SoftReference<Object>> cache = new HashMap<>();
 
+    @SuppressWarnings("unchecked")
     @Override
     public void handleData(Context context, String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
         if (cls == null){
             response.onResponse(null);
+            return;
         }
         Log.d(TAG, "handling....");
-        String key = cls.getName() + params.toString();
+        String key = cls.getName() + (params == null ? "" : params.toString());
         SoftReference<Object> ref = cache.get(key);
         if(ref != null){
             Log.d(TAG, "get");
@@ -48,6 +50,7 @@ public class CacheProvider extends AbsDataProvider{
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void put(Map<String, String> params, Class cls, Object target){
         String key = cls.getName() + params.toString();
         SoftReference<Object> ref = cache.get(key);

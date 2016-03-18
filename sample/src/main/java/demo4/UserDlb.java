@@ -1,14 +1,16 @@
 package demo4;
 
 import android.content.Context;
+
 import com.shinado.netframe.sample.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import framework.inj.ActivityInj;
 import framework.inj.ViewValueInj;
 import framework.inj.entity.Loadable;
-import sample.MyApplication;
+import sample.Constants;
 
 @ActivityInj(R.layout.activity_demo2n3)
 public class UserDlb extends Loadable<UserBean>{
@@ -44,7 +46,7 @@ public class UserDlb extends Loadable<UserBean>{
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return MyApplication.URL + "netframe_get_user.php";
+        return Constants.URL + "netframe_get_user.php";
     }
 
     @Override

@@ -12,14 +12,24 @@ import framework.provider.Listener;
 
 public class PreferenceProvider extends AbsDataProvider {
 
+    public static final String URI_GET = "pref.get";
+    public static final String URI_SAVE = "pref.save";
+
+    @SuppressWarnings("unchecked")
     @Override
     public void handleData(Context context, String uri, Map<String, String> params, Class target, Listener.Response response, Listener.Error error) {
-        if (uri.equals("pref.get")){
-            Object obj = getItem(context, target);
-            response.onResponse(obj);
-        } else if(uri.equals("pref.save")){
-            save(context, params, target);
-            response.onResponse(null);
+        switch (uri) {
+            case URI_GET:
+                Object obj = getItem(context, target);
+                response.onResponse(obj);
+                break;
+            case URI_SAVE:
+                save(context, params, target);
+                response.onResponse(null);
+                break;
+            default:
+                response.onResponse(null);
+                break;
         }
     }
 
@@ -78,7 +88,7 @@ public class PreferenceProvider extends AbsDataProvider {
                 } else if (fieldClass == Boolean.class){
                     field.set(item, sp.getBoolean(key, false));
                 } else if (fieldClass == Long.class){
-                    field.set(item, sp.getLong(key, -1l));
+                    field.set(item, sp.getLong(key, -1L));
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

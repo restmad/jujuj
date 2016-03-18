@@ -2,8 +2,6 @@ package demo4;
 
 import com.shinado.netframe.sample.R;
 
-import java.util.ArrayList;
-
 import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
 

@@ -1,14 +1,10 @@
 package demo2;
 
-import com.activeandroid.query.Select;
+import android.app.Activity;
+import android.os.Bundle;
 
 import framework.core.Jujuj;
 import framework.inj.entity.MutableEntity;
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
-
-import java.util.ArrayList;
 
 public class Demo2Activity extends Activity{
 

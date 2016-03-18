@@ -9,12 +9,11 @@ import com.shinado.netframe.sample.R;
 import java.util.ArrayList;
 
 import framework.inj.ActivityInj;
-import framework.inj.OnClick;
 import framework.inj.OnItemClick;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
 import framework.inj.entity.utility.Transformable;
-import sample.MyApplication;
+import sample.Constants;
 
 @ActivityInj(R.layout.activity_demo5)
 public class SimpleUserDlb implements Downloadable, Transformable{
@@ -31,7 +30,7 @@ public class SimpleUserDlb implements Downloadable, Transformable{
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return MyApplication.URL + "netframe_get_all_users.php";
+        return Constants.URL + "netframe_get_all_users.php";
     }
 
     @Override

@@ -1,14 +1,14 @@
 package demo3;
 
-import java.util.HashMap;
-
-import sample.MyApplication;
 import android.content.Context;
 
 import com.shinado.netframe.sample.R;
 
+import java.util.HashMap;
+
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
+import sample.Constants;
 
 class UserBean implements Downloadable{
 	
@@ -26,7 +26,7 @@ class UserBean implements Downloadable{
 
 	@Override
 	public String onDownLoadUrl(Context context) {
-		return MyApplication.URL + "netframe_get_only_user.php";
+		return Constants.URL + "netframe_get_only_user.php";
 	}
 
 	@Override
@@ -37,7 +37,7 @@ class UserBean implements Downloadable{
 
 	@Override
 	public Object onDownloadParams() {
-		HashMap<String, String> params = new HashMap<String, String>();
+		HashMap<String, String> params = new HashMap<>();
 		params.put("userName", userName);
 		return params;
 	}

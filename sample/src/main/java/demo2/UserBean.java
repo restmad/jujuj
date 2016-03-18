@@ -1,10 +1,5 @@
 package demo2;
 
-import java.util.HashMap;
-import java.util.List;
-
-import provider.Entity;
-import sample.MyApplication;
 import android.content.Context;
 
 import com.activeandroid.annotation.Column;
@@ -12,9 +7,14 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.shinado.netframe.sample.R;
 
+import java.util.HashMap;
+import java.util.List;
+
 import framework.inj.ActivityInj;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
+import provider.Entity;
+import sample.Constants;
 
 
 @ActivityInj(R.layout.activity_demo2n3)
@@ -44,11 +44,11 @@ class UserBean extends Entity implements Downloadable{
 		//WARNING don't use getMany, use getMani instead
 		return getMani(Number.class, "userBean");
 	}
-	
+
 	public UserBean(){
 		super();  
 	}
-	
+
 	@Override
 	public Entity query() {
 		UserBean entity = new Select().from(UserBean.class).where("userName = ?", userName).executeSingle();
@@ -60,7 +60,7 @@ class UserBean extends Entity implements Downloadable{
 
 	@Override
 	public String onDownLoadUrl(Context context) {
-		return MyApplication.URL + "netframe_get_user.php";
+		return Constants.URL + "netframe_get_user.php";
 	}
 
 	@Override
@@ -71,7 +71,7 @@ class UserBean extends Entity implements Downloadable{
 
 	@Override
 	public Object onDownloadParams() {
-		HashMap<String, String> params = new HashMap<String, String>();
+		HashMap<String, String> params = new HashMap<>();
 		params.put("userName", userName);
 		return params;
 	}

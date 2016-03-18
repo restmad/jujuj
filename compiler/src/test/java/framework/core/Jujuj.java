@@ -1,13 +1,11 @@
 package framework.core;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import framework.inj.entity.Postable;
 
 /**
  * nothing but for compiler to finish testing
@@ -18,8 +16,8 @@ public class Jujuj {
     private final Map<Class<?>, ViewInject> BINDERS = new LinkedHashMap<>();
 
     public interface ViewInject<T>{
-        public void setContent(View view, T target, ViewInjectHelper helper);
-        public HashMap<String, String> getParams(View view, T target, ViewInjectHelper helper);
+        void setContent(View view, T target, ViewInjectHelper helper);
+        HashMap<String, String> getParams(View view, T target, ViewInjectHelper helper);
     }
 
     /**
@@ -62,9 +60,7 @@ public class Jujuj {
             viewBinder = (ViewInject) viewBindingClass.newInstance();
         } catch (ClassNotFoundException e) {
             viewBinder = findViewInject(context, cls.getSuperclass());
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         BINDERS.put(cls, viewBinder);
@@ -80,7 +76,7 @@ public class Jujuj {
         }
 
         public boolean same(Context context){
-            return  context == context;
+            return  this.context == context;
         }
 
         /**

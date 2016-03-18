@@ -10,6 +10,7 @@ import framework.inj.entity.utility.Notifiable;
  *
  */
 public abstract class Loadable<T> extends MutableEntity<T> implements Downloadable{
+
     public Loadable() {
     }
 

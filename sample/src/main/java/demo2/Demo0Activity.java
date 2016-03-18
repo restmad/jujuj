@@ -19,11 +19,8 @@ import java.util.HashMap;
 
 import framework.provider.Listener;
 import provider.volley.VolleyProvider;
-import sample.MyApplication;
+import sample.Constants;
 
-/**
- * Created by shinado on 15/8/31.
- */
 public class Demo0Activity extends Activity{
 
     @Override
@@ -40,9 +37,9 @@ public class Demo0Activity extends Activity{
 
         if(entity == null){
             //load from server
-            HashMap<String, String> params = new HashMap<String, String>();
+            HashMap<String, String> params = new HashMap<>();
             params.put("userName", userName);
-            new VolleyProvider().handleData(this, MyApplication.URL + "netframe_get_user.php", params, UserBean.class,
+            new VolleyProvider().handleData(this, Constants.URL + "netframe_get_user.php", params, UserBean.class,
                     new Listener.Response<UserBean>(){
 
                         @Override
@@ -94,7 +91,7 @@ public class Demo0Activity extends Activity{
 
             @Override
             public View getView(int i, View view, ViewGroup viewGroup) {
-                ViewHolder holder = null;
+                ViewHolder holder;
                 if(view == null){
                     view = LayoutInflater.from(Demo0Activity.this).inflate(R.layout.layout_demo2n3_number, viewGroup, false);
                     holder = new ViewHolder();

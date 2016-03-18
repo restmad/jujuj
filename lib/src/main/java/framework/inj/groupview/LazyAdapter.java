@@ -1,7 +1,5 @@
 package framework.inj.groupview;
 
-import java.util.Collection;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -11,16 +9,20 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.util.Collection;
+
 import framework.core.Jujuj;
 
 public class LazyAdapter extends BaseAdapter{
 
     private Context mContext;
     private Collection<Object> mData;
+    private String mPackageName;
 
-    public LazyAdapter(Context context, Collection<Object> data) {
+    public LazyAdapter(Context context, Collection<Object> data, String packageName) {
     	this.mContext = context;
         mData = data;
+        mPackageName = packageName;
     }
 
     public void setData(Collection<Object> items){
@@ -85,19 +87,8 @@ public class LazyAdapter extends BaseAdapter{
         }
 		Log.d("HttpRequest", "adapter get item:" + dataSet.toString());
 
-        Jujuj.getInstance().setContent(mContext, view, dataSet);
-    }
-
-    /**
-     * Called by bindView() to set the text for a TextView but only if
-     * there is no existing ViewBinder or if the existing ViewBinder cannot
-     * handle binding to a TextView.
-     *
-     * @param v TextView to receive text
-     * @param text the text to be set for the TextView
-     */
-    public void setViewText(TextView v, String text) {
-        v.setText(text);
+        //TODO use tag
+        Jujuj.getInstance().setContent(mContext, view, dataSet, mPackageName);
     }
 
     /**
@@ -112,7 +103,7 @@ public class LazyAdapter extends BaseAdapter{
      * @see SimpleAdapter#setViewImage(ImageView, String)
      * @see SimpleAdapter#setViewText(TextView, String)
      */
-    public static interface ViewBinder {
+    public interface ViewBinder {
         /**
          * Binds the specified data to the specified view.
          *

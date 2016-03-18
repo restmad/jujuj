@@ -1,17 +1,18 @@
 package framework.core;
 
+import java.util.ArrayList;
+
+import framework.inj.impl.ViewBinder;
 import framework.net.image.AbsImageProvider;
 import framework.provider.AbsDataProvider;
 
-/**
- * Created by shinado on 15/8/27.
- */
 public class Configurations {
 
     String encoder;
     String charset;
     AbsDataProvider dataProvider;
     AbsImageProvider imageProvider;
+    ArrayList<ViewBinder> binders;
 
     private Configurations(Builder builder){
         if(builder.dataProvider == null){
@@ -22,6 +23,7 @@ public class Configurations {
         charset = builder.charset;
         dataProvider = builder.dataProvider;
         imageProvider = builder.imageProvider;
+        binders = builder.binders;
     }
 
     public static class Builder{
@@ -29,6 +31,7 @@ public class Configurations {
         private String charset;
         private AbsDataProvider dataProvider;
         private AbsImageProvider imageProvider;
+        private ArrayList<ViewBinder> binders = new ArrayList<>();
 
         public Builder(){
             encoder = "gbk";
@@ -54,6 +57,11 @@ public class Configurations {
             }else{
                 addDataProvider(dataProvider, provider);
             }
+            return this;
+        }
+
+        public Builder addViewInjector(ViewBinder injector){
+            binders.add(injector);
             return this;
         }
 

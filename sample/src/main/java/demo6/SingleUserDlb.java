@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import framework.inj.ViewValueInj;
 import framework.inj.entity.Loadable;
-import sample.MyApplication;
+import sample.Constants;
 
 public class SingleUserDlb extends Loadable<UserBean>{
 
@@ -28,7 +28,7 @@ public class SingleUserDlb extends Loadable<UserBean>{
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return MyApplication.URL + "netframe_get_user_by_id.php";
+        return Constants.URL + "netframe_get_user_by_id.php";
     }
 
     @Override

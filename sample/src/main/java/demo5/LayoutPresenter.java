@@ -8,7 +8,6 @@ import com.shinado.netframe.sample.R;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 import framework.inj.GroupViewInj;
 import framework.inj.OnClick;
 import framework.inj.ViewValueInj;

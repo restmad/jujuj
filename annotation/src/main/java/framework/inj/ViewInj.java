@@ -1,15 +1,15 @@
 package framework.inj;
 
-import static java.lang.annotation.ElementType.FIELD;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(FIELD)
 public @interface ViewInj {
 	
-	public int value() default Constants.DEFAULT;
+	int value() default Constants.DEFAULT;
 
 }

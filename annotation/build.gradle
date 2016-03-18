@@ -1,12 +1,14 @@
 apply plugin: 'java'
 
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
 configurations {
     provided
     compile.extendsFrom provided
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     provided deps.android
 
 }

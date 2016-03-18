@@ -1,16 +1,16 @@
 package demo3;
 
-import java.util.ArrayList;
-
-import framework.inj.entity.Downloadable;
-import sample.MyApplication;
 import android.content.Context;
 import android.util.Log;
 
 import com.shinado.netframe.sample.R;
 
+import java.util.ArrayList;
+
 import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
+import framework.inj.entity.Downloadable;
+import sample.Constants;
 
 class Numbers implements Downloadable{
 	
@@ -19,7 +19,7 @@ class Numbers implements Downloadable{
 
 	@Override
 	public String onDownLoadUrl(Context context) {
-		return MyApplication.URL + "netframe_get_user_numbs.php";
+		return Constants.URL + "netframe_get_user_numbs.php";
 	}
 
 	@Override

@@ -1,16 +1,9 @@
 package demo5;
 
-import android.content.Context;
-
 import com.shinado.netframe.sample.R;
-
-import java.util.HashMap;
 
 import framework.inj.ActivityInj;
 import framework.inj.ViewValueInj;
-import framework.inj.entity.Following;
-import framework.inj.entity.Loadable;
-import sample.MyApplication;
 
 @ActivityInj(R.layout.activity_demo2n3)
 class ActivityPresenter {

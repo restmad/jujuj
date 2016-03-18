@@ -1,15 +1,6 @@
 package demo4;
 
-import android.content.Context;
-
-import com.shinado.netframe.sample.R;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import framework.inj.ViewInj;
-import framework.inj.entity.Downloadable;
-import sample.MyApplication;
 
 public class UserBean {
 

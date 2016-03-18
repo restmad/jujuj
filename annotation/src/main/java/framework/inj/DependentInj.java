@@ -4,12 +4,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.FIELD;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(TYPE)
-public @interface GroupViewInj {
-	
-	int value() default -1;
-	
+@Target(FIELD)
+public @interface DependentInj {
+
 }

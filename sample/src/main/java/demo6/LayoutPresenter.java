@@ -14,13 +14,7 @@ import com.shinado.netframe.sample.R;
 import java.util.ArrayList;
 
 import framework.core.Jujuj;
-import framework.inj.GroupViewInj;
-import framework.inj.ViewDisplay;
-import framework.inj.ViewValueInj;
-import framework.inj.entity.Loadable;
-import framework.inj.entity.MutableEntity;
 import framework.inj.groupview.Adaptable;
-import framework.inj.groupview.Listable;
 
 public class LayoutPresenter implements Adaptable {
 

@@ -18,9 +18,6 @@ import framework.provider.AbsDataProvider;
 import framework.provider.Listener;
 import jujuj.shinado.com.dependency.DefaultApplication;
 
-/**
- * Created by shinado on 15/8/27.
- */
 public class VolleyProvider extends AbsDataProvider {
 
     private final String TAG = "VolleyProvider";
@@ -34,6 +31,7 @@ public class VolleyProvider extends AbsDataProvider {
 
     };
 
+    @SuppressWarnings("unchecked")
     @Override
     public void handleData(Context context, String uri, final Map<String, String> params, final Class cls,
                            final Listener.Response response, final Listener.Error error) {
