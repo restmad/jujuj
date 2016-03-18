@@ -18,5 +18,9 @@ class Bean implements Multipleable{
 	public MutableEntity user;
 	
 	public MutableEntity number = new MutableEntity(new Numbers());
-	
+
+	@Override
+	public Object[] getLoaders() {
+		return new Object[]{user, number};
+	}
 }
