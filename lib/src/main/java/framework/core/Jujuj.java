@@ -13,7 +13,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,8 +23,6 @@ import framework.inj.GroupViewInj;
 import framework.inj.Requestable;
 import framework.inj.entity.Action;
 import framework.inj.entity.Downloadable;
-import framework.inj.entity.Follower;
-import framework.inj.entity.Following;
 import framework.inj.entity.Listable;
 import framework.inj.entity.Loadable;
 import framework.inj.entity.Multipleable;
@@ -154,6 +151,7 @@ public class Jujuj {
         inject(context, view, mtp, packageName);
     }
 
+    @SuppressWarnings("unchecked")
     public void inject(Context context, View view, Multipleable mtp, String packageName) {
         for (Object obj : mtp.getLoaders()) {
             if (obj instanceof MutableEntity) {
@@ -197,10 +195,6 @@ public class Jujuj {
         if (m instanceof Loadable) {
             Loadable loadable = (Loadable) m;
             if (m.isStateStored()) {
-                //notice here it's set by method
-                //a loadable
-                //TODO setContentByMethod
-                //setContentByMethod(context, view, loadable);
                 return true;
             } else {
                 loadEntity(context, view, loadable, loadable, loadable.getEntity().getClass(), packageName);
@@ -325,10 +319,10 @@ public class Jujuj {
             return;
         }
 
-        postData(context, request, params, button, packageName);
+        postData(context, request, params, button);
     }
 
-    void postData(Context context, final Requestable request, Map<String, String> params, View button, String packageName) {
+    void postData(Context context, final Requestable request, Map<String, String> params, View button) {
         AbsDataProvider dataProvider = configurations.dataProvider;
         Type[] genType = request.getClass().getGenericInterfaces();
         Type[] typeArguments = ((ParameterizedType) genType[0]).getActualTypeArguments();
@@ -387,7 +381,7 @@ public class Jujuj {
                     @Override
                     public void onResponse(Object obj) {
                         if (obj == null) {
-                            request.onPostResponse(context, obj);
+                            request.onPostResponse(context, null);
                         } else {
                             if (button != null) {
                                 button.setEnabled(true);
@@ -451,6 +445,7 @@ public class Jujuj {
      * @param target       the target entity the data should be
      * @param listable     the previous Listable, if any
      */
+    @SuppressWarnings("unchecked")
     private void handleLoad(final AbsDataProvider dataProvider, final Context context, final View view,
                             final MutableEntity m, final Downloadable downloadable, final Class target,
                             final Listable listable,
@@ -611,10 +606,6 @@ public class Jujuj {
                 return;
             }
 
-            if (value instanceof Action) {
-                //TODO
-                return;
-            }
             for (ViewBinder injector : configurations.binders) {
                 if (injector.setViewContent(context, v, bean, fieldName, value, packageName)) {
                     break;
@@ -667,6 +658,7 @@ public class Jujuj {
         /**
          * to inject a DependentInj
          */
+        @SuppressWarnings("unchecked")
         public void inject(View view, Loadable bean, String packageName) {
             Jujuj.this.inject(context, view, bean, packageName);
         }
@@ -682,7 +674,7 @@ public class Jujuj {
          * to inject a ActionInj
          */
         @SuppressWarnings("unchecked")
-        public void inject(View button, final Action action, final String packageName) {
+        public void inject(View button, final Action action) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -693,7 +685,7 @@ public class Jujuj {
                     } else {
                         params = objToMap(obj);
                     }
-                    postData(context, action, params, v, packageName);
+                    Jujuj.this.postData(context, action, params, v);
                 }
             });
 

@@ -127,7 +127,7 @@ final class Generator {
         result.addStatement("$T " + nameOfView + " = helper.findViewById(view, $S, packageName)", VIEW, anno.getValue());
 
         String elementName = anno.getElementName();
-        result.addStatement("helper.inject("+nameOfView+", target." + elementName+ ", packageName)");
+        result.addStatement("helper.inject("+nameOfView+", target." + elementName+ ")");
 
         result.addStatement("helper.setContent(" + nameOfView + ", target, $S, target." + anno.getElementName() + ".getValue(), packageName)", anno.getElementName());
     }
