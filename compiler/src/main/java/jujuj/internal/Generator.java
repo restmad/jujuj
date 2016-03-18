@@ -19,6 +19,7 @@ final class Generator {
             ClassName.get("framework.core", "Jujuj", "ViewInjectHelper");
     private static final ClassName VIEW = ClassName.get("android.view", "View");
     private static final ClassName LOADABLE = ClassName.get("framework.inj.entity", "Loadable");
+    private static final ClassName ACTION = ClassName.get("framework.inj.entity", "Action");
     private static final ClassName HASHMAP = ClassName.get("java.util", "HashMap");
     private static final ClassName STRING = ClassName.get("java.lang", "String");
 
@@ -98,6 +99,8 @@ final class Generator {
     private void addContentBindings(MethodSpec.Builder result, AnnotationItem anno) {
         if (anno.getType() == AnnotationItem.Type.DependentInj) {
             handleDependentInj(result, anno);
+        } else if (anno.getType() == AnnotationItem.Type.ActionInj){
+            handleActionInj(result, anno);
         } else {
             String nameOfView = anno.getElementName() + "View";
             //field or method
@@ -112,11 +115,21 @@ final class Generator {
         result.addStatement("$T " + elementName + " = target." + elementName, LOADABLE);
         //if state stored
         result.beginControlFlow("if("+elementName + ".isStateStored())");
-            result.addStatement("helper.setContent(view, target." + elementName+ ", packageName)");
+            result.addStatement("helper.setContent(view, " + elementName+ ", packageName)");
         //else
         result.nextControlFlow("else");
-            result.addStatement("helper.inject(view, target." + elementName+ ", packageName)");
+            result.addStatement("helper.inject(view, " + elementName+ ", packageName)");
         result.endControlFlow();
+    }
+
+    private void handleActionInj(MethodSpec.Builder result, AnnotationItem anno){
+        String nameOfView = anno.getElementName() + "View";
+        result.addStatement("$T " + nameOfView + " = helper.findViewById(view, $S, packageName)", VIEW, anno.getValue());
+
+        String elementName = anno.getElementName();
+        result.addStatement("helper.inject("+nameOfView+", target." + elementName+ ", packageName)");
+
+        result.addStatement("helper.setContent(" + nameOfView + ", target, $S, target." + anno.getElementName() + ".getValue(), packageName)", anno.getElementName());
     }
 
     //finish addParams method

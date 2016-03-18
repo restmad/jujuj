@@ -19,6 +19,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
+import framework.inj.ActionInj;
 import framework.inj.Constants;
 import framework.inj.DependentInj;
 import framework.inj.ViewInj;
@@ -93,8 +94,14 @@ public class JujujProcessor extends AbstractProcessor {
                 e.printStackTrace();
             }
         }
-
-        //TODO
+        for (Element element : env.getElementsAnnotatedWith(ActionInj.class)) {
+            try {
+                int id = element.getAnnotation(ActionInj.class).value();
+                bind(element, targetClassMap, id, AnnotationItem.Type.ActionInj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         return targetClassMap;
     }

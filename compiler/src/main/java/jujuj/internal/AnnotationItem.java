@@ -37,6 +37,6 @@ final class AnnotationItem{
     }
 
     public enum Type{
-        ViewInj, ViewValueInj, DependentInj
+        ViewInj, ViewValueInj, DependentInj, ActionInj
     }
 }
