@@ -333,32 +333,61 @@ public class Jujuj {
         Type[] genType = request.getClass().getGenericInterfaces();
         Type[] typeArguments = ((ParameterizedType) genType[0]).getActualTypeArguments();
         Class entityClass = (Class) typeArguments[0];
-        handlePost(context, request, dataProvider, button, params, entityClass, packageName);
+        handlePostByBoss(context, request, dataProvider, button, params, entityClass);
         if (button != null) {
             button.setEnabled(false);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void handlePostByBoss(final Context context, final Requestable request, final AbsDataProvider dataProvider,
+                                  final View button,
+                                  final Map<String, String> params, final Class target) {
+        //only boss can handle post
+        //all the staffs handle the response
+        AbsDataProvider boss = dataProvider;
+        while (boss.getSupervisor() != null) {
+            boss = boss.getSupervisor();
+        }
+
+        boss.handleData(context, request.onPostUrl(context), params, target,
+                new Listener.Response() {
+                    @Override
+                    public void onResponse(Object obj) {
+                        if (obj == null) {
+                            request.onPostResponse(context, null);
+                            if (button != null) {
+                                button.setEnabled(true);
+                            }
+                        } else {
+                            handlePostByStaff(context, request, dataProvider, button, params, target);
+                        }
+                    }
+                },
+                new Listener.Error() {
+                    @Override
+                    public void onError(String msg) {
+                        if (button != null) {
+                            button.setEnabled(true);
+                        }
+                        request.onError(context, msg);
+                    }
+                });
     }
 
     /**
      * handle data in post method
      */
     @SuppressWarnings("unchecked")
-    private void handlePost(final Context context, final Requestable request, final AbsDataProvider dataProvider,
+    private void handlePostByStaff(final Context context, final Requestable request, final AbsDataProvider dataProvider,
                             final View button,
-                            final Map<String, String> params, final Class target, final String packageName) {
-        //notice the target here is set to null
-        //so what?
-
+                            final Map<String, String> params, final Class target) {
         dataProvider.handleData(context, request.onPostUrl(context), params, target,
                 new Listener.Response() {
                     @Override
                     public void onResponse(Object obj) {
                         if (obj == null) {
-                            //get nothing, let supervisor handle it
-                            AbsDataProvider supervisor = dataProvider.getSupervisor();
-                            if (supervisor != null) {
-                                handlePost(context, request, supervisor, button, params, target, packageName);
-                            }
+                            request.onPostResponse(context, obj);
                         } else {
                             if (button != null) {
                                 button.setEnabled(true);
@@ -376,6 +405,7 @@ public class Jujuj {
                         request.onError(context, msg);
                     }
                 });
+
     }
 
     @SuppressWarnings("unchecked")
@@ -416,10 +446,10 @@ public class Jujuj {
     }
 
     /**
-     * @param m              could be a Loadable
+     * @param m            could be a Loadable
      * @param downloadable to receive onError
-     * @param target        the target entity the data should be
-     * @param listable      the previous Listable, if any
+     * @param target       the target entity the data should be
+     * @param listable     the previous Listable, if any
      */
     private void handleLoad(final AbsDataProvider dataProvider, final Context context, final View view,
                             final MutableEntity m, final Downloadable downloadable, final Class target,
@@ -436,17 +466,17 @@ public class Jujuj {
                             AbsDataProvider supervisor = dataProvider.getSupervisor();
                             if (supervisor != null) {
                                 handleLoad(supervisor, context, view, m, downloadable, target, listable, uri, params, packageName);
-                            }else {
+                            } else {
                                 //if the previous result is not null
                                 //got something to handle
-                                if (listable != null){
+                                if (listable != null) {
                                     handleDownloadObject(context, view, m, listable, downloadable, packageName);
                                 }
                             }
                         } else {
                             if (obj instanceof Listable) {
                                 Listable newListable = (Listable) obj;
-                                if (listable != null){
+                                if (listable != null) {
                                     //add previous items
                                     newListable.getList().addAll(listable.getList());
                                 }
@@ -454,7 +484,7 @@ public class Jujuj {
                                 if (supervisor != null) {
                                     //go on
                                     handleLoad(supervisor, context, view, m, downloadable, target, newListable, uri, params, packageName);
-                                }else{
+                                } else {
                                     //finish
                                     handleDownloadObject(context, view, m, newListable, downloadable, packageName);
                                 }
