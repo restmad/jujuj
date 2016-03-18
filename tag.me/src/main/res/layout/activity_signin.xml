@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bcg" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_logo_large" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:text="Tag.me"
+            android:textColor="#ffffff"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/account"
+            style="@style/sign_in_edit"
+            android:layout_marginTop="30dp"
+            android:hint="Account" />
+
+        <RelativeLayout
+            style="@style/sign_in_style"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/pwd"
+                style="@style/sign_in_edit"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/sign_in_button"
+            style="@style/sign_in_btn"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/btn_style_sign_in"
+            android:enabled="false"
+            android:onClick="sign"
+            android:text="Sign in" />
+
+    </LinearLayout>
+
+</FrameLayout>
