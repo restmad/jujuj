@@ -1,4 +1,9 @@
-Juju was designed to handle data fetching(both from server and local) and display data into layout. It was an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
+
+  ![jujuj](https://cloud.githubusercontent.com/assets/3215337/13896194/adebbf0e-edbe-11e5-9dd3-7f78008ce9d2.png)  
+
+## What is Jujuj
+
+Jujuj is designed to handle data fetching(both from server and local) and display data into layout. It is an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
 
 - sample
 - dependency
