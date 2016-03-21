@@ -15,6 +15,7 @@ import com.shinado.tagme.common.UserPref;
 import com.shinado.tagme.main.MainActivity;
 import com.shinado.tagme.user.User;
 
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,11 +106,27 @@ public class LoginRequest implements Postable<LoginRequest.UserResult>, Validata
 
         Intent intent = new Intent(mActivity, MainActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(MainActivity.EXTRA_MY_LIKES, myLikes.getEntity().Likes);
-        bundle.putSerializable(MainActivity.EXTRA_MY_FOLLOWERS, myFollowers.getEntity().Follows);
+        bundle.putSerializable(MainActivity.EXTRA_MY_LIKES, getMyLikes());
+        bundle.putSerializable(MainActivity.EXTRA_MY_FOLLOWERS, getMyFollows());
         intent.putExtras(bundle);
 
         mActivity.startActivity(intent);
+    }
+
+    private HashSet<Integer> getMyLikes(){
+        HashSet<Integer> likes = new HashSet<>();
+        for (GetMyLikes.Like l : myLikes.getEntity().Likes){
+            likes.add(l.tag_id);
+        }
+        return likes;
+    }
+
+    private HashSet<String> getMyFollows(){
+        HashSet<String> follows = new HashSet<>();
+        for (GetMyFollowers.Follower f : myFollowers.getEntity().Follows){
+            follows.add(f.following_account);
+        }
+        return follows;
     }
 
     @Override

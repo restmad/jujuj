@@ -19,7 +19,6 @@ import java.util.Map;
 
 import framework.core.exception.NotInitiatedException;
 import framework.inj.ActivityInj;
-import framework.inj.entity.Director;
 import framework.inj.GroupViewInj;
 import framework.inj.Requestable;
 import framework.inj.entity.Responsible;
@@ -43,11 +42,6 @@ import framework.inj.impl.ViewBinder;
 import framework.inj.impl.WebViewBinder;
 import framework.provider.AbsDataProvider;
 import framework.provider.Listener;
-
-//import java.lang.reflect.Field;
-//import java.lang.reflect.InvocationTargetException;
-//import java.lang.reflect.Method;
-//import java.lang.reflect.Type;
 
 /**
  * Created by shinado on 15/8/28.
@@ -130,11 +124,11 @@ public class Jujuj {
      * inject a mutable entity
      * used for Activity
      */
-    public void inject(Context context, MutableEntity<? extends Downloadable> m) {
+    public void inject(Context context, MutableEntity<?> m) {
         inject(context, m, context.getPackageName());
     }
 
-    public boolean inject(Context context, View view, MutableEntity<? extends Downloadable> m) {
+    public boolean inject(Context context, View view, MutableEntity<?> m) {
         return inject(context, view, m, context.getPackageName());
     }
 
@@ -166,7 +160,7 @@ public class Jujuj {
         }
     }
 
-    public void inject(Context context, MutableEntity<? extends Downloadable> m, String packageName) {
+    public void inject(Context context, MutableEntity<?> m, String packageName) {
         if (m == null || m.getEntity() == null) {
             return;
         }
@@ -185,7 +179,7 @@ public class Jujuj {
      * inject a mutable entity
      * for view
      */
-    public boolean inject(Context context, View view, MutableEntity<? extends Downloadable> m, String packageName) {
+    public boolean inject(Context context, View view, MutableEntity<?> m, String packageName) {
         checkInit();
         if (m == null || m.getEntity() == null) {
             return false;
@@ -374,15 +368,15 @@ public class Jujuj {
                 });
     }
 
-    private void handleResult(Context context, Object result, AbsDataProvider dataProvider){
-        while (dataProvider != null){
-            if (dataProvider.getSupervisor() == null){
+    private void handleResult(Context context, Object result, AbsDataProvider dataProvider) {
+        while (dataProvider != null) {
+            if (dataProvider.getSupervisor() == null) {
                 return;
             }
 
             dataProvider.handleResult(context, result);
             dataProvider = dataProvider.getSupervisor();
-            if (dataProvider.getSupervisor() == null){
+            if (dataProvider.getSupervisor() == null) {
                 return;
             }
             handleResult(context, result, dataProvider);
@@ -415,7 +409,7 @@ public class Jujuj {
      *
      * @param target the target entity supposed to be loaded, could be either Downloadable or Loadable
      */
-    void loadEntity(final Context context, final View view, final MutableEntity m, final Downloadable downloadable, Class target, String packageName) {
+    void loadEntity(final Context context, final View view, final MutableEntity<?> m, final Downloadable downloadable, Class target, String packageName) {
         Object downloadParams = downloadable.onDownloadParams();
 
         Map<String, String> params = objToMap(downloadParams);
@@ -460,7 +454,7 @@ public class Jujuj {
                                 Listable newListable = (Listable) obj;
                                 if (listable != null) {
                                     //add previous items
-                                    if (listable.getList() != null){
+                                    if (listable.getList() != null) {
                                         newListable.getList().addAll(listable.getList());
                                     }
                                 }
@@ -504,53 +498,53 @@ public class Jujuj {
         response.onDownLoadResponse(context);
     }
 
-    private void onResponse(MutableEntity m, Object obj){
-        if (m != null){
-            if (m.getNotifiable() != null){
+    private void onResponse(MutableEntity m, Object obj) {
+        if (m != null) {
+            if (m.getNotifiable() != null) {
                 m.getNotifiable().onDownloadResponse();
             }
         }
-        if (obj instanceof Notifiable){
-            ((Notifiable)obj).onDownloadResponse();
+        if (obj instanceof Notifiable) {
+            ((Notifiable) obj).onDownloadResponse();
         }
     }
 
-    private void onError(MutableEntity m, Object obj, String msg){
-        if (m != null){
-            if (m.getNotifiable() != null){
+    private void onError(MutableEntity m, Object obj, String msg) {
+        if (m != null) {
+            if (m.getNotifiable() != null) {
                 m.getNotifiable().onError(msg);
             }
         }
-        if (obj instanceof Notifiable){
-            ((Notifiable)obj).onError(msg);
+        if (obj instanceof Notifiable) {
+            ((Notifiable) obj).onError(msg);
         }
     }
 
-    private void setContent(Context context, View view, MutableEntity m, Object obj, String packageName){
+    private void setContent(Context context, View view, MutableEntity m, Object obj, String packageName) {
         if (obj != null) {
-            if (view != null) {
-                if (m != null) {
-                    m.setEntity(obj);
-                    m.onStoring();
-                    if (m.getNotifiable() != null) {
-                        m.getNotifiable().onDownloadResponse();
-                    }
+            if (m != null) {
+                m.setEntity(obj);
+                m.onStoring();
+
+                if (view != null) {
                     if (m instanceof Loadable) {
                         setContent(context, view, m, packageName);
                     } else {
                         setContent(context, view, obj, packageName);
                     }
-                } else {
+                }
+            } else {
+                if (view != null) {
                     setContent(context, view, obj, packageName);
                 }
             }
         }
     }
 
-    private void dispatchResult(Context context, AbsDataProvider dataProvider, Object obj){
-        if (dataProvider != null){
+    private void dispatchResult(Context context, AbsDataProvider dataProvider, Object obj) {
+        if (dataProvider != null) {
             AbsDataProvider junior = dataProvider.getJunior();
-            if (junior != null){
+            if (junior != null) {
                 junior.handleResult(context, obj);
                 dispatchResult(context, junior, obj);
                 return;

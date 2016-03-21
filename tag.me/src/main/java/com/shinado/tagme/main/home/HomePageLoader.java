@@ -6,18 +6,24 @@ import android.widget.Toast;
 
 import com.shinado.tagme.Globals;
 import com.shinado.tagme.entity.Tag;
+import com.shinado.tagme.entity.Tags;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import framework.inj.ViewInj;
+import framework.inj.ViewValueInj;
 import framework.inj.entity.Downloadable;
+import framework.inj.entity.Loadable;
 import framework.inj.entity.utility.Transformable;
 
-public class HomePageLoader implements Downloadable, Transformable{
+public class HomePageLoader extends Loadable<Tags> implements Transformable{
 
-    @ViewInj
-    public ArrayList<Tag> tags;
+    @ViewValueInj
+    public ArrayList<Tag> tags(){
+        return getEntity().tags;
+    }
+
     private HashSet<Integer> myLikes = new HashSet<>();
     private HashSet<String> myFollows = new HashSet<>();
 
@@ -48,8 +54,8 @@ public class HomePageLoader implements Downloadable, Transformable{
 
     @Override
     public Object fromServer(String fieldName, Object value) {
-        if(value == tags){
-            return new HomeTagPresenter.Wrapper(tags, myLikes, myFollows);
+        if(fieldName.equals("tags")){
+            return new HomeTagPresenter.Wrapper(tags(), myLikes, myFollows);
         }else{
             return value;
         }
