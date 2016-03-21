@@ -356,6 +356,7 @@ public class Jujuj {
                             handleResult(context, obj, dataProvider);
                         }
                         request.onPostResponse(context, obj);
+                        Jujuj.this.onResponse(null, obj);
                         if (button != null) {
                             button.setEnabled(true);
                         }
@@ -367,6 +368,7 @@ public class Jujuj {
                         if (button != null) {
                             button.setEnabled(true);
                         }
+                        Jujuj.this.onError(null, request, msg);
                         request.onError(context, msg);
                     }
                 });
@@ -485,9 +487,7 @@ public class Jujuj {
                     public void onError(String msg) {
                         Log.e("jujuj Error", msg);
                         downloadable.onError(context, msg);
-                        if (m.getNotifiable() != null) {
-                            m.getNotifiable().onError(msg);
-                        }
+                        Jujuj.this.onError(m, downloadable, msg);
                     }
                 });
     }
@@ -499,10 +499,31 @@ public class Jujuj {
         dispatchResult(context, dataProvider, obj);
 
         setContent(context, view, m, obj, packageName);
+
+        onResponse(m, obj);
+        response.onDownLoadResponse(context);
+    }
+
+    private void onResponse(MutableEntity m, Object obj){
+        if (m != null){
+            if (m.getNotifiable() != null){
+                m.getNotifiable().onDownloadResponse();
+            }
+        }
         if (obj instanceof Notifiable){
             ((Notifiable)obj).onDownloadResponse();
         }
-        response.onDownLoadResponse(context);
+    }
+
+    private void onError(MutableEntity m, Object obj, String msg){
+        if (m != null){
+            if (m.getNotifiable() != null){
+                m.getNotifiable().onError(msg);
+            }
+        }
+        if (obj instanceof Notifiable){
+            ((Notifiable)obj).onError(msg);
+        }
     }
 
     private void setContent(Context context, View view, MutableEntity m, Object obj, String packageName){
