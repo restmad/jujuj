@@ -8,7 +8,6 @@ import java.util.List;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewValueInj;
-import framework.inj.groupview.Listable;
 
 @GroupViewInj(R.layout.layout_personal_page_tag)
 public class TagPresenter{

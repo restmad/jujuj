@@ -4,13 +4,13 @@ import com.shinado.tagme.R;
 import com.shinado.tagme.entity.Tag;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 
 import framework.inj.ActionInj;
 import framework.inj.DependentInj;
 import framework.inj.GroupViewInj;
 import framework.inj.ViewValueInj;
-import framework.inj.groupview.Listable;
 
 @GroupViewInj(R.layout.layout_home_tag)
 public class HomeTagPresenter {
@@ -62,7 +62,7 @@ public class HomeTagPresenter {
         likeDrawable = new LikeAction(tag.getId(), myLikes, "");
     }
 
-    public static class Wrapper implements Listable<HomeTagPresenter> {
+    public static class Wrapper implements framework.inj.entity.Listable{
 
         private ArrayList<HomeTagPresenter> homeTags;
 
@@ -74,13 +74,8 @@ public class HomeTagPresenter {
         }
 
         @Override
-        public HomeTagPresenter getItem(int position) {
-            return homeTags.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return homeTags.size();
+        public Collection getList() {
+            return homeTags;
         }
     }
 

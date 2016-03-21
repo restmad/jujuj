@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewValueInj;
-import framework.inj.groupview.Listable;
 
 @GroupViewInj(R.layout.layout_friends)
 public class FriendsPresenter {

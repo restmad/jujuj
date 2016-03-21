@@ -7,11 +7,12 @@ import android.widget.Toast;
 import com.shinado.netframe.sample.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import framework.inj.GroupViewInj;
 import framework.inj.OnClick;
 import framework.inj.ViewValueInj;
-import framework.inj.groupview.Listable;
+import framework.inj.entity.Listable;
 
 @GroupViewInj(R.layout.layout_demo5_user)
 public class LayoutPresenter {
@@ -47,7 +48,9 @@ public class LayoutPresenter {
         Toast.makeText(context, "url:"+userPortrait(), Toast.LENGTH_LONG).show();
     }
 
-    public static class Wrapper implements Listable<LayoutPresenter>{
+    public static class Wrapper implements Listable{
+
+        private ArrayList<LayoutPresenter> layoutUsers;
 
         public Wrapper(ArrayList<UserBean> users){
             layoutUsers = new ArrayList<>();
@@ -56,16 +59,9 @@ public class LayoutPresenter {
             }
         }
 
-        private ArrayList<LayoutPresenter> layoutUsers;
-
         @Override
-        public LayoutPresenter getItem(int position) {
-            return layoutUsers.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return layoutUsers.size();
+        public Collection getList() {
+            return layoutUsers;
         }
     }
 }

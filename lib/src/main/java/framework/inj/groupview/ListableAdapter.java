@@ -6,28 +6,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import framework.core.Jujuj;
+import java.util.Collection;
 
-public class ListableAdapter<T> extends BaseAdapter{
+import framework.core.Jujuj;
+import framework.inj.entity.Listable;
+
+public class ListableAdapter extends BaseAdapter{
 
     private Context context;
-    private Listable<T> listable;
+    private Collection<?> items;
     private String packageName;
 
-    public ListableAdapter(Context context, Listable<T> listable, String packageName){
+    public ListableAdapter(Context context, Listable listable, String packageName){
         this.context = context;
-        this.listable = listable;
+        this.items = listable.getList();
         this.packageName = packageName;
     }
 
     @Override
     public int getCount() {
-        return listable.getCount();
+        return items == null ? 0 : items.size();
     }
 
     @Override
-    public T getItem(int i) {
-        return listable.getItem(i);
+    public Object getItem(int i) {
+        return items.toArray()[i];
     }
 
     @Override
@@ -38,7 +41,7 @@ public class ListableAdapter<T> extends BaseAdapter{
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         long startTime = System.currentTimeMillis();
-        T item = getItem(i);
+        Object item = getItem(i);
         if(view == null){
             view = Jujuj.getInstance().findViewForGroup(context, viewGroup, item.getClass());
         }
