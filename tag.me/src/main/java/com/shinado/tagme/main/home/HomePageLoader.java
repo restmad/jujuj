@@ -30,6 +30,7 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable{
     public HomePageLoader(HashSet<Integer> myLikes, HashSet<String> myFollows){
         this.myLikes = myLikes;
         this.myFollows = myFollows;
+        setEntity(new Tags());
     }
 
     @Override
