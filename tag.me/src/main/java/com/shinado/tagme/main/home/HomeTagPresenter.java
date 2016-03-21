@@ -54,8 +54,10 @@ public class HomeTagPresenter {
         }
     }
 
-    public HomeTagPresenter(Tag tag){
+    public HomeTagPresenter(Tag tag, HashSet<Integer> myLikes, HashSet<String> myFollows){
         this.tag = tag;
+        this.myFollows = myFollows;
+        this.myLikes = myLikes;
         userLater = new HomeUserPresenter(tag.getUserAccount());
         likeDrawable = new LikeAction(tag.getId(), myLikes, "");
     }
@@ -64,10 +66,10 @@ public class HomeTagPresenter {
 
         private ArrayList<HomeTagPresenter> homeTags;
 
-        public Wrapper(ArrayList<Tag> tags){
+        public Wrapper(ArrayList<Tag> tags, HashSet<Integer> myLikes, HashSet<String> myFollows){
             homeTags = new ArrayList<>();
             for(Tag bean : tags){
-                homeTags.add(new HomeTagPresenter(bean));
+                homeTags.add(new HomeTagPresenter(bean, myLikes, myFollows));
             }
         }
 

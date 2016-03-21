@@ -1,6 +1,8 @@
 package com.shinado.tagme;
 
-public class BaseResult {
+import com.activeandroid.Model;
+
+public class BaseResult extends Model {
 
     public int resultCode;
     public String msg;

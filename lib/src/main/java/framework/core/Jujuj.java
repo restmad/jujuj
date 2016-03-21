@@ -30,6 +30,7 @@ import framework.inj.entity.Loadable;
 import framework.inj.entity.Multipleable;
 import framework.inj.entity.MutableEntity;
 import framework.inj.entity.Postable;
+import framework.inj.entity.utility.Notifiable;
 import framework.inj.entity.utility.PostButtonListenable;
 import framework.inj.entity.utility.Validatable;
 import framework.inj.impl.AbsListViewBinder;
@@ -351,13 +352,12 @@ public class Jujuj {
                 new Listener.Response() {
                     @Override
                     public void onResponse(Object obj) {
-                        if (obj == null) {
-                            request.onPostResponse(context, null);
-                            if (button != null) {
-                                button.setEnabled(true);
-                            }
-                        } else {
-                            handlePostByStaff(context, request, dataProvider, button, params, target);
+                        if (obj != null) {
+                            handleResult(context, obj, dataProvider);
+                        }
+                        request.onPostResponse(context, obj);
+                        if (button != null) {
+                            button.setEnabled(true);
                         }
                     }
                 },
@@ -372,37 +372,19 @@ public class Jujuj {
                 });
     }
 
-    /**
-     * handle data in post method
-     */
-    @SuppressWarnings("unchecked")
-    private void handlePostByStaff(final Context context, final Requestable request, final AbsDataProvider dataProvider,
-                                   final View button,
-                                   final Map<String, String> params, final Class target) {
-        dataProvider.handleData(context, request.onPostUrl(context), params, target,
-                new Listener.Response() {
-                    @Override
-                    public void onResponse(Object obj) {
-                        if (obj == null) {
-                            request.onPostResponse(context, null);
-                        } else {
-                            if (button != null) {
-                                button.setEnabled(true);
-                            }
-                            request.onPostResponse(context, obj);
-                        }
-                    }
-                },
-                new Listener.Error() {
-                    @Override
-                    public void onError(String msg) {
-                        if (button != null) {
-                            button.setEnabled(true);
-                        }
-                        request.onError(context, msg);
-                    }
-                });
+    private void handleResult(Context context, Object result, AbsDataProvider dataProvider){
+        while (dataProvider != null){
+            if (dataProvider.getSupervisor() == null){
+                return;
+            }
 
+            dataProvider.handleResult(context, result);
+            dataProvider = dataProvider.getSupervisor();
+            if (dataProvider.getSupervisor() == null){
+                return;
+            }
+            handleResult(context, result, dataProvider);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -517,6 +499,9 @@ public class Jujuj {
         dispatchResult(context, dataProvider, obj);
 
         setContent(context, view, m, obj, packageName);
+        if (obj instanceof Notifiable){
+            ((Notifiable)obj).onDownloadResponse();
+        }
         response.onDownLoadResponse(context);
     }
 

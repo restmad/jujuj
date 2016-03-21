@@ -1,11 +1,6 @@
 package com.shinado.tagme.login;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,16 +15,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.shinado.tagme.R;
 import com.shinado.tagme.animation.Decelerator;
 import com.shinado.tagme.animation.Rotate3dAnimation;
+import com.shinado.tagme.dialog.LoadingDialog;
 import com.shinado.tagme.view.LockView;
 
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.lang.ref.SoftReference;
 
 import framework.core.Jujuj;
 
@@ -38,49 +31,17 @@ import framework.core.Jujuj;
  */
 public class LoginActivity extends Activity {
 
-    private View mProgressView;
-    private View mLoginFormView;
-   /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
     void findView() {
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        showPwd = (LockView) findViewById(R.id.activity_sign_show_pwd);
+        lockView = (ImageView) findViewById(R.id.activity_sign_lock);
+        signBtn = (Button) findViewById(R.id.sign_in_button);
+        signInGroup = findViewById(R.id.activity_sign_in_group);
+        signUpGroup = findViewById(R.id.activity_sign_up_group);
+        accountEt = (EditText)findViewById(R.id.account);
+        pwdEt = (EditText)findViewById(R.id.pwd);
     }
 
+    private LoadingDialog dialog;
     private EditText accountEt, pwdEt;
     private View signInGroup, signUpGroup;
     private String account = "";
@@ -91,25 +52,23 @@ public class LoginActivity extends Activity {
     private int mSign = SIGN_UP;
     private LockView showPwd;
     private ImageView lockView;
+    private LoginHandler mHandler;
+    private HandlerHelper helper = new HandlerHelper();
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signin);
-        showPwd = (LockView) findViewById(R.id.activity_sign_show_pwd);
-        lockView = (ImageView) findViewById(R.id.activity_sign_lock);
-        signBtn = (Button) findViewById(R.id.sign_in_button);
-        signInGroup = findViewById(R.id.activity_sign_in_group);
-        signUpGroup = findViewById(R.id.activity_sign_up_group);
-        accountEt = (EditText)findViewById(R.id.account);
-        pwdEt = (EditText)findViewById(R.id.activity_sign_pwd);
+        Jujuj.getInstance().inject(this, new LoginRequest(this));
 
+        mHandler = new LoginHandler(this);
+        findView();
         setLockViewListener();
         addTextWatcher();
         initAnimations();
+    }
 
-        findView();
-        Jujuj.getInstance().inject(this, new LoginRequest(this));
+    public HandlerHelper getHelper(){
+        return helper;
     }
 
     private void setLockViewListener(){
@@ -218,7 +177,7 @@ public class LoginActivity extends Activity {
         int offset = showPwd.getLayoutParams().width;
         int des = 0;
 
-        expandingLockView(offset, des, WHAT_TURN_SIGN_IN);
+        expandingLockView(offset, des, LoginHandler.WHAT_TURN_SIGN_IN);
     }
 
     public void turn_sign_up(View v){
@@ -231,36 +190,61 @@ public class LoginActivity extends Activity {
         int offset = showPwd.getLayoutParams().width;
         int des = (int) getResources().getDimension(R.dimen.lock_width);
 
-        expandingLockView(offset, des, WHAT_TURN_SIGN_UP);
+        expandingLockView(offset, des, LoginHandler.WHAT_TURN_SIGN_UP);
     }
 
-    private final int WHAT_EXPANDING = 1;
-    private final int WHAT_TURN_SIGN_UP = 2;
-    private final int WHAT_TURN_SIGN_IN = 3;
-    private final int WHAT_SIGN_IN = 4;
-    private final int WHAT_SIGN_UP = 5;
+    class HandlerHelper{
 
-    private Handler mHandler = new Handler(){
+        private void expanding(int width){
+            ViewGroup.LayoutParams params = showPwd.getLayoutParams();
+            params.width = width;
+            params.height = width;
+            showPwd.setLayoutParams(params);
+        }
+
+        private void turnSignUp(){
+            signInGroup.clearAnimation();
+            signInGroup.setVisibility(View.GONE);
+            mSign = SIGN_UP;
+        }
+
+        private void turnSignIn(){
+            signUpGroup.clearAnimation();
+            signUpGroup.setVisibility(View.GONE);
+            mSign = SIGN_IN;
+        }
+    }
+
+    static class LoginHandler extends Handler{
+
+        static final int WHAT_EXPANDING = 1;
+        static final int WHAT_TURN_SIGN_UP = 2;
+        static final int WHAT_TURN_SIGN_IN = 3;
+
+        private SoftReference<LoginActivity> activityRef;
+
+        public LoginHandler(LoginActivity activity){
+            activityRef = new SoftReference<>(activity);
+        }
+
         @Override
-        public void handleMessage(Message msg){
-            System.out.println("waht::"+msg.what);
+        public void handleMessage(Message msg) {
+            HandlerHelper helper = activityRef.get().getHelper();
+
             switch(msg.what){
                 case WHAT_EXPANDING:
-                    expanding(msg.arg1);
+                    helper.expanding(msg.arg1);
                     break;
                 case WHAT_TURN_SIGN_UP:
-                    signInGroup.clearAnimation();
-                    signInGroup.setVisibility(View.GONE);
-                    mSign = SIGN_UP;
+                    helper.turnSignUp();
                     break;
                 case WHAT_TURN_SIGN_IN:
-                    signUpGroup.clearAnimation();
-                    signUpGroup.setVisibility(View.GONE);
-                    mSign = SIGN_IN;
+                    helper.turnSignIn();
                     break;
             }
         }
-    };
+
+    }
 
     private void expandingLockView(final int offset, final int des, final int what){
         new Thread(){
@@ -275,7 +259,7 @@ public class LoginActivity extends Activity {
                         e.printStackTrace();
                     }
                     Message msg = new Message();
-                    msg.what = WHAT_EXPANDING;
+                    msg.what = LoginHandler.WHAT_EXPANDING;
                     msg.arg1 = anim.getMoving().y;
                     mHandler.sendMessage(msg);
                 }
@@ -284,12 +268,6 @@ public class LoginActivity extends Activity {
         }.start();
     }
 
-    private void expanding(int width){
-        ViewGroup.LayoutParams params = showPwd.getLayoutParams();
-        params.width = width;
-        params.height = width;
-        showPwd.setLayoutParams(params);
-    }
 
     private Animation lockAnim, unlockAnim;
 
@@ -300,7 +278,6 @@ public class LoginActivity extends Activity {
                 InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
         System.out.println("type:" + pwd);
         if(pwdEt.getInputType() != pwd){
-            System.out.println("lock");
             pwdEt.setInputType(pwd);
             pwdEt.invalidate();
             if(lockAnim == null){
@@ -310,9 +287,7 @@ public class LoginActivity extends Activity {
                 lockAnim.setFillAfter(true);
             }
             lockView.startAnimation(lockAnim);
-            return;
         }else{
-            System.out.println("unlock");
             pwdEt.setInputType(visible);
             if(unlockAnim == null){
                 unlockAnim = new Rotate3dAnimation(0, 150,
@@ -324,4 +299,16 @@ public class LoginActivity extends Activity {
         }
     }
 
+    public void showProgress(boolean b) {
+        if (b){
+            if(dialog == null){
+                dialog = LoadingDialog.createDialog(this);
+            }
+            dialog.show();
+        }else {
+            if (dialog != null){
+                dialog.dismiss();
+            }
+        }
+    }
 }

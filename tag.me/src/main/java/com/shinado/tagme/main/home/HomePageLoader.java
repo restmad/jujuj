@@ -1,12 +1,14 @@
 package com.shinado.tagme.main.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.shinado.tagme.Globals;
 import com.shinado.tagme.entity.Tag;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
@@ -16,6 +18,13 @@ public class HomePageLoader implements Downloadable, Transformable{
 
     @ViewInj
     public ArrayList<Tag> tags;
+    private HashSet<Integer> myLikes = new HashSet<>();
+    private HashSet<String> myFollows = new HashSet<>();
+
+    public HomePageLoader(HashSet<Integer> myLikes, HashSet<String> myFollows){
+        this.myLikes = myLikes;
+        this.myFollows = myFollows;
+    }
 
     @Override
     public String onDownLoadUrl(Context context) {
@@ -40,7 +49,7 @@ public class HomePageLoader implements Downloadable, Transformable{
     @Override
     public Object fromServer(String fieldName, Object value) {
         if(value == tags){
-            return new HomeTagPresenter.Wrapper(tags);
+            return new HomeTagPresenter.Wrapper(tags, myLikes, myFollows);
         }else{
             return value;
         }

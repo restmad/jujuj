@@ -52,8 +52,8 @@ public class GetMyLikes implements Downloadable{
     }
 
     @Table(name = "MyLikes")
-    class Like extends Model implements Serializable{
+    public class Like extends Model implements Serializable{
         @Column(name = "tag_id")
-        int tag_id;
+        public int tag_id;
     }
 }

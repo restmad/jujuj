@@ -47,8 +47,8 @@ public class GetMyFollowers implements Downloadable{
     }
 
     @Table(name = "MyFollowers")
-    class Follower extends Model implements Serializable{
+    public class Follower extends Model implements Serializable{
         @Column(name = "account")
-        String following_account;
+        public String following_account;
     }
 }

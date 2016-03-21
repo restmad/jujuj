@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.shinado.tagme.BaseResult;
 
 import java.io.ByteArrayInputStream;
@@ -16,26 +18,42 @@ import java.io.InputStream;
  * "unique_id":"Dan","gender":"-1","following":"33","follower":"25","likes":"4",
  * "portrait":"http:\/\/tagme-tagme.stor.sinaapp.com\/imgs\/20141113104904656.png","tags":"4","place":"Changsha","user_name":"Danss"}
  */
+@Table(name = "TagMeUser")
 public class User extends BaseResult implements Parcelable{
 
 	public static final int MALE = 1;
 	public static final int FEMALE = 2;
 
-	private int id;
+	@Column(name = "sid")
+	public int id;
 
-	private String user_name = "";
-	private String account = "";
-	
-	private String uniqueId = "";
-	private String place = "";
-	private String portrait = "";
-	private int gender;
-	
-	private int tags = 0;
-	private int following = 0;
-	private int follower = 0;
-	private int likes = 0;
-	private boolean loaded = true;
+	@Column(name = "name")
+	public String user_name = "";
+
+	@Column(name = "account")
+	public String account = "";
+
+	@Column(name = "uniqueId")
+	public String uniqueId = "";
+	@Column(name = "place")
+	public String place = "";
+	@Column(name = "portrait")
+	public String portrait = "";
+	@Column(name = "gender")
+	public int gender;
+
+	@Column(name = "tags")
+	public int tags = 0;
+	@Column(name = "following")
+	public int following = 0;
+	@Column(name = "follower")
+	public int follower = 0;
+	@Column(name = "likes")
+	public int likes = 0;
+
+	private Bitmap portraitThumb = null;
+
+	public boolean loaded = true;
 	
 	public boolean isLoaded() {
 		return loaded;
@@ -45,8 +63,6 @@ public class User extends BaseResult implements Parcelable{
 		this.loaded = loaded;
 	}
 
-	private Bitmap portraitThumb = null;
-	
 	public User(){
 		
 	}
@@ -71,7 +87,7 @@ public class User extends BaseResult implements Parcelable{
 		setFollowing(target.getFollowing());
 		setLikes(target.getLikes());
 		setLoaded(target.isLoaded());
-		setId(target.getId());
+		setUserId(target.getUserId());
 	}
 	
 	public User(String userName, String userAccount, String uniqueId,
@@ -88,14 +104,13 @@ public class User extends BaseResult implements Parcelable{
 		this.following = following;
 		this.follower = follower;
 		this.likes = likes;
-		this.id = id;
 	}
 
-	public int getId() {
+	public int getUserId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setUserId(int id) {
 		this.id = id;
 	}
 
