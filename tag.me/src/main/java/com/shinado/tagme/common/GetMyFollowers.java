@@ -5,33 +5,28 @@ import android.content.Context;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.shinado.tagme.Globals;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import framework.inj.entity.Downloadable;
-import framework.inj.entity.Listable;
-import provider.Entity;
 
-public class GetMyLikes implements Downloadable{
+public class GetMyFollowers implements Downloadable{
 
-    public ArrayList<Like> Likes;
+    public ArrayList<Follower> Follows;
 
     private String myAccount;
 
-    public GetMyLikes(String account){
+    public GetMyFollowers(String account){
         this.myAccount = account;
     }
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return Globals.URL_TAG_ME + "get_my_likes.php";
+        return Globals.URL_TAG_ME + "get_my_follows.php";
     }
 
     @Override
@@ -51,9 +46,9 @@ public class GetMyLikes implements Downloadable{
 
     }
 
-    @Table(name = "MyLikes")
-    class Like extends Model implements Serializable{
-        @Column(name = "tag_id")
-        int tag_id;
+    @Table(name = "MyFollowers")
+    class Follower extends Model implements Serializable{
+        @Column(name = "account")
+        String following_account;
     }
 }

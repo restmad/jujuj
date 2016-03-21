@@ -33,6 +33,11 @@ public class PreferenceProvider extends AbsDataProvider {
         }
     }
 
+    @Override
+    public void handleResult(Context context, Object result) {
+        //TODO
+    }
+
     //TODO not taking transforming into consideration
     private void save(Context context, Map<String, String> params, Class target){
         Object item;

@@ -3,6 +3,9 @@ package provider;
 import android.content.Context;
 import android.util.Log;
 
+import com.activeandroid.Model;
+
+import java.util.Collection;
 import java.util.Map;
 
 import framework.provider.AbsDataProvider;
@@ -31,12 +34,32 @@ public class DBProvider extends AbsDataProvider {
                 return;
             }
             Entity target = entity.query();
-            CacheProvider.getInstance().put(params, cls, target);
             response.onResponse(target);
         }else{
             Log.d(TAG, "passed....");
             response.onResponse(null);
         }
+    }
+
+    @Override
+    public void handleResult(Context context, Object result) {
+        if (result == null){
+            return;
+        }
+         if (result instanceof Collection){
+             Collection collection = (Collection) result;
+             for (Object item : collection){
+                 if (item instanceof Model){
+                     ((Model)item).save();
+                 }else {
+                     break;
+                 }
+             }
+         }else {
+             if (result instanceof Model){
+                 ((Model)result).save();
+             }
+         }
     }
 
 }

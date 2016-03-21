@@ -92,6 +92,11 @@ public class VolleyProvider extends AbsDataProvider {
 
     }
 
+    @Override
+    public void handleResult(Context context, Object result) {
+        //boss doesn't need to handle this
+    }
+
     private  Gson generateGson(){
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss.S")

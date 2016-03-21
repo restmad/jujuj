@@ -14,7 +14,6 @@ import demo3.Demo3Activity;
 import demo4.Demo4Activity;
 import demo5.Demo5Activity;
 import demo6.Demo6Activity;
-import provider.CacheProvider;
 
 public class MainActivity extends ListActivity{
 	
@@ -63,6 +62,5 @@ public class MainActivity extends ListActivity{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		CacheProvider.destroy();
 	}
 }

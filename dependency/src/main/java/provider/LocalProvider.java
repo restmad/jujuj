@@ -33,6 +33,11 @@ public class LocalProvider extends AbsDataProvider {
 //        }
     }
 
+    @Override
+    public void handleResult(Context context, Object result) {
+        //TODO
+    }
+
     private Gson generateGson(){
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss.S")

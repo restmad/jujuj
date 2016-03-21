@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Tag.me</string>
+    <string name="hint_pwd">password</string>
+    <string name="hint_account">account</string>
+    <string name="btn_sign_up">Sign up</string>
+    <string name="btn_sign_in">Sign in</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="forget_pwd">Forget password</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -31,4 +38,5 @@
     <string name="follow">Follow</string>
     <string name="followed">Followed</string>
     <string name="unfollow">Unfollow</string>
+    <string name="toast_email_wrong">Email formate incorrect</string>
 </resources>

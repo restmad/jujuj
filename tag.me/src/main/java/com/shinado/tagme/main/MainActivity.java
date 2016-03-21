@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity
     private Bundle mBundle;
     private final static String TAG = "MainActivity";
     private Fragment mFragment;
+    public static final String EXTRA_MY_LIKES = "extra_my_likes";
+    public static final String EXTRA_MY_FOLLOWERS = "extra_my_followers";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

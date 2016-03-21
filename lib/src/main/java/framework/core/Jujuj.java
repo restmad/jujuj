@@ -19,8 +19,10 @@ import java.util.Map;
 
 import framework.core.exception.NotInitiatedException;
 import framework.inj.ActivityInj;
+import framework.inj.entity.Director;
 import framework.inj.GroupViewInj;
 import framework.inj.Requestable;
+import framework.inj.entity.Responsible;
 import framework.inj.entity.Action;
 import framework.inj.entity.Downloadable;
 import framework.inj.entity.Listable;
@@ -100,7 +102,8 @@ public class Jujuj {
     /**
      * to request data
      */
-    public void request(Context context, MutableEntity<? extends Downloadable> m) {
+    public void request(Context context, final MutableEntity<? extends Downloadable> m) {
+
         loadEntity(context, null, m, m.getEntity(), m.getEntity().getClass(), context.getPackageName());
     }
 
@@ -374,8 +377,8 @@ public class Jujuj {
      */
     @SuppressWarnings("unchecked")
     private void handlePostByStaff(final Context context, final Requestable request, final AbsDataProvider dataProvider,
-                            final View button,
-                            final Map<String, String> params, final Class target) {
+                                   final View button,
+                                   final Map<String, String> params, final Class target) {
         dataProvider.handleData(context, request.onPostUrl(context), params, target,
                 new Listener.Response() {
                     @Override
@@ -447,7 +450,7 @@ public class Jujuj {
      */
     @SuppressWarnings("unchecked")
     private void handleLoad(final AbsDataProvider dataProvider, final Context context, final View view,
-                            final MutableEntity m, final Downloadable downloadable, final Class target,
+                            final MutableEntity m, final Responsible downloadable, final Class target,
                             final Listable listable,
                             final String uri, final Map<String, String> params, final String packageName) {
         Log.d(TAG, "provider:" + dataProvider.getClass());
@@ -465,7 +468,7 @@ public class Jujuj {
                                 //if the previous result is not null
                                 //got something to handle
                                 if (listable != null) {
-                                    handleDownloadObject(context, view, m, listable, downloadable, packageName);
+                                    handleDownloadObject(context, view, m, dataProvider, listable, downloadable, packageName);
                                 }
                             }
                         } else {
@@ -473,19 +476,24 @@ public class Jujuj {
                                 Listable newListable = (Listable) obj;
                                 if (listable != null) {
                                     //add previous items
-                                    newListable.getList().addAll(listable.getList());
+                                    if (listable.getList() != null){
+                                        newListable.getList().addAll(listable.getList());
+                                    }
                                 }
                                 AbsDataProvider supervisor = dataProvider.getSupervisor();
                                 if (supervisor != null) {
                                     //go on
                                     handleLoad(supervisor, context, view, m, downloadable, target, newListable, uri, params, packageName);
+
+                                    //set content
+                                    setContent(context, view, m, target, packageName);
                                 } else {
                                     //finish
-                                    handleDownloadObject(context, view, m, newListable, downloadable, packageName);
+                                    handleDownloadObject(context, view, m, dataProvider, newListable, downloadable, packageName);
                                 }
                             } else {
                                 //not a Listable, return immediately
-                                handleDownloadObject(context, view, m, obj, downloadable, packageName);
+                                handleDownloadObject(context, view, m, dataProvider, obj, downloadable, packageName);
                             }
                         }
                     }
@@ -495,12 +503,24 @@ public class Jujuj {
                     public void onError(String msg) {
                         Log.e("jujuj Error", msg);
                         downloadable.onError(context, msg);
+                        if (m.getNotifiable() != null) {
+                            m.getNotifiable().onError(msg);
+                        }
                     }
                 });
     }
 
     @SuppressWarnings("unchecked")
-    private void handleDownloadObject(Context context, View view, MutableEntity m, Object obj, Downloadable downloadable, String packageName) {
+    private void handleDownloadObject(Context context, View view, MutableEntity m,
+                                      AbsDataProvider dataProvider,
+                                      Object obj, Responsible response, String packageName) {
+        dispatchResult(context, dataProvider, obj);
+
+        setContent(context, view, m, obj, packageName);
+        response.onDownLoadResponse(context);
+    }
+
+    private void setContent(Context context, View view, MutableEntity m, Object obj, String packageName){
         if (obj != null) {
             if (view != null) {
                 if (m != null) {
@@ -518,7 +538,17 @@ public class Jujuj {
                     setContent(context, view, obj, packageName);
                 }
             }
-            downloadable.onDownLoadResponse(context);
+        }
+    }
+
+    private void dispatchResult(Context context, AbsDataProvider dataProvider, Object obj){
+        if (dataProvider != null){
+            AbsDataProvider junior = dataProvider.getJunior();
+            if (junior != null){
+                junior.handleResult(context, obj);
+                dispatchResult(context, junior, obj);
+                return;
+            }
         }
     }
 

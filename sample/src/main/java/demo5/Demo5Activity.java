@@ -7,9 +7,6 @@ import framework.core.Jujuj;
 import framework.inj.entity.MutableEntity;
 import framework.inj.entity.utility.Notifiable;
 
-/**
- * Created by shinado on 15/9/14.
- */
 public class Demo5Activity extends Activity implements Notifiable{
 
     private MutableEntity<SimpleUserDlb> userDlb;
@@ -24,6 +21,11 @@ public class Demo5Activity extends Activity implements Notifiable{
 
     @Override
     public void onDownloadResponse() {
+
+    }
+
+    @Override
+    public void onError(String msg) {
 
     }
 }
