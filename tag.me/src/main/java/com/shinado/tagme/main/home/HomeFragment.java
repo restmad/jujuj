@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shinado.tagme.R;
+import com.shinado.tagme.common.UserPref;
 import com.shinado.tagme.main.MainActivity;
 
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mHomePage = new HomePageLoader(
+        mHomePage = new HomePageLoader(new UserPref(getContext()).getUesrAccount(),
                 (HashSet<Integer>) bundle.getSerializable(MainActivity.EXTRA_MY_LIKES),
                 (HashSet<String>) bundle.getSerializable(MainActivity.EXTRA_MY_FOLLOWERS)
         );

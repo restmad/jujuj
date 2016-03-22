@@ -13,7 +13,7 @@ import java.util.List;
 import framework.inj.ActivityInj;
 import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
-import provider.Entity;
+import provider.database.Entity;
 import sample.Constants;
 
 

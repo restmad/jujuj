@@ -2,18 +2,11 @@
 <items version="2" >
 
     <item
-        jar="E:\workspace\jujuj\tag.me\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\classes.jar"
+        jar="E:\workspace\jujuj\tag.me\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="b120b6f59dab00df0cdea3a3f7c29333315f9970">
-        <dex dex="E:\workspace\jujuj\tag.me\build\intermediates\pre-dexed\debug\classes-39de13a5284f3b3088434e41e6012e3b6407d468.jar" />
-    </item>
-    <item
-        jar="E:\workspace\jujuj\activeandroid\build\libs\activeandroid.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="684e92edbefb5e368e228a7eca7d4639b96554d1">
-        <dex dex="E:\workspace\jujuj\tag.me\build\intermediates\pre-dexed\debug\activeandroid-0e92d2b7af16860c5e767d827b95583cfecf6bb5.jar" />
+        sha1="5313bf060870c270c8034e417448ab45eac7e0a8">
+        <dex dex="E:\workspace\jujuj\tag.me\build\intermediates\pre-dexed\debug\classes-b39bda4b5d910c86babe2072d18785230e51ea8d.jar" />
     </item>
 
 </items>

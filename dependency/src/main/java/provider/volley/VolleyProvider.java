@@ -17,8 +17,9 @@ import java.util.Map;
 import framework.provider.AbsDataProvider;
 import framework.provider.Listener;
 import jujuj.shinado.com.dependency.DefaultApplication;
+import provider.LogAbsDataProvider;
 
-public class VolleyProvider extends AbsDataProvider {
+public class VolleyProvider extends LogAbsDataProvider {
 
     private final String TAG = "VolleyProvider";
     private Response.ErrorListener defaultError = new Response.ErrorListener() {
@@ -37,7 +38,7 @@ public class VolleyProvider extends AbsDataProvider {
                            final Map<String, String> params, final Class cls,
                            final Listener.Response response, final Listener.Error error) {
         if (!uri.startsWith("http://")){
-            response.onResponse(null);
+            response(response, null);
             return;
         }
 
@@ -55,7 +56,7 @@ public class VolleyProvider extends AbsDataProvider {
                     Gson gson = generateGson();
                     Object obj = gson.fromJson(array.toString(), cls);
 
-                    response.onResponse(obj);
+                    response(response, obj);
                 }
             };
 
@@ -76,7 +77,7 @@ public class VolleyProvider extends AbsDataProvider {
                     Gson gson = generateGson();
                     Object obj = gson.fromJson(json.toString(), cls);
 
-                    response.onResponse(obj);
+                    response(response, obj);
                 }
             };
 
@@ -94,7 +95,7 @@ public class VolleyProvider extends AbsDataProvider {
     }
 
     @Override
-    public void handleResult(Context context, Object result) {
+    public void handleResult(Context context, String uri, Map<String, String> params, Object result) {
         //boss doesn't need to handle this
     }
 
@@ -104,4 +105,8 @@ public class VolleyProvider extends AbsDataProvider {
                 .create();
     }
 
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 }

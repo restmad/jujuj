@@ -57,7 +57,7 @@ public class DefaultApplication extends Application{
         mInstance = this;
         ActiveAndroid.initialize(this);
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
-        Jujuj.getInstance().init(ConfigBuilder.getDefault());
+
     }
 
 

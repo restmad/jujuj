@@ -6,6 +6,7 @@ import com.shinado.tagme.entity.Tag;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import framework.inj.ActionInj;
 import framework.inj.DependentInj;
@@ -48,11 +49,7 @@ public class HomeTagPresenter {
 
     @ViewValueInj
     public boolean followToggle(){
-        if (myFollows.contains(tag.user_account)){
-            return true;
-        }else {
-            return false;
-        }
+        return myFollows.contains(tag.user_account);
     }
 
     public HomeTagPresenter(Tag tag, HashSet<Integer> myLikes, HashSet<String> myFollows){
@@ -67,7 +64,7 @@ public class HomeTagPresenter {
 
         private ArrayList<HomeTagPresenter> homeTags;
 
-        public Wrapper(ArrayList<Tag> tags, HashSet<Integer> myLikes, HashSet<String> myFollows){
+        public Wrapper(List<Tag> tags, HashSet<Integer> myLikes, HashSet<String> myFollows){
             homeTags = new ArrayList<>();
             for(Tag bean : tags){
                 homeTags.add(new HomeTagPresenter(bean, myLikes, myFollows));

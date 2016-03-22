@@ -3,9 +3,6 @@ package com.shinado.tagme.entity;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
-
-import provider.Entity;
 
 @Table(name = "TagDep")
 public class TagDependency extends Model{

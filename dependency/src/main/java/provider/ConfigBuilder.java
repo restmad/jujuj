@@ -1,11 +1,9 @@
 package provider;
 
 import framework.core.Configurations;
+import provider.database.DBProvider;
 import provider.volley.VolleyProvider;
 
-/**
- * Created by shinado on 15/8/31.
- */
 public class ConfigBuilder {
 
     public static Configurations getDefault(){

@@ -31,6 +31,6 @@ public abstract class AbsDataProvider{
                                     Map<String, String> params, Class cls,
                                      Listener.Response response, Listener.Error error);
 
-    public abstract void handleResult(Context context, Object result);
+    public abstract void handleResult(Context context, String uri, Map<String, String> params, Object result);
 
 }

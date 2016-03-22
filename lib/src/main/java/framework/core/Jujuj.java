@@ -342,12 +342,13 @@ public class Jujuj {
             boss = boss.getSupervisor();
         }
 
-        boss.handleData(context, request.onPostUrl(context), params, target,
+        final String uri = request.onPostUrl(context);
+        boss.handleData(context, uri, params, target,
                 new Listener.Response() {
                     @Override
                     public void onResponse(Object obj) {
                         if (obj != null) {
-                            handleResult(context, obj, dataProvider);
+                            handleResult(context, obj, uri, params, dataProvider);
                         }
                         request.onPostResponse(context, obj);
                         Jujuj.this.onResponse(null, obj);
@@ -368,18 +369,18 @@ public class Jujuj {
                 });
     }
 
-    private void handleResult(Context context, Object result, AbsDataProvider dataProvider) {
+    private void handleResult(Context context, Object result, String uri, Map<String, String> params, AbsDataProvider dataProvider) {
         while (dataProvider != null) {
             if (dataProvider.getSupervisor() == null) {
                 return;
             }
 
-            dataProvider.handleResult(context, result);
+            dataProvider.handleResult(context, uri, params, result);
             dataProvider = dataProvider.getSupervisor();
             if (dataProvider.getSupervisor() == null) {
                 return;
             }
-            handleResult(context, result, dataProvider);
+            handleResult(context, result, uri, params, dataProvider);
         }
     }
 
@@ -416,6 +417,9 @@ public class Jujuj {
     }
 
     /**
+     * When target is a Listable, it will fetch data from all DataProviders,
+     * otherwise, it returns immediately right after data is fetched.
+     * Then it will dispatch results to juniors
      * @param m            could be a Loadable
      * @param downloadable to receive onError
      * @param target       the target entity the data should be
@@ -428,7 +432,7 @@ public class Jujuj {
         Log.d(TAG, "provider:" + dataProvider.getClass());
         Object downloadParams = downloadable.onDownloadParams();
 
-        Map<String, String> params = objToMap(downloadParams);
+        final Map<String, String> params = objToMap(downloadParams);
 
         dataProvider.handleData(context, uri, params, target,
                 new Listener.Response<Object>() {
@@ -443,7 +447,7 @@ public class Jujuj {
                                 //if the previous result is not null
                                 //got something to handle
                                 if (listable != null) {
-                                    handleDownloadObject(context, view, m, dataProvider, listable, downloadable, packageName);
+                                    handleDownloadObject(dataProvider, context, view, m, listable, uri, params, downloadable, packageName);
                                 }
                             }
                         } else {
@@ -457,18 +461,18 @@ public class Jujuj {
                                 }
                                 AbsDataProvider supervisor = dataProvider.getSupervisor();
                                 if (supervisor != null) {
+                                    //set content
+                                    setContent(context, view, m, newListable, packageName);
+
                                     //go on
                                     handleLoad(supervisor, context, view, m, downloadable, target, newListable, uri, packageName);
-
-                                    //set content
-                                    setContent(context, view, m, target, packageName);
                                 } else {
                                     //finish
-                                    handleDownloadObject(context, view, m, dataProvider, newListable, downloadable, packageName);
+                                    handleDownloadObject(dataProvider, context, view, m, newListable, uri, params, downloadable, packageName);
                                 }
                             } else {
                                 //not a Listable, return immediately
-                                handleDownloadObject(context, view, m, dataProvider, obj, downloadable, packageName);
+                                handleDownloadObject(dataProvider, context, view, m, obj, uri, params, downloadable, packageName);
                             }
                         }
                     }
@@ -484,10 +488,11 @@ public class Jujuj {
     }
 
     @SuppressWarnings("unchecked")
-    private void handleDownloadObject(Context context, View view, MutableEntity m,
-                                      AbsDataProvider dataProvider,
-                                      Object obj, Responsible response, String packageName) {
-        dispatchResult(context, dataProvider, obj);
+    private void handleDownloadObject(AbsDataProvider dataProvider, Context context, View view,
+                                       MutableEntity m, Object obj, String uri, Map<String, String> params,
+                                      Responsible response,
+                                      String packageName) {
+        dispatchResult(context, dataProvider, uri, params, obj);
 
         setContent(context, view, m, obj, packageName);
 
@@ -517,6 +522,7 @@ public class Jujuj {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void setContent(Context context, View view, MutableEntity m, Object obj, String packageName) {
         if (obj != null) {
             if (m != null) {
@@ -538,13 +544,14 @@ public class Jujuj {
         }
     }
 
-    private void dispatchResult(Context context, AbsDataProvider dataProvider, Object obj) {
+    private void dispatchResult(Context context, AbsDataProvider dataProvider,
+                                String uri, Map<String, String> params, Object obj) {
         if (dataProvider != null) {
             AbsDataProvider junior = dataProvider.getJunior();
             if (junior != null) {
-                junior.handleResult(context, obj);
-                dispatchResult(context, junior, obj);
-                return;
+                junior.handleResult(context, uri, params, obj);
+                dispatchResult(context, junior, uri, params, obj);
+
             }
         }
     }

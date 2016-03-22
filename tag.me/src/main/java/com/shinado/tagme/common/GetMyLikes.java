@@ -2,22 +2,12 @@ package com.shinado.tagme.common;
 
 import android.content.Context;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.shinado.tagme.Globals;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 import framework.inj.entity.Downloadable;
-import framework.inj.entity.Listable;
-import provider.Entity;
 
 public class GetMyLikes implements Downloadable{
 

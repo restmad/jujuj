@@ -6,17 +6,21 @@ import com.shinado.netframe.sample.R;
 
 import java.util.ArrayList;
 
+import demo6.entity.PostBean;
+import demo6.entity.Posts;
 import framework.inj.ActivityInj;
-import framework.inj.ViewInj;
-import framework.inj.entity.Downloadable;
+import framework.inj.ViewValueInj;
+import framework.inj.entity.Loadable;
 import framework.inj.entity.utility.Transformable;
 import sample.Constants;
 
 @ActivityInj(R.layout.activity_demo6)
-public class PostDlb implements Downloadable, Transformable{
+public class PostDlb extends Loadable<Posts> implements Transformable{
 
-    @ViewInj(R.id.post_list)
-    public ArrayList<PostBean> posts;
+    @ViewValueInj(R.id.post_list)
+    public ArrayList<PostBean> posts(){
+        return getEntity().posts;
+    }
 
     @Override
     public String onDownLoadUrl(Context context) {
@@ -39,8 +43,8 @@ public class PostDlb implements Downloadable, Transformable{
 
     @Override
     public Object fromServer(String fieldName, Object value) {
-        if(value == posts){
-            return new LayoutPresenter(posts);
+        if(fieldName.endsWith("posts")){
+            return new PostPresenter.Wrapper(posts());
         }else{
             return value;
         }

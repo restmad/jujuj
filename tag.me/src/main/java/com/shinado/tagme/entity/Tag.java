@@ -1,7 +1,6 @@
 package com.shinado.tagme.entity;
 
 
-import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
@@ -10,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import provider.Entity;
+import provider.database.Entity;
 
 @Table(name = "Tags")
 public class Tag extends Entity implements Serializable{

@@ -1,42 +1,43 @@
 package com.shinado.tagme.main.home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
 import com.shinado.tagme.Globals;
+import com.shinado.tagme.URLs;
 import com.shinado.tagme.entity.Tag;
 import com.shinado.tagme.entity.Tags;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
-import framework.inj.ViewInj;
 import framework.inj.ViewValueInj;
-import framework.inj.entity.Downloadable;
 import framework.inj.entity.Loadable;
 import framework.inj.entity.utility.Transformable;
 
-public class HomePageLoader extends Loadable<Tags> implements Transformable{
+public class HomePageLoader extends Loadable<Tags> implements Transformable {
 
-    @ViewValueInj
-    public ArrayList<Tag> tags(){
-        return getEntity().tags;
-    }
-
+    private String account;
     private HashSet<Integer> myLikes = new HashSet<>();
     private HashSet<String> myFollows = new HashSet<>();
 
-    public HomePageLoader(HashSet<Integer> myLikes, HashSet<String> myFollows){
+    public HomePageLoader(String account, HashSet<Integer> myLikes, HashSet<String> myFollows){
+        this.account = account;
         this.myLikes = myLikes;
         this.myFollows = myFollows;
         setEntity(new Tags());
     }
 
+    @ViewValueInj
+    public List<Tag> tags(){
+        return getEntity().tags;
+    }
+
     @Override
     public String onDownLoadUrl(Context context) {
-        return Globals.URL_TAG_ME + "get_tags.php";
+        return Globals.URL_TAG_ME + URLs.GET_TAGS;
     }
 
     @Override
@@ -48,10 +49,11 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable{
     public Object onDownloadParams() {
         int id = 0;
         HashMap<String, String> params = new HashMap<>();
+        params.put("account", account);
         //TODO what? flag?
         params.put("flag", "1");
 
-        ArrayList<Tag> tags = tags();
+        List<Tag> tags = tags();
         if (tags != null && tags.size() > 0){
             id = tags.get(tags.size()-1).id;
         }
@@ -77,4 +79,5 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable{
     public Object toServer(String fieldName, Object value) {
         return value;
     }
+
 }

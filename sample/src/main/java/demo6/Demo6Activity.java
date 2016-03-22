@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import framework.core.Jujuj;
-import framework.inj.entity.MutableEntity;
+
 
 public class Demo6Activity extends Activity{
 
@@ -12,6 +12,6 @@ public class Demo6Activity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Jujuj.getInstance().inject(this, new MutableEntity<PostDlb>(new PostDlb()));
+        Jujuj.getInstance().inject(this, new PostDlb());
     }
 }

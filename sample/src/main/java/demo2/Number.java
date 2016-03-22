@@ -6,7 +6,7 @@ import com.shinado.netframe.sample.R;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewInj;
-import provider.Entity;
+import provider.database.Entity;
 
 @GroupViewInj(R.layout.layout_demo2n3_number)
 @Table(name = "Numbers")
