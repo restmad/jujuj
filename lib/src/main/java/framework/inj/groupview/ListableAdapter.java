@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import java.util.Collection;
 
 import framework.core.Jujuj;
-import framework.inj.entity.Listable;
 
 public class ListableAdapter extends BaseAdapter{
 
@@ -17,9 +16,9 @@ public class ListableAdapter extends BaseAdapter{
     private Collection<?> items;
     private String packageName;
 
-    public ListableAdapter(Context context, Listable listable, String packageName){
+    public ListableAdapter(Context context, AbsList list, String packageName){
         this.context = context;
-        this.items = listable.getList();
+        this.items = list.getList();
         this.packageName = packageName;
     }
 

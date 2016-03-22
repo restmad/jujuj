@@ -4,9 +4,11 @@ import com.shinado.tagme.R;
 import com.shinado.tagme.user.User;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewValueInj;
+import framework.inj.groupview.AbsList;
 
 @GroupViewInj(R.layout.layout_friends)
 public class FriendsPresenter {
@@ -37,7 +39,7 @@ public class FriendsPresenter {
         this.friend = friend;
     }
 
-    public static class Wrapper implements Listable<FriendsPresenter> {
+    public static class Wrapper implements AbsList{
 
         private ArrayList<FriendsPresenter> friends;
 
@@ -49,13 +51,8 @@ public class FriendsPresenter {
         }
 
         @Override
-        public FriendsPresenter getItem(int position) {
-            return friends.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return friends.size();
+        public Collection getList() {
+            return friends;
         }
     }
 

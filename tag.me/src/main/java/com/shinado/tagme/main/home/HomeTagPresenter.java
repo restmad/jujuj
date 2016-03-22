@@ -11,6 +11,7 @@ import framework.inj.ActionInj;
 import framework.inj.DependentInj;
 import framework.inj.GroupViewInj;
 import framework.inj.ViewValueInj;
+import framework.inj.groupview.AbsList;
 
 @GroupViewInj(R.layout.layout_home_tag)
 public class HomeTagPresenter {
@@ -62,7 +63,7 @@ public class HomeTagPresenter {
         likeDrawable = new LikeAction(tag.getId(), myLikes, "");
     }
 
-    public static class Wrapper implements framework.inj.entity.Listable{
+    public static class Wrapper implements AbsList{
 
         private ArrayList<HomeTagPresenter> homeTags;
 

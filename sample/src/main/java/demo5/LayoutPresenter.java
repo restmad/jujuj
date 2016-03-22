@@ -12,7 +12,7 @@ import java.util.Collection;
 import framework.inj.GroupViewInj;
 import framework.inj.OnClick;
 import framework.inj.ViewValueInj;
-import framework.inj.entity.Listable;
+import framework.inj.groupview.AbsList;
 
 @GroupViewInj(R.layout.layout_demo5_user)
 public class LayoutPresenter {
@@ -48,7 +48,7 @@ public class LayoutPresenter {
         Toast.makeText(context, "url:"+userPortrait(), Toast.LENGTH_LONG).show();
     }
 
-    public static class Wrapper implements Listable{
+    public static class Wrapper implements AbsList{
 
         private ArrayList<LayoutPresenter> layoutUsers;
 

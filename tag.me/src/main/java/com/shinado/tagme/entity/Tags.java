@@ -1,9 +1,16 @@
 package com.shinado.tagme.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class Tags {
+import framework.inj.entity.Listable;
 
-    public ArrayList<Tag> tags;
+public class Tags implements Listable{
 
+    public ArrayList<Tag> tags = new ArrayList<>();
+
+    @Override
+    public Collection getList() {
+        return tags;
+    }
 }
