@@ -3,7 +3,33 @@
 
 ## What is Jujuj
 
-Jujuj is designed to handle data fetching(both from server and local) and display data into layout. It is an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
+Jujuj makes your code cleaner. Basically, Jujuj solves two major problems. 
+- multiple data handling
+- dependency 
+
+For the first problem, let's assume you have a ListView to display posts. When this view is launched, it loads posts in the database and displays it, while in the meantime, load more posts in the server, and display it. 
+Therefore, the basic structure of Jujuj looks like this:
+
+  ![jujuj](https://cloud.githubusercontent.com/assets/3215337/13946903/6cca8910-f052-11e5-8f4d-2ba28c200223.png)  
+
+Now with Jujuj, you don't have to do all those dirty works, just ask Jujuj to handle it with:
+```
+Jujuj.getInstance().inject(this, new PostDlb());
+```
+
+For the second problem, let's say in the posts above, every post contains a userId to identify whom this post belongs to. In this case, users' portraits, names should be displayed on the posts, which are supposed to be loaded from a pool, for instance. 
+
+With Jujuj, you just need to annotate this object
+```
+@DependentInj
+public User user;
+```
+and Jujuj will load this object and display it accordingly, like this:
+
+<img src="https://cloud.githubusercontent.com/assets/3215337/13946913/75d7e4da-f052-11e5-9dd7-f3e2a2480c56.png" width = "600" />
+ 
+
+Jujuj is an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
 
 - sample
 - dependency
@@ -12,12 +38,12 @@ Jujuj is designed to handle data fetching(both from server and local) and displa
 In module ‘dependency’, it implements data providers using Volley as network request, ActiveAndroid as ORM, and Universal Image Loader as image loader. You can replace them with your favorite libraries.
 
 ## Why Jujuj
-- No heavy Activity. All data fetching flow is done in another class, nice and clean.
 - Lazy loading. Just display a view without even knowing where the data comes from, like what ImageLoader does.
 - MVVM. Jujuj makes you write codes in a MVVM pattern.
 - Independent. of UI, of any data agency.
 - Testable. network and data can be tested separately. 
 - Abstract. you can implement if with your favorite libs.
+- No reflection. 
 
 ## How it works
 
@@ -69,9 +95,9 @@ public class UserBean implements Downloadable{
 }
 ```
 
-This model defines how it’s loaded(Notice that it could be loaded either from local or server). The annotations define how this model is supposed to display in a layout. 
+This model defines how it’s loaded. The annotations define how this model is supposed to display in a layout. 
 
-This is the simple use case for Jujuj. It's fast and easy to understand, except that it doesn't apply to any reasonable pattern. Therefore, we extend it with MVVM pattern. In the following case, UserBean is ONLY a model, while UserDlb defines how this UserBean is supposed to be loaded and displayed in a layout.
+This is the simple use case for Jujuj. It's fast and easy to understand, except that it is not so reasonable. Therefore, we extend it with MVVM pattern. In the following case, UserBean is ONLY a model, while UserDlb defines how this UserBean is supposed to be loaded and displayed in a layout.
 
 ```
 @ActivityInj(R.layout.activity_demo4)
@@ -121,7 +147,6 @@ Jujuj also provides with handful of functional interfaces, such as Validatable, 
 
 ## What needs to be done
 - Moreable, to load more data, which is very basic for data-fetching apps.
-- Magic class. Everyone is using magic class instead of relection so will us.
 - ListView. ListView works pretty bad currently.
 
 ## Copyright
