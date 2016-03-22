@@ -10,7 +10,7 @@ Jujuj makes your code cleaner. Basically, Jujuj solves two major problems.
 For the first problem, let's assume you have a ListView to display posts. When this view is launched, it loads posts in the database and displays it, while in the meantime, load more posts in the server, and display it. 
 Therefore, the basic structure of Jujuj looks like this:
 
-  ![jujuj](https://cloud.githubusercontent.com/assets/3215337/13896194/adebbf0e-edbe-11e5-9dd3-7f78008ce9d2.png)  
+  ![jujuj](https://cloud.githubusercontent.com/assets/3215337/13946903/6cca8910-f052-11e5-8f4d-2ba28c200223.png)  
 
 Now with Jujuj, you don't have to do all those dirty works, just ask Jujuj to handle it with:
 ```
@@ -26,7 +26,7 @@ public User user;
 ```
 and Jujuj will load this object and display it accordingly, like this:
 
-  ![jujuj](https://cloud.githubusercontent.com/assets/3215337/13896194/adebbf0e-edbe-11e5-9dd3-7f78008ce9d2.png)  
+  ![jujuj](https://cloud.githubusercontent.com/assets/3215337/13946913/75d7e4da-f052-11e5-9dd7-f3e2a2480c56.png)  
 
 Jujuj is an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
 
