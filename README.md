@@ -26,7 +26,8 @@ public User user;
 ```
 and Jujuj will load this object and display it accordingly, like this:
 
-  ![jujuj](https://cloud.githubusercontent.com/assets/3215337/13946913/75d7e4da-f052-11e5-9dd7-f3e2a2480c56.png)  
+<img src="https://cloud.githubusercontent.com/assets/3215337/13946913/75d7e4da-f052-11e5-9dd7-f3e2a2480c56.png" width = "600" />
+ 
 
 Jujuj is an abstract framework on top of which you can set up your own network requesting, database querying, image loading and so on as you need. This project provides a default implementation named ‘dependency’, as a result of which, you may find this project is built one on top of another, like this:
 
