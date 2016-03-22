@@ -28,27 +28,27 @@ public class HomeTagPresenter {
 
     @ViewValueInj
     public String tagTitle(){
-        return tag.getTitle();
+        return tag.title;
     }
 
     @ViewValueInj
     public String tagImg(){
-        return tag.getImgUrl();
+        return tag.img_url;
     }
 
     @ViewValueInj
     public String likeText(){
-        return tag.getLikes()+"";
+        return tag.likes+"";
     }
 
     @ViewValueInj
     public String commentText(){
-        return tag.getComments()+"";
+        return tag.comments+"";
     }
 
     @ViewValueInj
     public boolean followToggle(){
-        if (myFollows.contains(tag.getUserAccount())){
+        if (myFollows.contains(tag.user_account)){
             return true;
         }else {
             return false;
@@ -59,8 +59,8 @@ public class HomeTagPresenter {
         this.tag = tag;
         this.myFollows = myFollows;
         this.myLikes = myLikes;
-        userLater = new HomeUserPresenter(tag.getUserAccount());
-        likeDrawable = new LikeAction(tag.getId(), myLikes, "");
+        userLater = new HomeUserPresenter(tag.user_account);
+        likeDrawable = new LikeAction(tag.id, myLikes, "");
     }
 
     public static class Wrapper implements AbsList{

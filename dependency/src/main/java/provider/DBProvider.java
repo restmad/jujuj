@@ -68,16 +68,24 @@ public class DBProvider extends AbsDataProvider {
         if (result == null){
             return;
         }
-         if (result instanceof Collection){
-             Collection collection = (Collection) result;
-             for (Object item : collection){
-                 if (item instanceof Model){
-                     ((Model)item).save();
-                 }else {
-                     break;
+        Collection collection;
+         if (result instanceof Collection || result instanceof Listable){
+             if (result instanceof Collection){
+                 collection = (Collection) result;
+             }else {
+                 collection = ((Listable)result).getList();
+             }
+             if (collection != null){
+                 for (Object item : collection){
+                     if (item instanceof Model){
+                         ((Model)item).save();
+                     }else {
+                         break;
+                     }
                  }
              }
          }else {
+
              if (result instanceof Model){
                  ((Model)result).save();
              }

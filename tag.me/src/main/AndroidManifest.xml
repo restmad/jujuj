@@ -14,6 +14,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".login.LoginActivity"/>
+
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
@@ -21,8 +23,7 @@
         </activity>
 
         <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/title_activity_login">
+            android:name=".preceeding.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

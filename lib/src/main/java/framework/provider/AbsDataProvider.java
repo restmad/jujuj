@@ -27,7 +27,8 @@ public abstract class AbsDataProvider{
         return supervisor;
     }
 
-    public abstract void handleData(Context context, String uri, Map<String, String> params, Class cls,
+    public abstract void handleData(Context context, String uri,
+                                    Map<String, String> params, Class cls,
                                      Listener.Response response, Listener.Error error);
 
     public abstract void handleResult(Context context, Object result);

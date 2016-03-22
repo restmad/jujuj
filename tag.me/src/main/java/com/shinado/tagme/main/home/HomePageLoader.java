@@ -9,6 +9,7 @@ import com.shinado.tagme.entity.Tag;
 import com.shinado.tagme.entity.Tags;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import framework.inj.ViewInj;
@@ -35,17 +36,27 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable{
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return Globals.URL_MAIN + "get_tags";
+        return Globals.URL_TAG_ME + "get_tags.php";
     }
 
     @Override
     public void onDownLoadResponse(Context context) {
-
+        
     }
 
     @Override
     public Object onDownloadParams() {
-        return null;
+        int id = 0;
+        HashMap<String, String> params = new HashMap<>();
+        //TODO what? flag?
+        params.put("flag", "1");
+
+        ArrayList<Tag> tags = tags();
+        if (tags != null && tags.size() > 0){
+            id = tags.get(tags.size()-1).id;
+        }
+        params.put("id", id+"");
+        return params;
     }
 
     @Override

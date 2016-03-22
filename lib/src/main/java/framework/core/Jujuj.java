@@ -410,14 +410,9 @@ public class Jujuj {
      * @param target the target entity supposed to be loaded, could be either Downloadable or Loadable
      */
     void loadEntity(final Context context, final View view, final MutableEntity<?> m, final Downloadable downloadable, Class target, String packageName) {
-        Object downloadParams = downloadable.onDownloadParams();
-
-        Map<String, String> params = objToMap(downloadParams);
-
         String uri = downloadable.onDownLoadUrl(context);
-
         AbsDataProvider dataProvider = configurations.dataProvider;
-        handleLoad(dataProvider, context, view, m, downloadable, target, null, uri, params, packageName);
+        handleLoad(dataProvider, context, view, m, downloadable, target, null, uri, packageName);
     }
 
     /**
@@ -428,10 +423,12 @@ public class Jujuj {
      */
     @SuppressWarnings("unchecked")
     private void handleLoad(final AbsDataProvider dataProvider, final Context context, final View view,
-                            final MutableEntity m, final Responsible downloadable, final Class target,
-                            final Listable listable,
-                            final String uri, final Map<String, String> params, final String packageName) {
+                            final MutableEntity m, final Downloadable downloadable, final Class target,
+                            final Listable listable, final String uri, final String packageName) {
         Log.d(TAG, "provider:" + dataProvider.getClass());
+        Object downloadParams = downloadable.onDownloadParams();
+
+        Map<String, String> params = objToMap(downloadParams);
 
         dataProvider.handleData(context, uri, params, target,
                 new Listener.Response<Object>() {
@@ -441,7 +438,7 @@ public class Jujuj {
                             //get nothing, let supervisor handle it
                             AbsDataProvider supervisor = dataProvider.getSupervisor();
                             if (supervisor != null) {
-                                handleLoad(supervisor, context, view, m, downloadable, target, listable, uri, params, packageName);
+                                handleLoad(supervisor, context, view, m, downloadable, target, listable, uri, packageName);
                             } else {
                                 //if the previous result is not null
                                 //got something to handle
@@ -461,7 +458,7 @@ public class Jujuj {
                                 AbsDataProvider supervisor = dataProvider.getSupervisor();
                                 if (supervisor != null) {
                                     //go on
-                                    handleLoad(supervisor, context, view, m, downloadable, target, newListable, uri, params, packageName);
+                                    handleLoad(supervisor, context, view, m, downloadable, target, newListable, uri, packageName);
 
                                     //set content
                                     setContent(context, view, m, target, packageName);

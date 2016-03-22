@@ -4,10 +4,12 @@ import com.shinado.tagme.R;
 import com.shinado.tagme.entity.Tag;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import framework.inj.GroupViewInj;
 import framework.inj.ViewValueInj;
+import framework.inj.groupview.AbsList;
 
 @GroupViewInj(R.layout.layout_personal_page_tag)
 public class TagPresenter{
@@ -20,10 +22,10 @@ public class TagPresenter{
 
     @ViewValueInj
     public String tagImg(){
-        return tag.getImgUrl();
+        return tag.img_url;
     }
 
-    public static class Wrapper implements Listable<TagPresenter> {
+    public static class Wrapper implements AbsList {
 
         private List<TagPresenter> tagPresenters;
 
@@ -35,13 +37,8 @@ public class TagPresenter{
         }
 
         @Override
-        public TagPresenter getItem(int position) {
-            return tagPresenters.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return tagPresenters.size();
+        public Collection getList() {
+            return tagPresenters;
         }
     }
 

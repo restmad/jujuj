@@ -25,6 +25,10 @@ public class GetMyLikes implements Downloadable{
 
     private String myAccount;
 
+    public GetMyLikes(){
+
+    }
+
     public GetMyLikes(String account){
         this.myAccount = account;
     }
@@ -51,9 +55,4 @@ public class GetMyLikes implements Downloadable{
 
     }
 
-    @Table(name = "MyLikes")
-    public class Like extends Model implements Serializable{
-        @Column(name = "tag_id")
-        public int tag_id;
-    }
 }

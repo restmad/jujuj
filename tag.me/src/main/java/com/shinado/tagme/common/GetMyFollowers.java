@@ -14,13 +14,13 @@ import java.util.List;
 
 import framework.inj.entity.Downloadable;
 
-public class GetMyFollowers implements Downloadable{
+public class GetMyFollowers implements Downloadable {
 
     public ArrayList<Follower> Follows;
 
     private String myAccount;
 
-    public GetMyFollowers(String account){
+    public GetMyFollowers(String account) {
         this.myAccount = account;
     }
 
@@ -46,9 +46,4 @@ public class GetMyFollowers implements Downloadable{
 
     }
 
-    @Table(name = "MyFollowers")
-    public class Follower extends Model implements Serializable{
-        @Column(name = "account")
-        public String following_account;
-    }
 }

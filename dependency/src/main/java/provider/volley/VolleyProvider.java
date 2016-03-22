@@ -33,7 +33,8 @@ public class VolleyProvider extends AbsDataProvider {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void handleData(Context context, String uri, final Map<String, String> params, final Class cls,
+    public void handleData(Context context, String uri,
+                           final Map<String, String> params, final Class cls,
                            final Listener.Response response, final Listener.Error error) {
         if (!uri.startsWith("http://")){
             response.onResponse(null);

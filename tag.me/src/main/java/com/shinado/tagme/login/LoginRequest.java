@@ -8,8 +8,10 @@ import android.widget.Toast;
 import com.shinado.tagme.BaseResult;
 import com.shinado.tagme.Globals;
 import com.shinado.tagme.R;
+import com.shinado.tagme.common.Follower;
 import com.shinado.tagme.common.GetMyFollowers;
 import com.shinado.tagme.common.GetMyLikes;
+import com.shinado.tagme.common.Like;
 import com.shinado.tagme.common.Toaster;
 import com.shinado.tagme.common.UserPref;
 import com.shinado.tagme.main.MainActivity;
@@ -115,7 +117,7 @@ public class LoginRequest implements Postable<LoginRequest.UserResult>, Validata
 
     private HashSet<Integer> getMyLikes(){
         HashSet<Integer> likes = new HashSet<>();
-        for (GetMyLikes.Like l : myLikes.getEntity().Likes){
+        for (Like l : myLikes.getEntity().Likes){
             likes.add(l.tag_id);
         }
         return likes;
@@ -123,7 +125,7 @@ public class LoginRequest implements Postable<LoginRequest.UserResult>, Validata
 
     private HashSet<String> getMyFollows(){
         HashSet<String> follows = new HashSet<>();
-        for (GetMyFollowers.Follower f : myFollowers.getEntity().Follows){
+        for (Follower f : myFollowers.getEntity().Follows){
             follows.add(f.following_account);
         }
         return follows;
