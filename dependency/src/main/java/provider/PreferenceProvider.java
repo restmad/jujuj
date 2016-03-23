@@ -7,10 +7,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import framework.provider.AbsDataProvider;
 import framework.provider.Listener;
 
-public class PreferenceProvider extends AbsDataProvider {
+public class PreferenceProvider extends LogAbsDataProvider {
 
     public static final String URI_GET = "pref.get";
     public static final String URI_SAVE = "pref.save";
@@ -34,7 +33,7 @@ public class PreferenceProvider extends AbsDataProvider {
     }
 
     @Override
-    public void handleResult(Context context, Object result) {
+    public void handleResult(Context context, String uri, Map<String, String> params, Object result) {
         //TODO
     }
 
@@ -100,5 +99,10 @@ public class PreferenceProvider extends AbsDataProvider {
             }
         }
         return item;
+    }
+
+    @Override
+    protected String getLogTag() {
+        return "PrefProvider";
     }
 }

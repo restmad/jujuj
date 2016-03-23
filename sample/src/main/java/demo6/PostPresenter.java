@@ -11,7 +11,6 @@ import framework.inj.GroupViewInj;
 import framework.inj.ViewValueInj;
 import framework.inj.groupview.AbsList;
 
-
 @GroupViewInj(R.layout.layout_demo6_item)
 public class PostPresenter {
 

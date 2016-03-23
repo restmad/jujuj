@@ -1,6 +1,8 @@
 package com.shinado.tagme.entity;
 
 
+import android.support.annotation.NonNull;
+
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
@@ -12,7 +14,7 @@ import java.util.List;
 import provider.database.Entity;
 
 @Table(name = "Tags")
-public class Tag extends Entity implements Serializable{
+public class Tag extends Entity implements Serializable, Comparable<Tag>{
 
 	@Column(name = "likes")
 	public int likes;
@@ -93,4 +95,8 @@ public class Tag extends Entity implements Serializable{
 		return super.save();
 	}
 
+	@Override
+	public int compareTo(@NonNull Tag another) {
+		return another.id - id;
+	}
 }

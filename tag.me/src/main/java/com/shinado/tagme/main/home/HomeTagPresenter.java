@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import framework.inj.ActionInj;
 import framework.inj.DependentInj;
@@ -64,7 +65,7 @@ public class HomeTagPresenter {
 
         private ArrayList<HomeTagPresenter> homeTags;
 
-        public Wrapper(List<Tag> tags, HashSet<Integer> myLikes, HashSet<String> myFollows){
+        public Wrapper(TreeSet<Tag> tags, HashSet<Integer> myLikes, HashSet<String> myFollows){
             homeTags = new ArrayList<>();
             for(Tag bean : tags){
                 homeTags.add(new HomeTagPresenter(bean, myLikes, myFollows));

@@ -27,6 +27,7 @@ public class CacheProvider extends LogAbsDataProvider{
 
     @Override
     public void handleResult(Context context, String uri, Map<String, String> params, Object result) {
+        Log.d(TAG, "handle result:" + result.toString());
         mLruCache.put(uri + params.toString(), result);
     }
 

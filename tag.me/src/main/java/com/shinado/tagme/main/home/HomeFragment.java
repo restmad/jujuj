@@ -18,6 +18,7 @@ import framework.core.Jujuj;
 public class HomeFragment extends Fragment {
 
     private HomePageLoader mHomePage;
+    private View mView;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -33,8 +34,12 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Jujuj.getInstance().inject(getActivity(), view, mHomePage);
-        return view;
+        mView = inflater.inflate(R.layout.fragment_home, container, false);
+        loadMore();
+        return mView;
+    }
+
+    public void loadMore(){
+        Jujuj.getInstance().inject(getActivity(), mView, mHomePage);
     }
 }

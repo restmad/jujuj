@@ -3,6 +3,7 @@ package com.shinado.tagme.user;
 import android.content.Context;
 
 import com.shinado.tagme.Globals;
+import com.shinado.tagme.URLs;
 
 import java.util.HashMap;
 
@@ -16,7 +17,7 @@ public class BaseUserLoader extends Loadable<User>{
 
     @Override
     public String onDownLoadUrl(Context context) {
-        return Globals.URL_TAG_ME + "get_user.php";
+        return Globals.URL_TAG_ME + URLs.GET_USERS;
     }
 
     @Override

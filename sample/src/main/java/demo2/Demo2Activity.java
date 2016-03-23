@@ -15,7 +15,7 @@ public class Demo2Activity extends Activity{
 		UserBean bean = new UserBean();
 		bean.userName = "Dan";
 
-		Jujuj.getInstance().inject(this, new MutableEntity(bean));
+		Jujuj.getInstance().inject(this, new MutableEntity<>(bean));
 	}
 	
 }

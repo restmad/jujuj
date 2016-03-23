@@ -12,6 +12,7 @@ import com.shinado.tagme.entity.Tags;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import framework.inj.ViewValueInj;
 import framework.inj.entity.Loadable;
@@ -19,11 +20,15 @@ import framework.inj.entity.utility.Transformable;
 
 public class HomePageLoader extends Loadable<Tags> implements Transformable {
 
+    private final int FLAG_REFRESH = 1;
+    private final int FLAG_MORE = 2;
+
+    private int flag = FLAG_REFRESH;
     private String account;
     private HashSet<Integer> myLikes = new HashSet<>();
     private HashSet<String> myFollows = new HashSet<>();
 
-    public HomePageLoader(String account, HashSet<Integer> myLikes, HashSet<String> myFollows){
+    public HomePageLoader(String account, HashSet<Integer> myLikes, HashSet<String> myFollows) {
         this.account = account;
         this.myLikes = myLikes;
         this.myFollows = myFollows;
@@ -31,7 +36,7 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable {
     }
 
     @ViewValueInj
-    public List<Tag> tags(){
+    public TreeSet<Tag> tags() {
         return getEntity().tags;
     }
 
@@ -42,7 +47,7 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable {
 
     @Override
     public void onDownLoadResponse(Context context) {
-        
+
     }
 
     @Override
@@ -50,14 +55,21 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable {
         int id = 0;
         HashMap<String, String> params = new HashMap<>();
         params.put("account", account);
-        //TODO what? flag?
-        params.put("flag", "1");
-
-        List<Tag> tags = tags();
-        if (tags != null && tags.size() > 0){
-            id = tags.get(tags.size()-1).id;
+        params.put("flag", "" + flag);
+        TreeSet<Tag> tags = tags();
+        if (tags != null && tags.size() > 0) {
+            if (flag == FLAG_REFRESH) {
+                id = tags.first().id;
+            } else {
+                id = tags.last().id;
+            }
+        }else{
+            if (flag == FLAG_MORE){
+                id = Integer.MAX_VALUE;
+            }
         }
-        params.put("id", id+"");
+
+        params.put("id", id + "");
         return params;
     }
 
@@ -68,9 +80,9 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable {
 
     @Override
     public Object fromServer(String fieldName, Object value) {
-        if(fieldName.equals("tags")){
+        if (fieldName.equals("tags")) {
             return new HomeTagPresenter.Wrapper(tags(), myLikes, myFollows);
-        }else{
+        } else {
             return value;
         }
     }

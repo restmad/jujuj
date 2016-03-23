@@ -2,10 +2,17 @@
 <items version="2" >
 
     <item
+        jar="E:\workspace\jujuj\tag.me\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0e0c9564cd77e300c5bb0321a705483b900af821">
+        <dex dex="E:\workspace\jujuj\tag.me\build\intermediates\pre-dexed\debug\classes-39de13a5284f3b3088434e41e6012e3b6407d468.jar" />
+    </item>
+    <item
         jar="E:\workspace\jujuj\tag.me\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="5313bf060870c270c8034e417448ab45eac7e0a8">
+        sha1="8c452360ebca57d3e70e4469b976285461785141">
         <dex dex="E:\workspace\jujuj\tag.me\build\intermediates\pre-dexed\debug\classes-b39bda4b5d910c86babe2072d18785230e51ea8d.jar" />
     </item>
 

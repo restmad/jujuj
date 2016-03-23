@@ -5,6 +5,7 @@ import com.shinado.tagme.database.DBHandler;
 import framework.core.Configurations;
 import framework.core.Jujuj;
 import jujuj.shinado.com.dependency.DefaultApplication;
+import provider.CacheProvider;
 import provider.ConfigBuilder;
 import provider.ImageProvider;
 import provider.database.DBProvider;
@@ -20,6 +21,7 @@ public class MyApplication extends DefaultApplication{
         dbProvider.setDBHandler(new DBHandler());
         Configurations configurations = new Configurations.Builder()
                 .setImageProvider(new ImageProvider())
+                .addDataProvider(new CacheProvider())
                 .addDataProvider(dbProvider)
                 .addDataProvider(new VolleyProvider())
                 .build();

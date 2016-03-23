@@ -1,14 +1,13 @@
 package com.shinado.tagme.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.TreeSet;
 
 import framework.inj.entity.Listable;
 
 public class Tags implements Listable{
 
-    public List<Tag> tags = new ArrayList<>();
+    public TreeSet<Tag> tags = new TreeSet<>();
 
     @Override
     public Collection getList() {

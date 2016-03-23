@@ -21,13 +21,6 @@ public class SimpleUserDlb implements Downloadable, Transformable{
     @ViewInj(R.id.user_list)
     public ArrayList<UserBean> users;
 
-    @OnItemClick(R.id.user_list)
-    public void onItemClick(Context context, View v, int i){
-        Intent intent = new Intent(context, UserActivity.class);
-        intent.putExtra("user", users.get(i));
-        context.startActivity(intent);
-    }
-
     @Override
     public String onDownLoadUrl(Context context) {
         return Constants.URL + "netframe_get_all_users.php";

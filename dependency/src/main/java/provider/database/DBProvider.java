@@ -79,6 +79,7 @@ public class DBProvider extends LogAbsDataProvider {
         if (result == null){
             return;
         }
+        Log.d(TAG, "handle result:" + result.toString());
         Collection collection;
         if (result instanceof Collection || result instanceof Listable){
             if (result instanceof Collection){
@@ -96,7 +97,6 @@ public class DBProvider extends LogAbsDataProvider {
                 }
             }
         }else {
-
             if (result instanceof Model){
                 ((Model)result).save();
             }

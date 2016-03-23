@@ -65,8 +65,6 @@ class UserBean extends Entity implements Downloadable{
 
 	@Override
 	public void onDownLoadResponse(Context context) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
