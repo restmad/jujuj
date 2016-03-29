@@ -1,15 +1,13 @@
-package demo5;
+package demo7;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 import framework.core.Jujuj;
 import framework.inj.entity.MutableEntity;
-import framework.inj.entity.utility.Notifiable;
 
-//sample of AbsList
-//UserBean is used in multiple activities, using different Presenters
-public class Demo5Activity extends Activity {
+//sample of Listable, loading users from different providers
+public class Demo7Activity extends Activity{
 
     private MutableEntity<SimpleUserDlb> userDlb;
 

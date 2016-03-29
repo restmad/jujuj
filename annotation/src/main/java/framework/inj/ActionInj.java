@@ -8,7 +8,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(FIELD)
+@Target({FIELD, METHOD})
 public @interface ActionInj {
 
     int value() default -1;

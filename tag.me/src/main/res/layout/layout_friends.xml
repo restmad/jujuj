@@ -11,7 +11,7 @@
 
         <com.shinado.tagme.view.PortraitView
             android:id="@+id/userPortrait"
-            android:src="@drawable/portrait_default_round"
+            android:src="@drawable/portrait_default"
             android:layout_width="48dp"
             android:layout_height="48dp"/>
 

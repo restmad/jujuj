@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import framework.core.Jujuj;
 
+//sample of Loadable
 public class Demo4Activity extends Activity{
 
     @Override

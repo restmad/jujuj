@@ -14,9 +14,14 @@ import demo3.Demo3Activity;
 import demo4.Demo4Activity;
 import demo5.Demo5Activity;
 import demo6.Demo6Activity;
+import demo7.Demo7Activity;
+import demo8.Demo8Activity;
 
 public class MainActivity extends ListActivity{
-	
+
+	Class[] targets = {Demo1Activity.class, Demo2Activity.class, Demo3Activity.class, Demo4Activity.class,
+			Demo5Activity.class, Demo6Activity.class, Demo7Activity.class, Demo8Activity.class};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -25,35 +30,16 @@ public class MainActivity extends ListActivity{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent intent = null;
-				switch(position){
-                    case 0:
-                        intent = new Intent(MainActivity.this, Demo1Activity.class);
-					    break;
-				    case 1:
-                        intent = new Intent(MainActivity.this, Demo2Activity.class);
-					    break;
-                    case 2:
-						intent = new Intent(MainActivity.this, Demo3Activity.class);
-						break;
-					case 3:
-						intent = new Intent(MainActivity.this, Demo4Activity.class);
-						break;
-					case 4:
-						intent = new Intent(MainActivity.this, Demo5Activity.class);
-						break;
-					case 5:
-						intent = new Intent(MainActivity.this, Demo6Activity.class);
-						break;
-				}
+				Intent intent = new Intent(MainActivity.this, targets[position]);
 				startActivity(intent);
 			}
 		});
 		
 		String[] items = { "Posting a request", "Loading from server", "Handling multiple requests",
-				"Using Loadable", "Setting from different presenter", "Using lazy loading", "Tell me about it"};
-        
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				"Using Loadable", "Sharing User bean", "Dependent injection",
+				"Using Listable", "Using Action"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_1, items);
         
         setListAdapter(adapter);

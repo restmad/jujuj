@@ -2,18 +2,18 @@
 <items version="2" >
 
     <item
-        jar="E:\workspace\jujuj\tag.me\build\intermediates\exploded-aar\jujuj\dependency\unspecified\jars\classes.jar"
+        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="0e0c9564cd77e300c5bb0321a705483b900af821">
-        <dex dex="E:\workspace\jujuj\tag.me\build\intermediates\pre-dexed\debug\classes-39de13a5284f3b3088434e41e6012e3b6407d468.jar" />
+        sha1="de390dfc8b0cb17fe174d68dc30a846bd699793a">
+        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\classes-0f4daaea2227d43b5ff1a25f99978c4ab315675d.jar" />
     </item>
     <item
-        jar="E:\workspace\jujuj\tag.me\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\classes.jar"
+        jar="E:\workspace\jujuj\annotation\build\libs\annotation.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="8c452360ebca57d3e70e4469b976285461785141">
-        <dex dex="E:\workspace\jujuj\tag.me\build\intermediates\pre-dexed\debug\classes-b39bda4b5d910c86babe2072d18785230e51ea8d.jar" />
+        sha1="3d24fb9e92953db3d009676d6a5e2cc7c759f751">
+        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\annotation-1cf577136115c25fe7f47d4683fb4e5837dc05ca.jar" />
     </item>
 
 </items>

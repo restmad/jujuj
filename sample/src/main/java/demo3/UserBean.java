@@ -10,7 +10,7 @@ import framework.inj.ViewInj;
 import framework.inj.entity.Downloadable;
 import sample.Constants;
 
-class UserBean implements Downloadable{
+public class UserBean implements Downloadable{
 	
 	@ViewInj(R.id.user_portrait)
 	public String userPortrait;

@@ -98,7 +98,6 @@ public class Jujuj {
      * to request data
      */
     public void request(Context context, final MutableEntity<? extends Downloadable> m) {
-
         loadEntity(context, null, m, m.getEntity(), m.getEntity().getClass(), context.getPackageName());
     }
 
@@ -145,7 +144,7 @@ public class Jujuj {
             return;
         }
 
-        View view = setContentView(context, mtp);
+        View view = setContentView(context, mtp.getClass());
         inject(context, view, mtp, packageName);
     }
 
@@ -161,16 +160,16 @@ public class Jujuj {
     }
 
     public void inject(Context context, MutableEntity<?> m, String packageName) {
-        if (m == null || m.getEntity() == null) {
+        if (m == null /**|| m.getEntity() == null **/) {
             return;
         }
 
         View view;
         if (m instanceof Loadable) {
             //when m is a Loadable
-            view = setContentView(context, m);
+            view = setContentView(context, m.getClass());
         } else {
-            view = setContentView(context, m.getEntity());
+            view = setContentView(context, getGenericClass(m));
         }
         inject(context, view, m, packageName);
     }
@@ -222,7 +221,7 @@ public class Jujuj {
             return;
         }
 
-        View view = setContentView(context, bean);
+        View view = setContentView(context, bean.getClass());
         inject(context, view, bean, packageName);
     }
 
@@ -264,9 +263,9 @@ public class Jujuj {
     /**
      * setContentView for Activity
      */
-    private View setContentView(Context context, Object bean) {
-        if (bean.getClass().isAnnotationPresent(ActivityInj.class)) {
-            Annotation annotation = bean.getClass().getAnnotation(
+    private View setContentView(Context context, Class<?> targetClass) {
+        if (targetClass.isAnnotationPresent(ActivityInj.class)) {
+            Annotation annotation = targetClass.getAnnotation(
                     ActivityInj.class);
             if (annotation != null) {
                 ActivityInj contentInj = (ActivityInj) annotation;
@@ -322,13 +321,18 @@ public class Jujuj {
 
     void postData(Context context, final Requestable request, Map<String, String> params, View button) {
         AbsDataProvider dataProvider = configurations.dataProvider;
-        Type[] genType = request.getClass().getGenericInterfaces();
-        Type[] typeArguments = ((ParameterizedType) genType[0]).getActualTypeArguments();
-        Class entityClass = (Class) typeArguments[0];
+        Class entityClass = getGenericClass(request);
         handlePostByBoss(context, request, dataProvider, button, params, entityClass);
         if (button != null) {
             button.setEnabled(false);
         }
+    }
+
+    Class<?> getGenericClass(Object object){
+        Type[] genType = object.getClass().getGenericInterfaces();
+        Type[] typeArguments = ((ParameterizedType) genType[0]).getActualTypeArguments();
+        Class entityClass = (Class) typeArguments[0];
+        return entityClass;
     }
 
     @SuppressWarnings("unchecked")
@@ -397,7 +401,11 @@ public class Jujuj {
         Map<String, String> map = null;
         try {
             map = BeanUtils.describe(obj);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
 
@@ -597,7 +605,9 @@ public class Jujuj {
             if (debug)
                 Log.d(TAG, clsName + " not found. Trying superclass " + cls.getSuperclass().getName());
             viewBinder = findViewInject(context, cls.getSuperclass());
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         BINDERS.put(cls, viewBinder);
