@@ -1,9 +1,5 @@
 package framework.inj.entity;
 
-import android.content.Context;
-
-import framework.inj.Requestable;
-
 /**
  *
  * @param <T> target result of this Postable
@@ -11,6 +7,6 @@ import framework.inj.Requestable;
  */
 public interface Postable<T> extends Requestable<T>{
 
-    public int getSubmitButtonId();
+    int getSubmitButtonId();
 
 }

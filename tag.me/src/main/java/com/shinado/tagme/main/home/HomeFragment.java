@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mHomePage = new HomePageLoader(new UserPref(getContext()).getUesrAccount(),
+        mHomePage = new HomePageLoader(new UserPref(getActivity()).getUesrAccount(),
                 (HashSet<Integer>) bundle.getSerializable(MainActivity.EXTRA_MY_LIKES),
                 (HashSet<String>) bundle.getSerializable(MainActivity.EXTRA_MY_FOLLOWERS)
         );

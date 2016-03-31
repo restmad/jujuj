@@ -20,7 +20,7 @@ import java.util.Map;
 import framework.core.exception.NotInitiatedException;
 import framework.inj.ActivityInj;
 import framework.inj.GroupViewInj;
-import framework.inj.Requestable;
+import framework.inj.entity.Requestable;
 import framework.inj.entity.Responsible;
 import framework.inj.entity.Action;
 import framework.inj.entity.Downloadable;
@@ -98,7 +98,7 @@ public class Jujuj {
      * to request data
      */
     public void request(Context context, final MutableEntity<? extends Downloadable> m) {
-        loadEntity(context, null, m, m.getEntity(), m.getEntity().getClass(), context.getPackageName());
+        loadEntity(context, null, m, m.getEntity(), getGenericClass(m), context.getPackageName());
     }
 
     /**
@@ -180,35 +180,44 @@ public class Jujuj {
      */
     public boolean inject(Context context, View view, MutableEntity<?> m, String packageName) {
         checkInit();
-        if (m == null || m.getEntity() == null) {
+        if (m == null) {
             return false;
         }
 
         Object bean = m.getEntity();
         if (bean instanceof Postable) {
-            setDataPost(context, view, (Postable) bean, packageName);
+            if (bean != null){
+                setDataPost(context, view, (Postable) bean, packageName);
+            }
         }
 
         if (m instanceof Loadable) {
             Loadable loadable = (Loadable) m;
             if (m.isStateStored()) {
+                setContent(context, view, bean, packageName);
                 return true;
             } else {
-                loadEntity(context, view, loadable, loadable, loadable.getEntity().getClass(), packageName);
+                loadEntity(context, view, loadable, loadable, getGenericClass(m), packageName);
                 return true;
             }
         } else {
+            if (bean == null){
+                return false;
+            }
             /**
              * if the state is stored
              */
             if (m.isStateStored()) {
                 setContent(context, view, bean, packageName);
                 return true;
+            }else{
+                loadEntity(context, view, m, (Downloadable) bean, bean.getClass(), packageName);
             }
-            loadEntity(context, view, m, (Downloadable) bean, bean.getClass(), packageName);
         }
 
-        setContent(context, view, bean, packageName);
+        if (bean != null){
+            setContent(context, view, bean, packageName);
+        }
         return false;
     }
 
@@ -330,6 +339,10 @@ public class Jujuj {
 
     Class<?> getGenericClass(Object object){
         Type[] genType = object.getClass().getGenericInterfaces();
+        if (genType.length == 0){
+            genType = new Type[1];
+            genType[0] = object.getClass().getGenericSuperclass();
+        }
         Type[] typeArguments = ((ParameterizedType) genType[0]).getActualTypeArguments();
         Class entityClass = (Class) typeArguments[0];
         return entityClass;

@@ -20,15 +20,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="demo1.Demo1Activity" />
-        <activity android:name="demo2.Demo2Activity" />
-        <activity android:name="demo3.Demo3Activity" />
-        <activity android:name="demo4.Demo4Activity" />
-        <activity android:name="demo5.Demo5Activity" />
-        <activity android:name="demo5.UserActivity" />
-        <activity android:name="demo6.Demo6Activity" />
-        <activity android:name="demo7.Demo7Activity" />
-        <activity android:name="demo8.Demo8Activity" />
+        <activity android:name="jujuj.demo1.Demo1Activity" />
+        <activity android:name="jujuj.demo2.Demo2Activity" />
+        <activity android:name="jujuj.demo3.Demo3Activity" />
+        <activity android:name="jujuj.demo4.Demo4Activity" />
+        <activity android:name="jujuj.demo5.Demo5Activity" />
+        <activity android:name="jujuj.demo5.UserActivity" />
+        <activity android:name="jujuj.demo6.Demo6Activity" />
+        <activity android:name="jujuj.demo7.Demo7Activity" />
+        <activity android:name="jujuj.demo8.Demo8Activity" />
     </application>
 
 </manifest>

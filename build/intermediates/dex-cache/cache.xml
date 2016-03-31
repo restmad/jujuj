@@ -5,15 +5,8 @@
         jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="de390dfc8b0cb17fe174d68dc30a846bd699793a">
+        sha1="de676489b3460de2655c53104df7454676f97eff">
         <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\classes-0f4daaea2227d43b5ff1a25f99978c4ab315675d.jar" />
-    </item>
-    <item
-        jar="E:\workspace\jujuj\annotation\build\libs\annotation.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3d24fb9e92953db3d009676d6a5e2cc7c759f751">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\annotation-1cf577136115c25fe7f47d4683fb4e5837dc05ca.jar" />
     </item>
 
 </items>
