@@ -98,7 +98,7 @@ public class Jujuj {
      * to request data
      */
     public void request(Context context, final MutableEntity<? extends Downloadable> m) {
-        loadEntity(context, null, m, m.getEntity(), getGenericClass(m), context.getPackageName());
+        loadEntity(context, null, m, m.getEntity(), getGenericClass(m.getClass()), context.getPackageName());
     }
 
     /**
@@ -169,7 +169,13 @@ public class Jujuj {
             //when m is a Loadable
             view = setContentView(context, m.getClass());
         } else {
-            view = setContentView(context, getGenericClass(m));
+            if (m.getEntity() == null) {
+                //TODO not tested
+                Class cls = getGenericClass(m.getClass());
+                view = setContentView(context, cls);
+            } else {
+                view = setContentView(context, m.getEntity().getClass());
+            }
         }
         inject(context, view, m, packageName);
     }
@@ -186,7 +192,7 @@ public class Jujuj {
 
         Object bean = m.getEntity();
         if (bean instanceof Postable) {
-            if (bean != null){
+            if (bean != null) {
                 setDataPost(context, view, (Postable) bean, packageName);
             }
         }
@@ -197,11 +203,17 @@ public class Jujuj {
                 setContent(context, view, bean, packageName);
                 return true;
             } else {
-                loadEntity(context, view, loadable, loadable, getGenericClass(m), packageName);
+                //TODO
+                if (m.getEntity() != null) {
+                    loadEntity(context, view, loadable, loadable, m.getEntity().getClass(), packageName);
+                } else {
+                    Class cls = getGenericClass(m.getClass());
+                    loadEntity(context, view, loadable, loadable, cls, packageName);
+                }
                 return true;
             }
         } else {
-            if (bean == null){
+            if (bean == null) {
                 return false;
             }
             /**
@@ -210,14 +222,14 @@ public class Jujuj {
             if (m.isStateStored()) {
                 setContent(context, view, bean, packageName);
                 return true;
-            }else{
+            } else {
                 loadEntity(context, view, m, (Downloadable) bean, bean.getClass(), packageName);
             }
         }
 
-        if (bean != null){
-            setContent(context, view, bean, packageName);
-        }
+//        if (bean != null){
+//            setContent(context, view, bean, packageName);
+//        }
         return false;
     }
 
@@ -330,18 +342,21 @@ public class Jujuj {
 
     void postData(Context context, final Requestable request, Map<String, String> params, View button) {
         AbsDataProvider dataProvider = configurations.dataProvider;
-        Class entityClass = getGenericClass(request);
+        Class entityClass = getGenericClass(request.getClass());
         handlePostByBoss(context, request, dataProvider, button, params, entityClass);
         if (button != null) {
             button.setEnabled(false);
         }
     }
 
-    Class<?> getGenericClass(Object object){
-        Type[] genType = object.getClass().getGenericInterfaces();
-        if (genType.length == 0){
+    Class<?> getGenericClass(Class cls) {
+        Type[] genType = cls.getGenericInterfaces();
+        if (genType.length == 0) {
             genType = new Type[1];
-            genType[0] = object.getClass().getGenericSuperclass();
+            genType[0] = cls.getGenericSuperclass();
+        }
+        if (!(genType[0] instanceof ParameterizedType)) {
+            return null;
         }
         Type[] typeArguments = ((ParameterizedType) genType[0]).getActualTypeArguments();
         Class entityClass = (Class) typeArguments[0];
@@ -441,6 +456,7 @@ public class Jujuj {
      * When target is a Listable, it will fetch data from all DataProviders,
      * otherwise, it returns immediately right after data is fetched.
      * Then it will dispatch results to juniors
+     *
      * @param m            could be a Loadable
      * @param downloadable to receive onError
      * @param target       the target entity the data should be
@@ -501,7 +517,7 @@ public class Jujuj {
                 new Listener.Error() {
                     @Override
                     public void onError(String msg) {
-                        Log.e("jujuj Error", msg);
+                        Log.e("jujuj Error", msg == null ? "" : msg);
                         downloadable.onError(context, msg);
                         Jujuj.this.onError(m, downloadable, msg);
                     }
@@ -510,7 +526,7 @@ public class Jujuj {
 
     @SuppressWarnings("unchecked")
     private void handleDownloadObject(AbsDataProvider dataProvider, Context context, View view,
-                                       MutableEntity m, Object obj, String uri, Map<String, String> params,
+                                      MutableEntity m, Object obj, String uri, Map<String, String> params,
                                       Responsible response,
                                       String packageName) {
         dispatchResult(context, dataProvider, uri, params, obj);
@@ -673,11 +689,12 @@ public class Jujuj {
         /**
          * invoke by ViewInject
          */
-        public void getParams(View childView, HashMap<String, String> params, Object request, String fieldName, String packageName) {
+        public boolean getParams(View childView, HashMap<String, String> params, Object request, String fieldName, String packageName) {
             try {
                 for (ViewBinder injector : configurations.binders) {
                     String value = injector.addParams(childView, params, request, fieldName, packageName);
                     if (value != null) {
+                        //TODO still post request when error
                         if (request instanceof Validatable) {
                             String validate = ((Validatable) request).validate(fieldName, value);
                             if (validate != null) {
@@ -685,7 +702,7 @@ public class Jujuj {
                                 if (request instanceof Postable) {
                                     ((Postable) request).onError(context, validate);
                                 }
-                                return;
+                                return false;
                             }
                         }
                         break;
@@ -694,6 +711,7 @@ public class Jujuj {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return true;
         }
 
         /**

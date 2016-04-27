@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="E:\workspace\jujuj\sample\build\intermediates\exploded-aar\jujuj\lib\unspecified\jars\classes.jar"
+        jar="E:\workspace\jujuj\tagview\build\intermediates\exploded-aar\jujuj\tagimageview\unspecified\jars\classes.jar"
         jumboMode="false"
-        revision="23.0.1"
-        sha1="de676489b3460de2655c53104df7454676f97eff">
-        <dex dex="E:\workspace\jujuj\sample\build\intermediates\pre-dexed\debug\classes-0f4daaea2227d43b5ff1a25f99978c4ab315675d.jar" />
+        revision="23.0.2"
+        sha1="b28ba4123c38e7a172ffd883af64f461498c4e76">
+        <dex dex="E:\workspace\jujuj\tagview\build\intermediates\pre-dexed\debug\classes-505a373a803340b0ded8b2c26ed0b6bf5c5083a1.jar" />
     </item>
 
 </items>

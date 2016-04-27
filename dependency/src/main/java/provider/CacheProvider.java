@@ -20,7 +20,7 @@ public class CacheProvider extends LogAbsDataProvider{
     @SuppressWarnings("unchecked")
     @Override
     public void handleData(Context context, String uri, Map<String, String> params, Class cls, Listener.Response response, Listener.Error error) {
-        Object value = mLruCache.get(uri + params.toString());
+        Object value = mLruCache.get(uri + (params == null ? "" : params.toString()));
         response(response, value);
         response.onResponse(value);
     }

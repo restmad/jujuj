@@ -136,7 +136,10 @@ final class Generator {
     private void addParamsBindings(MethodSpec.Builder result, AnnotationItem anno) {
         String nameOfView = anno.getElementName() + "View";
         result.addStatement("$T " + nameOfView + " = helper.findViewById(view, $S, packageName)", VIEW, anno.getValue());
-        result.addStatement("helper.getParams(" + nameOfView + ", params, target, $S, packageName)", anno.getElementName());
+        result.addStatement("boolean b" + nameOfView + " = helper.getParams(" + nameOfView + ", params, target, $S, packageName)", anno.getElementName());
+        result.beginControlFlow("if(!b" + nameOfView + ")");
+        result.addStatement("return null");
+        result.endControlFlow();
     }
 
 }

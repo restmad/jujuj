@@ -8,21 +8,23 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 
-import jujuj.demo1.Demo1Activity;
-import jujuj.demo2.Demo2Activity;
-import jujuj.demo3.Demo3Activity;
-import jujuj.demo4.Demo4Activity;
-import jujuj.demo5.Demo5Activity;
-import jujuj.demo6.Demo6Activity;
-import jujuj.demo7.Demo7Activity;
-import jujuj.demo8.Demo8Activity;
+import jujuj.post.PostActivity;
+import jujuj.downloadable.Demo2Activity;
+import jujuj.multiple.Demo3Activity;
+import jujuj.Loadable.Demo4Activity;
+import jujuj.multibean.Demo5Activity;
+import jujuj.dependent.Demo6Activity;
+import jujuj.listable.Demo7Activity;
+import jujuj.action.Demo8Activity;
+import jujuj.proxy.ProxyActivity;
+import jujuj.validate.ValidateActivity;
 
 public class MainActivity extends ListActivity{
 
-	Class[] targets = {Demo1Activity.class, Demo2Activity.class, Demo3Activity.class, Demo4Activity.class,
+	Class[] targets = {PostActivity.class, ValidateActivity.class, ProxyActivity.class, Demo2Activity.class, Demo3Activity.class, Demo4Activity.class,
 			Demo5Activity.class, Demo6Activity.class, Demo7Activity.class, Demo8Activity.class};
 
-	String[] items = { "Posting a request", "Loading from server", "Handling multiple requests",
+	String[] items = { "Posting a request", "Post with validation", "Post with proxy", "Loading from server", "Handling multiple requests",
 			"Using Loadable", "Sharing User bean", "Dependent injection",
 			"Using Listable", "Using Action"};
 

@@ -37,9 +37,9 @@ public class DBProvider extends LogAbsDataProvider {
             response(response, obj);
             return;
         }
+        Log.d(TAG, "handling...." + cls.toString());
 
         if(cls.isAssignableFrom(Entity.class)){
-            Log.d(TAG, "handling....");
             Entity entity;
             try {
                 entity = (Entity) cls.newInstance();
@@ -50,6 +50,7 @@ public class DBProvider extends LogAbsDataProvider {
             }
             Entity target = entity.query();
             response.onResponse(target);
+
         } else if(cls.isAssignableFrom(Listable.class)){
             Type[] genType = cls.getGenericInterfaces();
             Type[] typeArguments = ((ParameterizedType) genType[0]).getActualTypeArguments();

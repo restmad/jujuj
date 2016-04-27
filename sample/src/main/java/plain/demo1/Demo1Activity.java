@@ -13,7 +13,7 @@ import com.shinado.netframe.sample.R;
 import java.util.HashMap;
 
 import framework.provider.Listener;
-import jujuj.demo2.Demo2Activity;
+import jujuj.downloadable.Demo2Activity;
 import provider.volley.VolleyProvider;
 import sample.Constants;
 
@@ -31,6 +31,7 @@ public class Demo1Activity extends Activity{
 			public void onClick(View v) {
 				showDialog();
 				HashMap<String, String> params = new HashMap<>();
+
 				EditText accountInput = (EditText) findViewById(R.id.login_account);
 				params.put("account", accountInput.getText().toString());
 

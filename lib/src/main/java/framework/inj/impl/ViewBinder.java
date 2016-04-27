@@ -26,7 +26,7 @@ public abstract class ViewBinder {
 			return value + "";
 		}
 		else{
-			throw new TypeNotSupportedException("The type of the field is not an Integer, Long, Double, Float or String");
+			throw new TypeNotSupportedException("The type of the value" + value.toString() + " is not an Integer, Long, Double, Float or String");
 		}
 
 	}

@@ -36,7 +36,7 @@ public class TextViewBinder extends ViewBinder {
 				return value+"";
 //			}
 		}else{
-			return null;
+			return "";
 		}
 	}
 
