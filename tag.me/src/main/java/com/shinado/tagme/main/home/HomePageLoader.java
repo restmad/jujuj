@@ -18,7 +18,7 @@ import framework.inj.ViewValueInj;
 import framework.inj.entity.Loadable;
 import framework.inj.entity.utility.Transformable;
 
-public class HomePageLoader extends Loadable<Tags> implements Transformable {
+public class HomePageLoader extends Loadable<Tags> {
 
     private final int FLAG_REFRESH = 1;
     private final int FLAG_MORE = 2;
@@ -36,8 +36,8 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable {
     }
 
     @ViewValueInj
-    public TreeSet<Tag> tags() {
-        return getEntity().tags;
+    public HomeTagPresenter.Wrapper tags() {
+        return new HomeTagPresenter.Wrapper(getEntity().tags, myLikes, myFollows);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable {
         HashMap<String, String> params = new HashMap<>();
         params.put("account", account);
         params.put("flag", "" + flag);
-        TreeSet<Tag> tags = tags();
+        TreeSet<Tag> tags = (TreeSet<Tag>) tags().getList();
         if (tags != null && tags.size() > 0) {
             if (flag == FLAG_REFRESH) {
                 id = tags.first().id;
@@ -76,20 +76,6 @@ public class HomePageLoader extends Loadable<Tags> implements Transformable {
     @Override
     public void onError(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public Object fromServer(String fieldName, Object value) {
-        if (fieldName.equals("tags")) {
-            return new HomeTagPresenter.Wrapper(tags(), myLikes, myFollows);
-        } else {
-            return value;
-        }
-    }
-
-    @Override
-    public Object toServer(String fieldName, Object value) {
-        return value;
     }
 
 }

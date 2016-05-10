@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@color/white" >
 
-        <ImageView
-            android:id="@+id/tagImg"
+        <com.example.tagimageview.TagViewGroup
+            android:id="@+id/tagViewGroup"
             android:layout_marginTop="60dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

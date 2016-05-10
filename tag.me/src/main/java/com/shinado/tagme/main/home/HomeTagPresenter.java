@@ -34,8 +34,8 @@ public class HomeTagPresenter {
     }
 
     @ViewValueInj
-    public String tagImg(){
-        return tag.img_url;
+    public Tag tagViewGroup(){
+        return tag;
     }
 
     @ViewValueInj

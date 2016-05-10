@@ -18,14 +18,6 @@ import provider.database.Entity;
 @Table(name = "Tags")
 public class Tag extends Entity implements Serializable, Comparable<Tag>, ITag, Cloneable{
 
-	public ArrayList<Tag> tags;
-
-	@Column(name = "likes")
-	public int likes;
-
-	@Column(name = "comments")
-	public int comments;
-
 	@Column(name = "tagId")
 	public int id;
 
@@ -38,17 +30,14 @@ public class Tag extends Entity implements Serializable, Comparable<Tag>, ITag, 
 	@Column(name = "content")
 	public String content = "";
 
-	@Column(name = "place")
-	public String place = "";
-
 	@Column(name = "type")
 	public int t_type;
 
-	@Column(name = "uploadTime")
-	public String upload_time;
-
 	@Column(name = "imgUrl")
 	public String img_url = "";
+
+	@Column(name = "direction")
+	public Direction direction;
 
 	@Column(name = "x")
 	public int x;
@@ -62,8 +51,19 @@ public class Tag extends Entity implements Serializable, Comparable<Tag>, ITag, 
 	@Column(name = "height")
 	public int height;
 
-	@Column(name = "direction")
-	public Direction direction;
+	@Column(name = "uploadTime")
+	public String upload_time;
+
+	@Column(name = "likes")
+	public int likes;
+
+	@Column(name = "comments")
+	public int comments;
+
+	@Column(name = "place")
+	public String place = "";
+
+	public Tag parent;
 
 	public ArrayList<Tag> children = new ArrayList<>();
 
@@ -114,7 +114,7 @@ public class Tag extends Entity implements Serializable, Comparable<Tag>, ITag, 
 
 	@Override
 	public List<? extends ITag> getTags() {
-		return tags;
+		return children;
 	}
 
 	@Override
@@ -149,11 +149,6 @@ public class Tag extends Entity implements Serializable, Comparable<Tag>, ITag, 
 
 	@Override
 	public ITag getCopy() {
-		return null;
-	}
-
-	@Override
-	public ITag getParent() {
 		try {
 			return (Tag) clone();
 		} catch (CloneNotSupportedException e) {
@@ -161,4 +156,14 @@ public class Tag extends Entity implements Serializable, Comparable<Tag>, ITag, 
 		}
 		return null;
 	}
+
+	@Override
+	public Tag getParent() {
+		return parent;
+	}
+
+	public void setParent(Tag tag){
+		this.parent = tag;
+	}
+
 }
