@@ -1,11 +1,13 @@
 package com.shinado.tagme.entity;
 
 
+import android.graphics.Point;
 import android.support.annotation.NonNull;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.example.tagimageview.ITag;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +16,9 @@ import java.util.List;
 import provider.database.Entity;
 
 @Table(name = "Tags")
-public class Tag extends Entity implements Serializable, Comparable<Tag>{
+public class Tag extends Entity implements Serializable, Comparable<Tag>, ITag, Cloneable{
+
+	public ArrayList<Tag> tags;
 
 	@Column(name = "likes")
 	public int likes;
@@ -58,6 +62,9 @@ public class Tag extends Entity implements Serializable, Comparable<Tag>{
 	@Column(name = "height")
 	public int height;
 
+	@Column(name = "direction")
+	public Direction direction;
+
 	public ArrayList<Tag> children = new ArrayList<>();
 
 	public Tag(){
@@ -98,5 +105,60 @@ public class Tag extends Entity implements Serializable, Comparable<Tag>{
 	@Override
 	public int compareTo(@NonNull Tag another) {
 		return another.id - id;
+	}
+
+	@Override
+	public long getTagId() {
+		return id;
+	}
+
+	@Override
+	public List<? extends ITag> getTags() {
+		return tags;
+	}
+
+	@Override
+	public String getImageUrl() {
+		return img_url;
+	}
+
+	@Override
+	public String getText() {
+		return title;
+	}
+
+	@Override
+	public Point getLocation() {
+		return new Point(x, y);
+	}
+
+	@Override
+	public Point getScreenSize() {
+		return new Point(width, height);
+	}
+
+	@Override
+	public Direction getDirection() {
+		return direction;
+	}
+
+	@Override
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+	@Override
+	public ITag getCopy() {
+		return null;
+	}
+
+	@Override
+	public ITag getParent() {
+		try {
+			return (Tag) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

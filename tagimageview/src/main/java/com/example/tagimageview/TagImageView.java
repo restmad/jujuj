@@ -3,10 +3,7 @@ package com.example.tagimageview;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.NinePatch;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -15,13 +12,9 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +45,6 @@ public class TagImageView extends ImageView {
     private NinePatchDrawable mTextBackgroundRight;
 
     private boolean mInAnimation = false;
-    private DisplayImageOptions mImageOptions;
 
     private Animation mTagInAnim, mTagOutAnim;
 
@@ -68,7 +60,6 @@ public class TagImageView extends ImageView {
         int textColor = typedArray.getColor(R.styleable.TagImageView_textColor, 0x00FFFFFF);
         mTextSize = typedArray.getDimension(R.styleable.TagImageView_textSize, 12);
         mPadding = typedArray.getDimension(R.styleable.TagImageView_padding, 0);
-        setImageHolder(typedArray.getResourceId(R.styleable.TagImageView_imageHolder, 0));
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(textColor);
@@ -101,9 +92,9 @@ public class TagImageView extends ImageView {
             }
         };
 
-        mTagInAnim = AnimationUtils.loadAnimation(mContext, R.anim.tag_in);
+        mTagInAnim = AnimationUtils.loadAnimation(mContext, R.anim.tag_in_foreground);
         mTagInAnim.setAnimationListener(listener);
-        mTagOutAnim = AnimationUtils.loadAnimation(mContext, R.anim.tag_out);
+        mTagOutAnim = AnimationUtils.loadAnimation(mContext, R.anim.tag_back_foreground);
         mTagOutAnim.setAnimationListener(listener);
     }
 
@@ -159,7 +150,7 @@ public class TagImageView extends ImageView {
                 Rect bounds = new Rect(left, top, right, bottom);
                 Log.d(TAG, "bounds of " + tag.getText() + ": " + bounds.left + ", " + bounds.top + ", " + bounds.right + ", " + bounds.bottom);
 
-                mBoundsMap.put(tag.getId(), bounds);
+                mBoundsMap.put(tag.getTagId(), bounds);
 
                 trySwitchDirection(tag, bounds);
 
@@ -219,7 +210,7 @@ public class TagImageView extends ImageView {
                 startX = x;
                 startY = y;
                 for (ITag child : currentTags) {
-                    Rect rect = mBoundsMap.get(child.getId());
+                    Rect rect = mBoundsMap.get(child.getTagId());
                     if (rect != null) {
                         if (rect.contains((int) x, (int) y)) {
                             mTagOnDrag = child;
@@ -354,8 +345,6 @@ public class TagImageView extends ImageView {
         }
         mCurrentTag = tag;
 
-        ImageLoader.getInstance().displayImage(tag.getImageUrl(), this, mImageOptions);
-
         switch (animationType){
             case IN:
                 startTagInAnimation();
@@ -383,14 +372,6 @@ public class TagImageView extends ImageView {
     public void setTag(ITag tag) {
         this.mTag = tag;
         setCurrentTag(tag, AnimationType.NONE);
-    }
-
-    public void setImageHolder(int drawable){
-        mImageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(drawable)
-                .showImageOnFail(drawable)
-                .showImageForEmptyUri(drawable)
-                .build();
     }
 
     public interface OnTagClickListener{
