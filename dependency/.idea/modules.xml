@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../activeandroid/activeandroid.iml" filepath="$PROJECT_DIR$/../activeandroid/activeandroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../annotation/annotation.iml" filepath="$PROJECT_DIR$/../annotation/annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../compiler/compiler.iml" filepath="$PROJECT_DIR$/../compiler/compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency.iml" filepath="$PROJECT_DIR$/dependency.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../extension/extension.iml" filepath="$PROJECT_DIR$/../extension/extension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../jujuj.iml" filepath="$PROJECT_DIR$/../jujuj.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../lib/lib.iml" filepath="$PROJECT_DIR$/../lib/lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sample/sample.iml" filepath="$PROJECT_DIR$/../sample/sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tag.me/tag.me.iml" filepath="$PROJECT_DIR$/../tag.me/tag.me.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tagimageview/tagimageview.iml" filepath="$PROJECT_DIR$/../tagimageview/tagimageview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tagview/tagview.iml" filepath="$PROJECT_DIR$/../tagview/tagview.iml" />
+    </modules>
+  </component>
+</project>

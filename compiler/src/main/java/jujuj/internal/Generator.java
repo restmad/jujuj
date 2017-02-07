@@ -112,7 +112,7 @@ final class Generator {
 
     private void handleDependentInj(MethodSpec.Builder result, AnnotationItem anno){
         String elementName = anno.getElementName();
-        result.addStatement("$T " + elementName + " = target." + elementName, LOADABLE);
+        result.addStatement("$T " + elementName + " = target." + elementName + "()", LOADABLE);
         //if state stored
         result.beginControlFlow("if("+elementName + ".isStateStored())");
             result.addStatement("helper.setContent(view, " + elementName+ ", packageName)");
@@ -127,7 +127,7 @@ final class Generator {
         result.addStatement("$T " + nameOfView + " = helper.findViewById(view, $S, packageName)", VIEW, anno.getValue());
 
         String elementName = anno.getElementName();
-        result.addStatement("helper.inject("+nameOfView+", target." + elementName+ ")");
+        result.addStatement("helper.inject("+nameOfView+", target." + elementName + ")");
 
         result.addStatement("helper.setContent(" + nameOfView + ", target, $S, target." + anno.getElementName() + ".getValue(), packageName)", anno.getElementName());
     }
